@@ -4,32 +4,17 @@
 
     
   <url>
-    <loc>http://FK2469.github.io/2018/01/11/mapreduce/</loc>
-    <lastmod>2018-01-11T14:49:49.221Z</lastmod>
+    <loc>http://FK2469.github.io/mapreduce/</loc>
+    <lastmod>2018-01-11T16:00:00.000Z</lastmod>
     <data>
         <display>
         <title>走向分布式（一）- MapReduce</title>
-        <pubTime>2018-01-11T14:49:49.225Z</pubTime>
+        <pubTime>2017-12-30T16:00:00.000Z</pubTime>
         
         <tag>Golang</tag>
          
         <tag>分布式系统</tag>
          
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://FK2469.github.io/2018/01/10/hello-world/</loc>
-    <lastmod>2018-01-10T15:34:12.864Z</lastmod>
-    <data>
-        <display>
-        <title>Hello World</title>
-        <pubTime>2018-01-10T15:34:12.880Z</pubTime>
-        
          
            
         </display>
