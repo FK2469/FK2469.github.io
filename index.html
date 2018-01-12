@@ -205,7 +205,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle"></p>
+        <h1 class="site-subtitle" itemprop="description"></h1>
       
   </div>
 
@@ -246,9 +246,43 @@
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
   
 </nav>
 
@@ -294,9 +328,9 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/mapreduce/" itemprop="url">走向分布式（一）- MapReduce</a></h1>
+                <a class="post-title-link" href="/mapreduce/" itemprop="url">走向分布式（一）- MapReduce</a></h2>
         
 
         <div class="post-meta">
@@ -330,6 +364,37 @@
           
 
           
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,603 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13 分钟
+                </span>
+              
+            </div>
+          
 
           
 
@@ -347,157 +412,16 @@
 
       
         
-          
-            <blockquote class="blockquote-center">没有完美的系统，任何系统的出现都是为了解决当时最主要的问题。</blockquote>
+          <blockquote class="blockquote-center">没有完美的系统，任何系统的出现都是为了解决当时最主要的问题。</blockquote>
 
-<h2 id="走向分布式"><a href="#走向分布式" class="headerlink" title="走向分布式"></a>走向分布式</h2><p>  分布式：<br>  一个业务分拆为多个子业务，部署在不同的服务器上。各个模块间通过远程服务调用(RPC)进行通信，整个计算机集合共同对外提供服务，但对于用户来说，就像是一台计算机在提供服务一样。</p>
-<p>  一个系统走向分布式，追求的无非是：</p>
-<ul>
-<li>扩展性(Scalability)</li>
-<li>高可用(High Availability)</li>
-<li><p>高性能(High Performence)</p>
-<p>获取相应特性的同时，便注定要接受一些牺牲:</p>
-</li>
-<li>牺牲效率</li>
-<li>牺牲AP弹性</li>
-<li><p>牺牲运维的便捷性  </p>
-<p>为了对应用掩盖“分布”，产生了三大抽象:</p>
-</li>
-<li>存储(Storage)</li>
-<li>通信(Communication)</li>
-<li><p>计算(Computation)  </p>
-<p>云计算不过是分布式这个旧瓶子装的新酒：<br>分布式技术 + 服务化技术 + 虚拟化技术(资源隔离和管理)  </p>
-</li>
-<li><p>服务模式(Service models)<br>美国国家标准和技术研究院的云计算定义中明确了三种服务模式：</p>
-<p>软件即服务（SaaS - Software as a service）<br>平台即服务（PaaS - Platform as a service）<br>基础设施即服务（IaaS - Infrastructure as a service）</p>
-<p>而另外两位新成员分别是：移动后端即服务(MBaaS - Mobile “backend” as a service)和Serverless computing。</p>
-</li>
-<li><p>虚拟化<br>包括资源虚拟化、统一分配检测资源、向资源池中添加资源。</p>
-</li>
-</ul>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>  远程服务调用(RPC), 线程(threads), 并发控制(concurrency control)</p>
-<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><ul>
-<li><p>愿景: 彻底的可扩展性<br>N台服务器就有N倍的吞吐量。应对更多的负载只需要堆更多的机器就好了。</p>
-</li>
-<li><p>事实上:<br>随着N的增长，扩展的难度越大。</p>
-<ul>
-<li>负载不均衡(Load im-balance, stragglers)</li>
-<li>不可并行化的代码(Non-parallelizable code)</li>
-<li>共享资源(比如网络)带来的性能瓶颈</li>
-</ul>
-</li>
-</ul>
-<h3 id="容错"><a href="#容错" class="headerlink" title="容错"></a>容错</h3><p>  数以千计的机器、复杂的网络意味着总会有错误产生，而我们希望这些错误对应用是透明的。</p>
-<p>  我们想要的是: </p>
-<ul>
-<li>可用性(Availability)<br>  尽管机器出了毛病，应用不至于崩溃。</li>
-<li><p>耐久性(Durability)<br>  当错误修复的时候，应用又能活蹦乱跳。</p>
-</li>
-<li><p>一个想法: 复制服务器<br>  如果一个服务器崩溃了，用户可以转而使用其他的。</p>
-</li>
-</ul>
-<h3 id="一致性"><a href="#一致性" class="headerlink" title="一致性"></a>一致性</h3><p>  通常，基础架构需要“良好定义的行为”(well-defined behavior)。比如”Get(k)获取到的值，产生自最近的Put(k,v).”</p>
-<p>  但实现良好行为相当困难！<br>  备份服务器(Replica servers)之间很难保证一致。</p>
-<ul>
-<li>客户端可能在多步骤上传的中途崩溃。</li>
-<li>服务器可能在执行后、响应前崩溃。</li>
-<li>竞争网络资源可能造成服务器的死锁</li>
-<li>多主服务器的风险(split brain)<br>一致性和高性能不可兼得。<br>保证一致性需要通信，强一致性会影响系统性能。高可用常常意味着应用的“弱一致性”。</li>
-</ul>
-<h2 id="实例学习-MapReduce"><a href="#实例学习-MapReduce" class="headerlink" title="实例学习: MapReduce"></a>实例学习: MapReduce</h2><h3 id="MapReduce-概述"><a href="#MapReduce-概述" class="headerlink" title="MapReduce 概述"></a>MapReduce 概述</h3><h4 id="现实需求"><a href="#现实需求" class="headerlink" title="现实需求"></a>现实需求</h4><ul>
-<li>处理大量的原始数据<br>比如文档抓取、Web 请求日志；</li>
-<li>处理各种类型的衍生数据<br>比如倒排索引、Web 文档的图结构的各种表示形式、每台主机上网络爬虫抓取的页面数量的汇总、每天被请求的最多的查询的集合。<h4 id="潜在问题"><a href="#潜在问题" class="headerlink" title="潜在问题"></a>潜在问题</h4><ul>
-<li>如何处理并行计算、如何分发数据、如何处理错误？</li>
-</ul>
-</li>
-</ul>
-<h4 id="有问题，试着用抽象的方法解决如何？"><a href="#有问题，试着用抽象的方法解决如何？" class="headerlink" title="有问题，试着用抽象的方法解决如何？"></a>有问题，试着用抽象的方法解决如何？</h4><p>一种新的计算模型——MapReduce应运而生。<br>MapReduce抽象出来大多数的运算都包含的操作：在输入数据的记录上应用 Map 操作得出一个中间 key/value pair 集合。然后在所有具有相同 key 值的 value 值上应用 Reduce 操作，从而达到合并中间的数据，得到结果。<br>值得一提的是，它的灵感来自 Lisp 和许多其他函数式语言的 Map 和 Reduce 的原语。</p>
-<h4 id="MapReduce-原理简图"><a href="#MapReduce-原理简图" class="headerlink" title="MapReduce 原理简图"></a>MapReduce 原理简图</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">input is divided into M files  </span><br><span class="line">Input1 -&gt; Map -&gt; a,<span class="number">1</span> b,<span class="number">1</span> c,<span class="number">1</span>  </span><br><span class="line">Input2 -&gt; Map -&gt;     b,<span class="number">1</span>  </span><br><span class="line">Input3 -&gt; Map -&gt; a,<span class="number">1</span>     c,<span class="number">1</span>  </span><br><span class="line">                  |   |   |  </span><br><span class="line">                      |   -&gt; Reduce -&gt; c,<span class="number">2</span>  </span><br><span class="line">                      -----&gt; Reduce -&gt; b,<span class="number">2</span></span><br></pre></td></tr></table></figure>
-<p>用户自定义的 Map 函数接受一个输入的 key/value pair 值，然后产生一个中间 key/value pair 值的集合。<br>MapReduce 库把所有具有相同中间数据的值集合在一起后传递给 reduce 函数。Reduce 函数合并这些 value 值，形成一个较小的 value 值的集合。<br>一般地，每次 Reduce 函数调用只产生 0 或 1 个输出 value 值。通过一个迭代器把中间 value 值提供给 Reduce 函数，以此处理无法全部放入内存中的大量的 value 值的集合。</p>
-<h4 id="例子-word-count"><a href="#例子-word-count" class="headerlink" title="例子: word count"></a>例子: word count</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">input is thousands of text files</span><br><span class="line">Map(k, v)</span><br><span class="line">  split v into words</span><br><span class="line">  <span class="keyword">for</span> each word w</span><br><span class="line">    emit(w, <span class="string">"1"</span>)</span><br><span class="line">Reduce(k, v)</span><br><span class="line">  emit(len(v))</span><br></pre></td></tr></table></figure>
-<h3 id="MapReduce-特性"><a href="#MapReduce-特性" class="headerlink" title="MapReduce 特性"></a>MapReduce 特性</h3><h4 id="MapReduce-隐藏了许多令人痛苦的细节"><a href="#MapReduce-隐藏了许多令人痛苦的细节" class="headerlink" title="MapReduce 隐藏了许多令人痛苦的细节"></a>MapReduce 隐藏了许多令人痛苦的细节</h4><ul>
-<li>启动服务器上的软件</li>
-<li>追踪任务进展</li>
-<li>数据移动</li>
-<li>错误恢复</li>
-</ul>
-<h4 id="MapReduce-可扩展性良好"><a href="#MapReduce-可扩展性良好" class="headerlink" title="MapReduce 可扩展性良好"></a>MapReduce 可扩展性良好</h4><p>  N台服务器可以有N倍的吞吐量。因为Map()操作之间并不需要交互，所以Map()可以并行处理。同理Reduce()操作也可以。<br>  新模型解放了程序员，他们不再需要为每个应用进行专门的并行优化了。毕竟程序员的时间比机器更宝贵!</p>
-<h4 id="可能限制性能的地方"><a href="#可能限制性能的地方" class="headerlink" title="可能限制性能的地方?"></a>可能限制性能的地方?</h4><ul>
-<li>我们想知道这里还有什么可优化的地方。CPU? 内存? 硬盘? 网络?<br>论文的作者认为网络带宽是瓶颈所在，所以他们尽量避免数据在网络间的移动。</li>
-</ul>
-<h3 id="MapReduce-详述"><a href="#MapReduce-详述" class="headerlink" title="MapReduce 详述"></a>MapReduce 详述</h3><h4 id="运行流程"><a href="#运行流程" class="headerlink" title="运行流程"></a>运行流程</h4><p>  <img src="http://ts25504.github.io/images/mapreduce.jpg" alt="Figure 1"></p>
-<ol>
-<li>用户程序首先调用 MapReduce 库将输入文件分成 M 个数据片，每个数据片的大小一般从16MB 到 64MB(通过可选的参数可配置每个数据片的大小)。然后在集群中启动大量用户程序的副本。</li>
-<li>这些程序副本中的有一个特殊的程序–master。副本中其它的程序都是 worker 程序，由 master 分配任务。有 M 个 Map 任务和 R 个 Reduce 任务将被分配，master 将一个 Map 或 Reduce 任务分配给一个空闲的 worker。</li>
-<li>被分配了 Map 任务的 worker 程序读取相关的输入数据片段，从输入的数据片段中解析出 key/value pair，然后把 key/value pair 传递给用户自定义的 Map 函数，由 Map 函数生成并输出的中间 key/value pair，并缓存在内存中。</li>
-<li>缓存中的 key/value pair 通过分区函数分成 R 个区域，之后周期性的写入到本地磁盘上。缓存的key/value pair 在本地磁盘上的存储位置将被回传给 master，由 master 负责把这些存储位置再传送给Reduce worker。</li>
-<li>当 Reduce worker 程序接收到 master 程序发来的数据存储位置信息后，使用 RPC 从 Map worker 所在主机的磁盘上读取这些缓存数据。当 Reduce worker 读取了所有的中间数据后，通过对 key 进行排序后使得具有相同key 值的数据聚合在一起。由于许多不同的 key 值会映射到相同的 Reduce 任务上，因此必须进行排序。如果中间数据太大无法在内存中完成排序，那么就要在外部进行排序。</li>
-<li>Reduce worker 程序遍历排序后的中间数据，对于每一个唯一的中间 key 值，Reduce worker 程序将这个 key 值和它相关的中间 value 值的集合传递给用户自定义的 Reduce 函数。Reduce 函数的输出被追加到所属分区的输出文件。</li>
-<li><p>当所有的 Map 和 Reduce 任务都完成之后，master 唤醒用户程序。在这个时候，在用户程序里的对MapReduce 调用才返回。</p>
-<p> 在成功完成任务之后，MapReduce 的输出存放在 R 个输出文件中（对应每个 Reduce 任务产生一个输出文件，文件名由用户指定）。一般情况下，用户不需要将这 R 个输出文件合并成一个文件–他们经常把这些文件作为另外一个 MapReduce 的输入，或者在另外一个可以处理多个分割文件的分布式应用中使用。</p>
-</li>
-</ol>
-<p>重温一下之前Word Count的例子！<br>  <img src="http://fk2469.github.io/images/word_count.png" alt="Word_Count"></p>
-<h4 id="如何降低缓慢网络的影响"><a href="#如何降低缓慢网络的影响" class="headerlink" title="如何降低缓慢网络的影响?"></a>如何降低缓慢网络的影响?</h4><ul>
-<li>Map 输入从 GFS replica的本地磁盘中读取，而不是网络中。</li>
-<li>中间数据经过仅经过网络一次。</li>
-<li>Map worker写入本地磁盘，而不是GFS。</li>
-<li>中间数据分成多个键的文件。</li>
-<li>大规模的网络运输更有效。</li>
-</ul>
-<h4 id="如何获得负载均衡"><a href="#如何获得负载均衡" class="headerlink" title="如何获得负载均衡?"></a>如何获得负载均衡?</h4><p>有些应用执行所需的时间本身就比其他应用要长。</p>
-<p>解决方案：任务数多于worker数。<br>Master分配新任务给完成先前任务的worker。<br>所以，理想中没有因任务太大而占据太多完成时间的情况出现。更快的服务器做更多的工作，最终在相同时间完成。</p>
-<h4 id="如何进行容错"><a href="#如何进行容错" class="headerlink" title="如何进行容错?"></a>如何进行容错?</h4><p>例如, 如果一台服务器在MR任务中崩溃了怎么办？<br>隐藏失败是简化编程的一大组成部分!<br>MR只需要重新运行失败的Map和Reduce任务。</p>
-<p>为什么不从头开始整个工作？</p>
-<p>究其根源，是MR要求各个任务是纯函数:</p>
-<ul>
-<li>他们不在调用里保持状态</li>
-<li>他们不读或写文件, 除了预期的 MR 输入/输出</li>
-<li>任务之间没有隐藏的通信。<br>因此, 重新执行(re-execution)产生相同的结果。</li>
-</ul>
-<p>对纯函数的要求是MR与其他并行编程方案相比主要的限制，但这对 MR 的简洁性至关重要。</p>
-<h4 id="故障恢复的细节"><a href="#故障恢复的细节" class="headerlink" title="故障恢复的细节"></a>故障恢复的细节</h4><ul>
-<li>Map worker崩溃:<br>master 发现 worker 不再回应 pings，即意识到worker崩溃。<br>若崩溃的worker的中间Map输出损坏，但这部分数据可能被所有Reduce任务需要。此时master重新运行，将任务分配到其他GFS副本中。<br>有些 Reduce workers 可能已经读取失败的worker的中间数据，这里我们需要有函数式(functional)和可确定(deterministic)的Map()!<br>如果 Reduces已经获取了所有中间数据，master 不需要重新执行 Map。尽管若之后Reduce崩溃仍会导致失败的Map的重新执行。</li>
-<li>Reduce worker 崩溃：<br>已完成的任务不受影响，因它们已经被存储在了GFS上，并且有副本。<br>master 重启 worker的未完成的任务在其他worker上</li>
-<li>Reduce worker 在构建输出文件的中途崩溃：<br>GFS具有原子重命名功能，可防止输出在完成之前可见。所以master在其他地方重新运行Reduce任务是安全的。</li>
-</ul>
-<h4 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h4><ul>
-<li>如果master分配两个workers同样的Map()任务怎么办?<br>大概master错以为其中一个worker宕机了，它只会告诉 Reduce workers 其中的一个.</li>
-<li>如果master分配两个workers同样的Reduce()任务怎么办?<br>他们都将尝试写入同样的输出文件到GFS上。<br>GFS的原子重命名可防止混淆;先完成的文件将是可见的。</li>
-<li>如果一个 worker 十分缓慢怎么办(straggler)?<br>也许是由于硬件的问题，master启动前几个任务的第二个副本。</li>
-<li>如果一个 worker 由于 h/w 或 s/w 计算出错误的输出怎么办?<br>MR 采取失效停止(fail-stop)策略评估CPUs和软件。</li>
-<li>如果 master 崩溃怎么办?</li>
-</ul>
-<h4 id="对于哪些应用MapReduce效果不好"><a href="#对于哪些应用MapReduce效果不好" class="headerlink" title="对于哪些应用MapReduce效果不好?"></a>对于哪些应用MapReduce效果不好?</h4><p>不是一切应用都适合map/shuffle/reduce模式。</p>
-<ul>
-<li>数据量很小的时候。</li>
-<li>小数据更新到大数据之中。</li>
-<li>不可预料的读操作(Map和Reduce都不能选择输入)</li>
-<li>多重洗牌(Multiple shuffles)。比如 page-rank，虽然可以用多重MR但不是最有效的。有更灵活的系统适用于该场景，当然模型也更复杂。</li>
-</ul>
-<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>MapReduce凭一己之力让集群计算广受欢迎。</p>
-<ul>
-<li>或许不是最有效、最灵活的</li>
-<li>可扩展性良好</li>
-<li>易于编程。错误和数据移动对程序员透明。</li>
-</ul>
-<h4 id="启发"><a href="#启发" class="headerlink" title="启发"></a>启发</h4><ul>
-<li>限定编程模型使得并行和分布式计算非常容易，也易于构造容错的计算环境；</li>
-<li>网络带宽是稀有资源。大量的系统优化是针对减少网络传输量为目的的：本地优化策略使大量的数据从本地磁盘读取，中间文件写入本地磁盘、并且只写一份中间文件也节约了网络带宽；</li>
-<li>多次执行相同的任务可以减少性能缓慢的机器带来的负面影响（即硬件配置的不平衡），同时解决了由于机器失效导致的数据丢失问题。</li>
-</ul>
-<h2 id="MIT-6-824-Lab-1"><a href="#MIT-6-824-Lab-1" class="headerlink" title="MIT 6.824 Lab 1"></a>MIT 6.824 Lab 1</h2><h3 id="Preamble-Getting-familiar-with-the-source"><a href="#Preamble-Getting-familiar-with-the-source" class="headerlink" title="Preamble: Getting familiar with the source"></a>Preamble: Getting familiar with the source</h3><p>Mapreduce包提供了一个简单的Map / Reduce库。应用程序通常应该调用Distributed()[位于master.go中]来启动一个作业，但是也可以调用Sequential()[也在master.go中]来获得调试的顺序执行。</p>
-<h4 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h4><p>与论文中的运行流程无异，但有了具体的函数名看起来更亲切一些。</p>
-<ol>
-<li>该应用程序提供大量输入文件, 一个Map函数, 一个Reduce函数, nReduce个reduce tasks。</li>
-<li>RPC服务器启动, 等该worker注册(Register)至RPC中. 任务处于可执行状态时, 调度器(Schedule)决定如何把task分配给worker和如何容错。</li>
-<li>Master把每个输入文件作为一个Map任务, 每个任务至少调用一次doMap. 这些任务或者直接执行或者由DoTask RPC发射, 每个对doMap()的调用读取合适的文件, 对每个文件调用map, 对每个map文件最后产生nReduce个文件。</li>
-<li>Master对每个reduce人物至少调用一次doReduce(). doReduce()收集由map产生的nReduce文件, 然后对这些文件运行reduce函数. 最终产生nReduce个中间文件。</li>
-<li>Master调用mr.merge(), 合并所有的中间文件为一个输出文件。</li>
-<li>Master发送Shutdown RPC关闭workers, 然后关闭RPC服务器。</li>
-</ol>
-<h3 id="Part-I-Map-Reduce-input-and-output"><a href="#Part-I-Map-Reduce-input-and-output" class="headerlink" title="Part I: Map/Reduce input and output"></a>Part I: Map/Reduce input and output</h3><h3 id="Part-II-Single-worker-word-count"><a href="#Part-II-Single-worker-word-count" class="headerlink" title="Part II: Single-worker word count"></a>Part II: Single-worker word count</h3><h3 id="Part-III-Distributing-MapReduce-tasks"><a href="#Part-III-Distributing-MapReduce-tasks" class="headerlink" title="Part III: Distributing MapReduce tasks"></a>Part III: Distributing MapReduce tasks</h3><h3 id="Part-IV-Handling-worker-failures"><a href="#Part-IV-Handling-worker-failures" class="headerlink" title="Part IV: Handling worker failures"></a>Part IV: Handling worker failures</h3><h3 id="Part-V-Inverted-index-generation"><a href="#Part-V-Inverted-index-generation" class="headerlink" title="Part V: Inverted index generation"></a>Part V: Inverted index generation</h3>
-          
+<h2 id="走向分布式"><a href="#走向分布式" class="headerlink" title="走向分布式"></a>走向分布式</h2><p>  分布式：<br>  一个业务分拆为多个子业务，部署在不同的服务器上。各个模块间通过远程服务调用(RPC)进行通信，整个计算机集合共同对外提供服务，但对于用户来说，就像是一台计算机在提供服务一样。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/mapreduce/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -809,6 +733,323 @@
 
 
   
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
 
 
 
