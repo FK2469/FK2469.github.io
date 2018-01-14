@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=consolas:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Golang,分布式系统,Mit 6.824," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="远程进程之间的通信的两把利器：线程和RPC。  线程为什么线程？  允许您利用并发性，这是分布式系统中很自然的要求。    I/O并发性：在等待来自另一个服务器的响应时，处理下一个请求。   多核：线程在几个核心上并行运行。">
+<meta name="keywords" content="Golang,分布式系统,Mit 6.824">
+<meta property="og:type" content="article">
+<meta property="og:title" content="走向分布式（二）- RPC&amp;Threads">
+<meta property="og:url" content="http://FK2469.github.io/RPC&Threads/index.html">
+<meta property="og:site_name" content="FK2469&#39;s Notes">
+<meta property="og:description" content="远程进程之间的通信的两把利器：线程和RPC。  线程为什么线程？  允许您利用并发性，这是分布式系统中很自然的要求。    I/O并发性：在等待来自另一个服务器的响应时，处理下一个请求。   多核：线程在几个核心上并行运行。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-14T09:17:26.485Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="走向分布式（二）- RPC&amp;Threads">
+<meta name="twitter:description" content="远程进程之间的通信的两把利器：线程和RPC。  线程为什么线程？  允许您利用并发性，这是分布式系统中很自然的要求。    I/O并发性：在等待来自另一个服务器的响应时，处理下一个请求。   多核：线程在几个核心上并行运行。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://FK2469.github.io/RPC&Threads/"/>
+
+
+
+
+
+  <title>走向分布式（二）- RPC&Threads | FK2469's Notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/FK2469" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">FK2469's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://FK2469.github.io/RPC&Threads/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="FK2469">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FK2469's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">走向分布式（二）- RPC&Threads</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-13T00:00:00+08:00">
+                2018-01-13
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-14T17:17:26+08:00">
+                2018-01-14
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,502 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote class="blockquote-center"><br>远程进程之间的通信的两把利器：线程和RPC。<br></blockquote>
+
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><h3 id="为什么线程？"><a href="#为什么线程？" class="headerlink" title="为什么线程？"></a>为什么线程？</h3><p>  允许您利用并发性，这是分布式系统中很自然的要求。  </p>
+<ul>
+<li>I/O并发性：<br>在等待来自另一个服务器的响应时，处理下一个请求。  </li>
+<li>多核：<br>线程在几个核心上并行运行。<a id="more"></a>
+<h3 id="线程-“执行线程”-thread-of-execution"><a href="#线程-“执行线程”-thread-of-execution" class="headerlink" title="线程==“执行线程”(thread of execution)"></a>线程==“执行线程”(thread of execution)</h3>线程允许一个程序一次（逻辑上讲）执行许多事情。<br>线程共享内存。  </li>
+<li>每个线程都包含一些线程状态：<br>程序计数器，寄存器，堆栈。</li>
+</ul>
+<h3 id="程序中应该有多少个线程？"><a href="#程序中应该有多少个线程？" class="headerlink" title="程序中应该有多少个线程？"></a>程序中应该有多少个线程？</h3><ul>
+<li>尽可能多的“有用”的应用程序。  </li>
+<li>Go鼓励你创造许多线程。<br>通常比核心更多的线程。<br>Go运行时会在可用CPU上安排它们。  </li>
+<li>Go线程是不是免费的，但你应该认为他们是。<br>创建线程比方法调用更昂贵。</li>
+</ul>
+<h3 id="线程中的挑战："><a href="#线程中的挑战：" class="headerlink" title="线程中的挑战："></a>线程中的挑战：</h3><ul>
+<li>共享数据<br> 一个线程读取另一个线程正在改变的数据？<br> 可能导致竞赛状况。<br> -&gt;不要共享或协调共享（例如，互斥体）</li>
+<li>线程之间的协调<br>等待所有的Map线程完成<br>可能会导致死锁（通常比竞争更易于注意）<br>-&gt;使用Go channel或WaitGroup。</li>
+<li>并发性的粒度<br> 粗粒度 - &gt;简单，但很少并发/并行性。<br> 细粒度 - &gt;更多的并发性，更多的竞争和死锁。  </li>
+</ul>
+<h3 id="实例练习-Crawler"><a href="#实例练习-Crawler" class="headerlink" title="实例练习 Crawler"></a>实例练习 Crawler</h3><ul>
+<li>安排I/O并发<br>在获取URL的同时，处理另一个URL</li>
+<li>一次获取每个URL<br>要避免浪费网络带宽<br>要对远程服务器友好<br>=&gt;需要某种方式来跟踪哪些网址被访问了。<br>[在不同核心上处理不同的URL]<br>少认同是重要的。</li>
+</ul>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><h5 id="消除深度—使用fetched代替"><a href="#消除深度—使用fetched代替" class="headerlink" title="消除深度—使用fetched代替"></a>消除深度—使用fetched代替</h5><ul>
+<li>顺序方案：将fetched map传递给递归调用<br>当fetcher需要很长时间时不会重叠I/O<br>不利用多个核心  </li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CrawlSerial</span><span class="params">(url <span class="keyword">string</span>, fetcher Fetcher, fetched <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">bool</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> fetched[url] &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fetched[url] = <span class="literal">true</span></span><br><span class="line">	body, urls, err := fetcher.Fetch(url)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"found: %s %q\n"</span>, url, body)</span><br><span class="line">	<span class="keyword">for</span> _, u := <span class="keyword">range</span> urls &#123;</span><br><span class="line">		CrawlSerial(u, fetcher, fetched)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用Go routines和 shared fetched map  <ul>
+<li>为每个URL创建一个线程<br>我们不通过你呢？（竞争）</li>
+<li>为什么锁？（删除它们，似乎每一个还会工作！）<br>没有锁可能会出什么问题？<br>  URL的检查和标记不是原子的</li>
+<li>所以可能会发生，我们获取相同的网址两次。<br>T1检查提取[url]，T2检查提取[url]<br>都看到该网址还没有被提取<br>两者都返回假和两个取，这是错误的<br>这叫做”竞赛条件”<br>  该错误只显示一些线程交错</li>
+<li>很难找到，很难推理<br>Go可以检测到你的竞争（go run -race crawler.go）<br>请注意，访问的检查和标记必须是原子的。 </li>
+<li>我们怎样才能决定我们处理一个页面？<br>waitGroup</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> fetchState <span class="keyword">struct</span> &#123;</span><br><span class="line">	mu      sync.Mutex</span><br><span class="line">	fetched <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">bool</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *fetchState)</span> <span class="title">CheckAndMark</span><span class="params">(url <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	<span class="comment">//defer f.mu.Unlock()</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//f.mu.Lock()</span></span><br><span class="line">	<span class="keyword">if</span> f.fetched[url] &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">	&#125;</span><br><span class="line">	f.fetched[url] = <span class="literal">true</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mkFetchState</span><span class="params">()</span> *<span class="title">fetchState</span></span> &#123;</span><br><span class="line">	f := &amp;fetchState&#123;&#125;</span><br><span class="line">	f.fetched = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">bool</span>)</span><br><span class="line">	<span class="keyword">return</span> f</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CrawlConcurrentMutex</span><span class="params">(url <span class="keyword">string</span>, fetcher Fetcher, f *fetchState)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> f.CheckAndMark(url) &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	body, urls, err := fetcher.Fetch(url)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"found: %s %q\n"</span>, url, body)</span><br><span class="line">	<span class="keyword">var</span> done sync.WaitGroup</span><br><span class="line">	<span class="keyword">for</span> _, u := <span class="keyword">range</span> urls &#123;</span><br><span class="line">		done.Add(<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(u <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">			<span class="keyword">defer</span> done.Done()</span><br><span class="line">			CrawlConcurrentMutex(u, fetcher, f)</span><br><span class="line">		&#125;(u) <span class="comment">// Without the u argument there is a race</span></span><br><span class="line">	&#125;</span><br><span class="line">	done.Wait()</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用Channel<ul>
+<li>Channels：general-purse机制来协调线程<br>消息的有限缓冲区<br>多个线程可以在channel上发送和接收<br>  （Go运行时在内部使用锁）</li>
+<li>发送或接收可能会被阻止<br>当channel已满时<br>当channel是空的</li>
+<li>通过主线程分派每个URL获取<br>没有竞争获取map，因为它不共享！</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">dofetch</span><span class="params">(url1 <span class="keyword">string</span>, ch <span class="keyword">chan</span> []<span class="keyword">string</span>, fetcher Fetcher)</span></span> &#123;</span><br><span class="line">	body, urls, err := fetcher.Fetch(url1)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		ch &lt;- []<span class="keyword">string</span>&#123;&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"found: %s %q\n"</span>, url1, body)</span><br><span class="line">		ch &lt;- urls</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">master</span><span class="params">(ch <span class="keyword">chan</span> []<span class="keyword">string</span>, fetcher Fetcher)</span></span> &#123;</span><br><span class="line">	n := <span class="number">1</span></span><br><span class="line">	fetched := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">bool</span>)</span><br><span class="line">	<span class="keyword">for</span> urls := <span class="keyword">range</span> ch &#123;</span><br><span class="line">		<span class="keyword">for</span> _, u := <span class="keyword">range</span> urls &#123;</span><br><span class="line">			<span class="keyword">if</span> _, ok := fetched[u]; ok == <span class="literal">false</span> &#123;</span><br><span class="line">				fetched[u] = <span class="literal">true</span></span><br><span class="line">				n += <span class="number">1</span></span><br><span class="line">				<span class="keyword">go</span> dofetch(u, ch, fetcher)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		n -= <span class="number">1</span></span><br><span class="line">		<span class="keyword">if</span> n == <span class="number">0</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CrawlConcurrentChannel</span><span class="params">(url <span class="keyword">string</span>, fetcher Fetcher)</span></span> &#123;</span><br><span class="line">	ch := <span class="built_in">make</span>(<span class="keyword">chan</span> []<span class="keyword">string</span>)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		ch &lt;- []<span class="keyword">string</span>&#123;url&#125;</span><br><span class="line">	&#125;()</span><br><span class="line">	master(ch, fetcher)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="什么是最好的解决方案？"><a href="#什么是最好的解决方案？" class="headerlink" title="什么是最好的解决方案？"></a>什么是最好的解决方案？</h4><ul>
+<li>所有并发的比串行的更难<br>一些Go设计师认为避免共享内存<br>即只使用channel  <ul>
+<li>我们的解决方案是使用许多并发功能</li>
+<li>加锁: 当共享是自然的时候<br>例如，几个共享map的服务器线程</li>
+<li>channels: 当线程间需要协调的时候<br>例如，生产者/消费者风格的并发</li>
+<li>使用Go的竞争探测器：<br><a href="https://golang.org/doc/articles/race_detector.html" target="_blank" rel="noopener">https://golang.org/doc/articles/race_detector.html</a><br>go test -race mypkg</li>
+</ul>
+</li>
+</ul>
+<h2 id="远程过程调用（RPC）"><a href="#远程过程调用（RPC）" class="headerlink" title="远程过程调用（RPC）"></a>远程过程调用（RPC）</h2><p>  分布式系统的关键部分!  </p>
+<ul>
+<li>目标：易于编程的网络通信  <ul>
+<li>隐藏客户端/服务器通信的大部分细节  </li>
+<li>客户来电很像普通的程序调用  </li>
+<li>服务器处理程序很像普通程序<br>RPC被广泛使用！</li>
+</ul>
+</li>
+</ul>
+<p>RPC理想地使网络通信看起来就像fn调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Client:</span><br><span class="line">  z = fn(x, y)</span><br><span class="line">Server:</span><br><span class="line">  fn(x, y) &#123;</span><br><span class="line">    compute</span><br><span class="line">    return z</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>  RPC旨在达到这种透明度。</p>
+<h3 id="实例研究：kv-go"><a href="#实例研究：kv-go" class="headerlink" title="实例研究：kv.go"></a>实例研究：kv.go</h3><p>  客户端“拨号”服务器并调用Call（）<br>    调用类似于常规函数调用<br>  服务器在单独的线程中处理每个请求<br>    并发！因此，锁住了keyvalue。</p>
+<p>RPC消息图：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Client             Server</span><br><span class="line">  request---&gt;</span><br><span class="line">     &lt;---response</span><br></pre></td></tr></table></figure></p>
+<p>软件结构<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">client app         handlers</span><br><span class="line">  stubs           dispatcher</span><br><span class="line"> RPC lib           RPC lib</span><br><span class="line">   net  ------------ net</span><br></pre></td></tr></table></figure></p>
+<p>一些细节：</p>
+<ul>
+<li>哪个服务器函数（处理程序）要调用？<br>在Go中特指Call()</li>
+<li>编组(Marshalling)：将数据格式化成数据包<br>棘手的数组，指针，对象，＆C<br>Go的RPC库非常强大！<br>有些事情你不能通过：例如，channel，函数  </li>
+<li>绑定(Binding)：客户如何知道与谁交谈？<br>也许客户端提供服务器主机名<br>也许名称服务将服务名称映射到最佳服务器主机  </li>
+</ul>
+<h3 id="RPC问题：如何处理失败？"><a href="#RPC问题：如何处理失败？" class="headerlink" title="RPC问题：如何处理失败？"></a>RPC问题：如何处理失败？</h3><p>  如丢包，断网，慢服务器，服务器崩溃。</p>
+<p>什么是客户端RPC库的失败？<br>  客户端从不会看到来自服务器的响应<br>  客户端*不知道服务器是否看到了请求！<br>    也许服务器/网络在发送回复之前失败</p>
+<h4 id="最简单的方案：“至少一次”-at-least-once"><a href="#最简单的方案：“至少一次”-at-least-once" class="headerlink" title="最简单的方案：“至少一次”(at least once)"></a>最简单的方案：“至少一次”(at least once)</h4><p>  RPC库等待响应一段时间，如果没有到达，重新发送请求。<br>  这样做几次后，若仍然没有回应则将错误返回给应用程序。</p>
+<p>问：应用程序能够轻松处理“至少一次”吗？</p>
+<p>简单的问题”写”至少一次：<br>  客户发送“从银行账户扣除$ 10”</p>
+<p>问：这个客户端程序有什么问题？<br>  Put（“k”，10） - 一个RPC在DB服务器中设置键的值<br>  Put（“k”，20） - 客户端然后做第二个同一个键</p>
+<p>问：至少有一次可以吗？</p>
+<ul>
+<li>是的：如果可以重复操作，例如只读操作</li>
+<li>是的：如果应用程序有自己的应对重复计划(MIT 6.824 Lab1 中就用到该方案)</li>
+</ul>
+<h4 id="更好的RPC行为：“最多一次”-at-most-once"><a href="#更好的RPC行为：“最多一次”-at-most-once" class="headerlink" title="更好的RPC行为：“最多一次”(at most once)"></a>更好的RPC行为：“最多一次”(at most once)</h4><p>  想法：服务器RPC代码检测到重复的请求<br>    返回以前的答复，而不是重新运行处理程序</p>
+<p>  问：如何检测重复的请求？<br>  客户端包含每个请求的唯一ID（XID）<br>    使用相同的XID重新发送<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  if seen[xid]:</span><br><span class="line">    r = old[xid]</span><br><span class="line">  else</span><br><span class="line">    r = handler()</span><br><span class="line">    old[xid] = r</span><br><span class="line">    seen[xid] = true</span><br></pre></td></tr></table></figure></p>
+<h5 id="一些”最多一次”的复杂性"><a href="#一些”最多一次”的复杂性" class="headerlink" title="一些”最多一次”的复杂性"></a>一些”最多一次”的复杂性</h5><ul>
+<li>如何确保XID是唯一的？<br>大随机数？<br>结合唯一的客户端ID（IP地址？）和序列号？</li>
+<li><p>服务器必须最终放弃有关旧RPC的信息<br>什么时候放弃安全？<br>理念：  </p>
+<ul>
+<li>唯一的客户端ID</li>
+<li>每客户端RPC序列号</li>
+<li>客户端包括“每个RPC都看到所有回复&lt;= X”</li>
+<li>很像TCP序列号和ack</li>
+</ul>
+<p>或者一次只允许客户端一个未完成的RPC<br>  seq + 1的到达允许服务器放弃所有&lt;= seq</p>
+<p>或者客户同意继续重试&lt;5分钟<br>  服务器丢弃5分钟以上</p>
+</li>
+<li><p>如何处理dup req而原始仍在执行？<br>服务器还不知道答复; 不想跑两次</p>
+<p>想法：每个执行RPC的“挂起”标志; 等待或忽略</p>
+</li>
+</ul>
+<p>如果最多一次服务器崩溃并重新启动，该怎么办？  </p>
+<ul>
+<li>如果在内存中至多有一次重复的信息，服务器将会忘记<br>并在重新启动后接受重复的请求  </li>
+<li>也许它应该将重复信息写入磁盘？  </li>
+<li>也许副本服务器也应该复制重复信息？  </li>
+</ul>
+<h3 id="那“仅一次”呢？"><a href="#那“仅一次”呢？" class="headerlink" title="那“仅一次”呢？"></a>那“仅一次”呢？</h3><p>  最多一次，再加上无限重试加上容错服务。</p>
+<h3 id="Go-RPC是“最多一次”"><a href="#Go-RPC是“最多一次”" class="headerlink" title="Go RPC是“最多一次”"></a>Go RPC是“最多一次”</h3><p>  打开TCP连接; 写请求到TCP连接。<br>  TCP可能会重新传输，但服务器的TCP将会过滤掉重复的内容。<br>  Go代码没有重试（即不会创建第二个TCP连接）。<br>  Go RPC代码返回一个错误，如果它没有得到答复： </p>
+<ul>
+<li>也许在超时之后（来自TCP）  </li>
+<li>也许服务器没有看到请求  </li>
+<li>也许服务器处理请求，但服务器/网络在回复之前失败</li>
+</ul>
+<p>对于实验1来说，Go RPC的”最多一次”是不够的  </p>
+<ul>
+<li>它仅只适用于一个RPC调用。如果worker没有回应，master重新发送给另一名worker，但原worker可能没有失败，并且也在努力。  </li>
+<li>Go RPC不能检测到这种重复：<br>实验1中没有问题，因为在应用程序级别处理了。实验3将明确检测重复。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+    <div>
+        
+          
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/RPC&Threads/">走向分布式（二）- RPC&Threads</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 FK2469 的个人博客">FK2469</a></p>
+  <p><span>发布时间:</span>2018年01月13日 - 00:01</p>
+  <p><span>最后更新:</span>2018年01月14日 - 17:01</p>
+  <p><span>原始链接:</span><a href="/RPC&Threads/" title="走向分布式（二）- RPC&Threads">http://FK2469.github.io/RPC&Threads/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://FK2469.github.io/RPC&Threads/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+          
+    </div>
+	
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Golang/" rel="tag"># Golang</a>
+          
+            <a href="/tags/分布式系统/" rel="tag"># 分布式系统</a>
+          
+            <a href="/tags/Mit-6-824/" rel="tag"># Mit 6.824</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/mapreduce/" rel="next" title="走向分布式（一）- MapReduce">
+                <i class="fa fa-chevron-left"></i> 走向分布式（一）- MapReduce
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">FK2469</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/FK2469" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:FK2469@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么线程？"><span class="nav-number">1.1.</span> <span class="nav-text">为什么线程？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程-“执行线程”-thread-of-execution"><span class="nav-number">1.2.</span> <span class="nav-text">线程==“执行线程”(thread of execution)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序中应该有多少个线程？"><span class="nav-number">1.3.</span> <span class="nav-text">程序中应该有多少个线程？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程中的挑战："><span class="nav-number">1.4.</span> <span class="nav-text">线程中的挑战：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例练习-Crawler"><span class="nav-number">1.5.</span> <span class="nav-text">实例练习 Crawler</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方案"><span class="nav-number">1.5.1.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#消除深度—使用fetched代替"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">消除深度—使用fetched代替</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是最好的解决方案？"><span class="nav-number">1.5.2.</span> <span class="nav-text">什么是最好的解决方案？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程过程调用（RPC）"><span class="nav-number">2.</span> <span class="nav-text">远程过程调用（RPC）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例研究：kv-go"><span class="nav-number">2.1.</span> <span class="nav-text">实例研究：kv.go</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RPC问题：如何处理失败？"><span class="nav-number">2.2.</span> <span class="nav-text">RPC问题：如何处理失败？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最简单的方案：“至少一次”-at-least-once"><span class="nav-number">2.2.1.</span> <span class="nav-text">最简单的方案：“至少一次”(at least once)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更好的RPC行为：“最多一次”-at-most-once"><span class="nav-number">2.2.2.</span> <span class="nav-text">更好的RPC行为：“最多一次”(at most once)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一些”最多一次”的复杂性"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">一些”最多一次”的复杂性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#那“仅一次”呢？"><span class="nav-number">2.3.</span> <span class="nav-text">那“仅一次”呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go-RPC是“最多一次”"><span class="nav-number">2.4.</span> <span class="nav-text">Go RPC是“最多一次”</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">FK2469</span>
+
+  
+</div>
+
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
