@@ -574,7 +574,7 @@
 <li><a href="https://research.google.com/archive/sawzall.html" target="_blank" rel="noopener">Sawzall</a> : 直接基于 MapReduce 模型的专用语言。</li>
 <li><a href="https://research.google.com/pubs/pub41378.html" target="_blank" rel="noopener">MillWheel</a>:解决流计算的问题了。</li>
 </ul>
-<p>MillWheel 的所谓流计算则跟函数式编程里的懒惰求值大有渊源。<br>比如计算：<br><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">map</span></span> (<span class="name"><span class="builtin-name">fn</span></span> [x] (<span class="name"><span class="builtin-name">*</span></span> x <span class="number">2</span>)) (<span class="name"><span class="builtin-name">map</span></span> (<span class="name"><span class="builtin-name">fn</span></span> [x] (<span class="name"><span class="builtin-name">+</span></span> x <span class="number">1</span>)) data-list))</span><br></pre></td></tr></table></figure></p>
+<p>MillWheel 的所谓流计算则跟函数式编程里的懒惰求值大有渊源。<br>比如计算：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(map (fn [x] (* x 2)) (map (fn [x] (+ x 1)) data-list))</span><br></pre></td></tr></table></figure></p>
 <p>最笨的做法就是先把 data-list 每项加 1，输出一个列表作为每项乘 2 的 map 任务的输入，然后再输出另一个列表，这就是传统的MapReduce实现。<br>Clojure 利用 LazySeq 实现了对 map 的懒惰求值，可以做到「要一个算一个」：当要取上述结果的第一项时，它才去取 data-list 中的第一项，作加 1 和乘 2 操作然后输出，如此类推，就不是做完一个 map 再做另一个 map 了。</p>
 <p>MillWheel 做的则是方向正好反过来的「来一个算一个」，data-list 里来一个输入就输出一个结果，每一步都不需要等上一步全部完成（数据流往往是无限的，没有「全部完成」的概念）。</p>
 <p>比如计算：<br><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">reduce</span></span> + <span class="number">0</span> (<span class="name"><span class="builtin-name">map</span></span> (<span class="name"><span class="builtin-name">fn</span></span> [x] (<span class="name"><span class="builtin-name">*</span></span> x <span class="number">2</span>)) data-stream))</span><br></pre></td></tr></table></figure></p>
@@ -768,7 +768,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
