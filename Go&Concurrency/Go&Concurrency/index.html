@@ -143,7 +143,7 @@
 <meta property="og:image" content="http://fk2469.github.io/Go&Concurrency/Go&Concurrency/figure6.jpg">
 <meta property="og:image" content="http://fk2469.github.io/Go&Concurrency/Go&Concurrency/figure7.jpg">
 <meta property="og:image" content="http://fk2469.github.io/Go&Concurrency/Go&Concurrency/figure8.jpg">
-<meta property="og:updated_time" content="2018-01-15T15:36:18.911Z">
+<meta property="og:updated_time" content="2018-01-15T16:06:02.243Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="走向分布式（三）- Go&amp;Concurrency">
 <meta name="twitter:description" content="Goroutine和Channel擦出的火花，使Go得以轻松应对数以万计的并发逻辑。  并发Go 作为一门新兴的编程语言，最大特点就在于它是原生支持并发的。和传统基于 OS 线程和进程实现不同，Go 语言的并发是基于用户态的并发，这种并发方式就变得非常轻量，能够轻松运行几万甚至是几十万的并发逻辑。因此使用 Go 开发的服务端应用采用的就是“协程模型”，每一个请求由独立的协程处理完成。 比进程线程模">
@@ -353,8 +353,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-15T23:42:12+08:00">
-                2018-01-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-16T00:06:02+08:00">
+                2018-01-16
               </time>
             
 
@@ -369,8 +369,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-15T23:36:18+08:00">
-                2018-01-15
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-16T00:06:02+08:00">
+                2018-01-16
               </time>
             
           </span>
@@ -397,7 +397,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,285 字
+                  2,326 字
                 </span>
               
 
@@ -447,8 +447,9 @@
 <p>这个例子体现使用 Go 语言开发的两个特点：</p>
 <p>Go 语言的并发很简单，并且通过提高并发可以提高处理效率。</p>
 <p>协程之间可以通过通信的方式来共享变量。</p>
-<h2 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h2><p>当并发成为语言的原生特性之后，在实践过程中就会频繁地使用并发来处理逻辑问题，尤其是涉及到网络I/O的过程，例如 RPC 调用，数据库访问等。下图是一个微服务处理请求的抽象描述：<br><img src="figure2.jpg" alt="Figure 2"></p>
-<p>当 Request 到达 GW 之后，GW 需要整合下游5个服务的结果来响应本次的请求，假定对下游5个服务的调用不存在互相的数据依赖问题。那么这里会同时发起5个 RPC 请求，然后等待5个请求的返回结果。为避免长时间的等待，这里会引入等待超时的概念。超时事件发生后，为了避免资源泄漏，会发送事件给正在并发处理的请求。在实践过程中，得出两种抽象的模型。</p>
+<h2 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h2><p>当并发成为语言的原生特性之后，在实践过程中就会频繁地使用并发来处理逻辑问题，尤其是涉及到网络I/O的过程，例如 RPC 调用，数据库访问等。下述内容整理自今日头条技术团队的博文——<a href="https://zhuanlan.zhihu.com/p/26696984" target="_blank" rel="noopener">《今日头条Go建千亿级微服务的实践》</a></p>
+<p>下图是一个微服务处理请求的抽象描述：<br><img src="figure2.jpg" alt="Figure 2"></p>
+<p>当 Request 到达 GW 之后，GW 需要整合下游5个服务的结果来响应本次的请求，假定对下游5个服务的调用不存在互相的数据依赖问题。那么这里会同时发起5个 RPC 请求，然后等待5个请求的返回结果。为避免长时间的等待，这里会引入等待超时的概念。超时事件发生后，为了避免资源泄漏，会发送事件给正在并发处理的请求。在实践过程中，今日头条技术团队得出两种抽象的模型。</p>
 <ul>
 <li><p>Wait</p>
 </li>
@@ -491,8 +492,8 @@
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
   <p><span>本文标题:</span><a href="/Go&Concurrency/Go&Concurrency/">走向分布式（三）- Go&Concurrency</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 FK2469 的个人博客">FK2469</a></p>
-  <p><span>发布时间:</span>2018年01月15日 - 23:01</p>
-  <p><span>最后更新:</span>2018年01月15日 - 23:01</p>
+  <p><span>发布时间:</span>2018年01月16日 - 00:01</p>
+  <p><span>最后更新:</span>2018年01月16日 - 00:01</p>
   <p><span>原始链接:</span><a href="/Go&Concurrency/Go&Concurrency/" title="走向分布式（三）- Go&Concurrency">http://FK2469.github.io/Go&Concurrency/Go&Concurrency/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://FK2469.github.io/Go&Concurrency/Go&Concurrency/"  aria-label="复制成功！"></i></span>
   </p>
@@ -553,6 +554,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Go&Concurrency/" rel="prev" title="走向分布式（三）- Go&Concurrency">
+                走向分布式（三）- Go&Concurrency <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -629,7 +634,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
