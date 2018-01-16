@@ -2,7 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://FK2469.github.io/Go&Concurrency/Go&Concurrency/</loc>
+    <loc>http://FK2469.github.io/1/</loc>
+    
+    <lastmod>2018-01-16T02:53:47.995Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://FK2469.github.io/Go&Concurrency/</loc>
     
     <lastmod>2018-01-15T16:06:02.243Z</lastmod>
     

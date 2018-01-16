@@ -127,13 +127,19 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="FK2469&#39;s Notes">
-<meta property="og:url" content="http://FK2469.github.io/tags/分布式系统/index.html">
+<meta name="description" content="容易被不规范讨论的几组概念。  并发&amp;amp;并行2018/1/8 0:33 阅读 goroutine背后的系统知识与Concurrency is not parallelism有感。对并发、并行这一老生常谈的问题进行二次挖掘，但仍然停留在扩展概念和完善解释的层面。对Concurrency后面的big picture(如Actor模型等)仍认识不足。需待以后补全。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="并发并行;同步异步;阻塞非阻塞">
+<meta property="og:url" content="http://FK2469.github.io/1/index.html">
 <meta property="og:site_name" content="FK2469&#39;s Notes">
+<meta property="og:description" content="容易被不规范讨论的几组概念。  并发&amp;amp;并行2018/1/8 0:33 阅读 goroutine背后的系统知识与Concurrency is not parallelism有感。对并发、并行这一老生常谈的问题进行二次挖掘，但仍然停留在扩展概念和完善解释的层面。对Concurrency后面的big picture(如Actor模型等)仍认识不足。需待以后补全。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.sizeofvoid.net/wp-content/uploads/2013/03/concurrent_and_parallel.png">
+<meta property="og:updated_time" content="2018-01-16T02:53:47.995Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="FK2469&#39;s Notes">
+<meta name="twitter:title" content="并发并行;同步异步;阻塞非阻塞">
+<meta name="twitter:description" content="容易被不规范讨论的几组概念。  并发&amp;amp;并行2018/1/8 0:33 阅读 goroutine背后的系统知识与Concurrency is not parallelism有感。对并发、并行这一老生常谈的问题进行二次挖掘，但仍然停留在扩展概念和完善解释的层面。对Concurrency后面的big picture(如Actor模型等)仍认识不足。需待以后补全。">
+<meta name="twitter:image" content="http://www.sizeofvoid.net/wp-content/uploads/2013/03/concurrent_and_parallel.png">
 
 
 
@@ -163,13 +169,13 @@
 
 
 
-  <link rel="canonical" href="http://FK2469.github.io/tags/分布式系统/"/>
+  <link rel="canonical" href="http://FK2469.github.io/1/"/>
 
 
 
 
 
-  <title>标签: 分布式系统 | FK2469's Notes</title>
+  <title>并发并行;同步异步;阻塞非阻塞 | FK2469's Notes</title>
   
 
 
@@ -188,7 +194,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
     <a href="https://github.com/FK2469" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -296,110 +302,281 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block tag">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h2>分布式系统<small>标签</small>
-        </h2>
-      </div>
-
-      
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://FK2469.github.io/1/">
 
-      <h3 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="FK2469">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FK2469's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/Go&Concurrency/" itemprop="url">
-              
-                <span itemprop="name">走向分布式（三）- Go&Concurrency</span>
-              
-            </a>
         
-      </h3>
+          <h2 class="post-title" itemprop="name headline">并发并行;同步异步;阻塞非阻塞</h2>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-16T09:33:18+08:00"
-              content="2018-01-16" >
-          01-16
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-08T09:32:57+08:00">
+                2018-01-08
+              </time>
+            
 
-    </header>
-  </article>
+            
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-16T10:53:47+08:00">
+                2018-01-16
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,128 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  11 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/RPC&Threads/" itemprop="url">
-              
-                <span itemprop="name">走向分布式（二）- RPC&Threads</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-13T00:00:00+08:00"
-              content="2018-01-13" >
-          01-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
+        <blockquote class="blockquote-center"><br>容易被不规范讨论的几组概念。<br></blockquote>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/mapreduce/" itemprop="url">
-              
-                <span itemprop="name">走向分布式（一）- MapReduce</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-31T00:00:00+08:00"
-              content="2017-12-31" >
-          12-31
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+<h2 id="并发-amp-并行"><a href="#并发-amp-并行" class="headerlink" title="并发&amp;并行"></a>并发&amp;并行</h2><p>2018/1/8 0:33 阅读 <a href="http://www.cnblogs.com/foxmailed/p/3429072.html" target="_blank" rel="noopener">goroutine背后的系统知识</a>与<a href="https://blog.golang.org/concurrency-is-not-parallelism" target="_blank" rel="noopener">Concurrency is not parallelism</a>有感。<br>对并发、并行这一老生常谈的问题进行二次挖掘，但仍然停留在扩展概念和完善解释的层面。对Concurrency后面的big picture(如Actor模型等)仍认识不足。需待以后补全。<br><a id="more"></a></p>
+<h3 id="一组定义"><a href="#一组定义" class="headerlink" title="一组定义"></a>一组定义</h3><ul>
+<li><p>并发(Concurrency)：一个同时具有多个活动的系统；<br>  两个或多个事件在同一时间间隔内发生。(操作系统教材)<br>  Concurrency is the composition of independently executing processes.<br>  Concurrency is about dealing with lots of things at once.<br>  Concurrency is about structure.<br>  Concurrency provides a way to structure a solution to solve a problem that may (but not necessarily) be parallelizable.<br>  一个逻辑流（一系列PC的值，唯一地对应于包含在程序的可执行目标文件中的指令/包含在运行时动态链接到程序的共享对象中的指令）的执行在时间上与另一个流重叠，这两个流称为被称为并发地运行。多个流并发地执行的一般现象成为并发。</p>
+</li>
+<li><p>并行(Parallelism)：用并发使一个系统运行得更快。<br>  两个或多个事件在同一时刻发生。(操作系统教材)<br>  Parallelism is the simultaneous execution of (possibly related) computations.<br>  Parallelism is about doing lots of things at once.<br>  Parallelism is about execution.</p>
+<p>  并发是指程序的逻辑结构。非并发的程序就是一根竹竿捅到底，只有一个逻辑控制流，也就是顺序执行的(Sequential)程序，在任何时刻，程序只会处在这个逻辑控制流的某个位置。而如果某个程序有多个独立的逻辑控制流，也就是可以同时处理(deal)多件事情，我们就说这个程序是并发的。这里的“同时”，并不一定要是真正在时钟的某一时刻(那是运行状态而不是逻辑结构)，而是指：如果把这些逻辑控制流画成时序流程图，它们在时间线上是可以重叠的。</p>
+<p>  并行是指程序的运行状态。如果一个程序在某一时刻被多个CPU流水线同时进行处理，那么我们就说这个程序是以并行的形式在运行。（严格意义上讲，我们不能说某程序是“并行”的，因为“并行”不是描述程序本身，而是描述程序的运行状态。以下说到“并行”的时候，就是指代“以并行的形式运行”）显然，并行一定是需要硬件支持的。</p>
+</li>
+</ul>
+<h3 id="一组推论"><a href="#一组推论" class="headerlink" title="一组推论"></a>一组推论</h3><p>基于上述概念，我们不难得到如下的推论：</p>
+<ol>
+<li>并发是并行的必要条件，如果一个程序本身就不是并发的，也就是只有一个逻辑控制流，那么我们不可能让其被并行处理。</li>
+<li>并发不是并行的充分条件，一个并发的程序，如果只被一个CPU流水线进行处理(通过分时)，那么它就不是并行的。</li>
+<li>并发只是更符合现实问题本质的表达方式，并发的最初目的是简化代码逻辑，而不是使程序运行的更快；</li>
+</ol>
+<p>这几段略微抽象，我们可以用一个最简单的例子来把这些概念实例化：用C语言写一个最简单的HelloWorld，它就是非并发的，如果我们建立多个线程，每个线程里打印一个HelloWorld，那么这个程序就是并发的，如果这个程序运行在老式的单核CPU上，那么这个并发程序还不是并行的，如果我们用多核多CPU且支持多任务的操作系统来运行它，那么这个并发程序就是并行的。</p>
+<p>还有一个略微复杂的例子，更能说明并发不一定可以并行，而且并发不是为了效率，就是Go语言例子里计算素数的sieve.go。我们从小到大针对每一个因子启动一个代码片段，如果当前验证的数能被当前因子除尽，则该数不是素数，如果不能，则把该数发送给下一个因子的代码片段，直到最后一个因子也无法除尽，则该数为素数，我们再启动一个它的代码片段，用于验证更大的数字。这是符合我们计算素数的逻辑的，而且每个因子的代码处理片段都是相同的，所以程序非常的简洁，但它无法被并行，因为每个片段都依赖于前一个片段的处理结果和输出。</p>
+<h3 id="并发的构造方式"><a href="#并发的构造方式" class="headerlink" title="并发的构造方式"></a>并发的构造方式</h3><ol>
+<li><p>显式地定义并触发多个代码片段，也就是逻辑控制流，由应用程序或操作系统对它们进行调度。它们可以是独立无关的，也可以是相互依赖需要交互的。线程只是实现并发的其中一个手段，除此之外，运行库或是应用程序本身也有多种手段来实现并发。</p>
+</li>
+<li><p>隐式地放置多个代码片段，在系统事件发生时触发执行相应的代码片段，也就是事件驱动的方式，譬如某个端口或管道接收到了数据(多路IO的情况下)，再譬如进程接收到了某个信号(signal)。</p>
+</li>
+</ol>
+<h3 id="构建并发程序的机制：进程、I-O多路复用、线程。"><a href="#构建并发程序的机制：进程、I-O多路复用、线程。" class="headerlink" title="构建并发程序的机制：进程、I/O多路复用、线程。"></a>构建并发程序的机制：进程、I/O多路复用、线程。</h3><ul>
+<li>进程：<br>  进程由内核自动调度，因为他们有各自独立的虚拟地址空间，所以要实现数据共享必须要有显式的的IPC机制。构造“进程”这一抽象的概念，能设计出同时执行多个程序的系统。</li>
+<li>I/O多路复用：<br>  事件驱动程序创建他们自己的并发逻辑流，这些逻辑流被模型化为状态机，用I/O多路复用来显示地调度这些流。因为程序运行在单一线程中，所以共享数据很快而且很容易。</li>
+<li>线程：<br>  线程是上述方法的综合。同基于进程的流一样，线程也是由内核自动调度的。同基于I/O多路复用的流一样，线程是运行在一个单一进程的上下文中的，因此可以更快地访问数据。构造“线程”这一概念，能够在一个进程中执行多个控制流。</li>
+</ul>
+<h3 id="从进程到线程到协程"><a href="#从进程到线程到协程" class="headerlink" title="从进程到线程到协程"></a>从进程到线程到协程</h3><ul>
+<li><p>碰着I/O访问，阻塞了后面所有的计算。空着也是空着，就把CPU切换到其他进程。</p>
+</li>
+<li><p>进程数高的时候，进程切换会耗费大量系统资源。于是线程的概念，大致意思就是，这个地方阻塞了，但我还有其他地方的逻辑流可以计算，这些逻辑流是共享一个地址空间的，不用特别麻烦的切换页表、刷新TLB，只要把寄存器刷新一遍就行，能比切换进程开销少点。</p>
+</li>
+<li><p>如果连时钟阻塞、 线程切换这些功能我们都不需要了，自己在进程里面写一个逻辑流调度的东西。那么我们即可以利用到并发优势，又可以避免反复系统调用，还有进程切换造成的开销，分分钟给你上几千个逻辑流不费力。这就是用户态线程。</p>
+</li>
+<li><p>从上面可以看到，实现一个用户态线程有两个必须要处理的问题：一是碰着阻塞式I\O会导致整个进程被挂起；二是由于缺乏时钟阻塞，进程需要自己拥有调度线程的能力。如果一种实现使得每个线程需要自己通过调用某个方法，主动交出控制权。那么我们就称这种用户态线程是协作式的，即是协程。本质上，协程就是用户空间下的线程。    </p>
+</li>
+</ul>
+<h3 id="并行的四个层面"><a href="#并行的四个层面" class="headerlink" title="并行的四个层面"></a>并行的四个层面</h3><ol>
+<li><p>多台机器。自然我们就有了多个CPU流水线，譬如Hadoop集群里的MapReduce任务。</p>
+</li>
+<li><p>多CPU。不管是真的多颗CPU还是多核还是超线程，总之我们有了多个CPU流水线。</p>
+<ul>
+<li>多CPU：<br>将多个CPU(称为”核”)集成到一个集成电路芯片上。以Intel Core i7为例，其中微处理器芯片有4个CPU核，每个核都有自己的L1和L2高速缓存，以及到主存的接口。</li>
+<li>超线程：<br>有时称为同时多线程(simultaneout multi-threading),是个控制流的技术。它涉及CPU某些硬件有多个备份，比如程序计数器和寄存器文件；而其他的硬件部分只有一份，比如执行浮点算数运算的单元。常规的处理器需要大约20000个时钟周期做不同线程间的转换，而超线程的处理器可以在单个周期的基础上决定要执行哪一个线程。这使得CPU能够更好地利用它的处理资源。例如，假设一个线程必须等到某些数据被装载到高速缓存中，那CPU就可以继续去执行另一个线程。举例来说，Intel Core i7处理器可以让一个核执行两个线程，所以一个4核的系统实际上可以并行地执行8个线程。</li>
+</ul>
+</li>
+<li><p>单CPU核里的ILP(Instruction-level parallelism)，指令级并行。<br> 通过复杂的制造工艺和对指令的解析以及分支预测和乱序执行，现在的CPU可以在单个时钟周期内执行多条指令，从而，即使是非并发的程序，也可能是以并行的形式执行。早起的微处理器，如1978年的Intel 8086，需要多个(通常是3-10个)时钟周期来执行一条指令。比较先进的处理器可以保持每个时钟周期2-4条指令的执行效率。其实每条指令从开始到结束需要长得多的时间，大约要20个时间周期，为了执行多达百条的指令，通过流水线将每条指令分解成几个步骤，这些步骤可以同时进行，这样就能并行地处理不同指令的不同部分。如果处理器可以达到比一个周期一条语句更快的执行速率，就称之为<em>超标量</em>(superscalar)处理器。</p>
+</li>
+<li><p>单指令多数据(Single instruction, multiple data. SIMD)。<br> 为了多媒体数据的处理，现在的CPU的指令集支持单条指令对多条数据进行操作。</p>
+</li>
+</ol>
+<p>其中，1牵涉到分布式处理，包括数据的分布和任务的同步等等，而且是基于网络的。3和4通常是编译器和CPU的开发人员需要考虑的。这里我们说的并行主要针对第2种：单台机器内的多核CPU并行。</p>
+<p>在CMU那本著名的《Computer Systems: A Programmer’s Perspective》里的这张图也非常直观清晰：<br><img src="http://www.sizeofvoid.net/wp-content/uploads/2013/03/concurrent_and_parallel.png" alt="CSAPP-Figure-12.31"></p>
+<h2 id="同步-amp-异步"><a href="#同步-amp-异步" class="headerlink" title="同步&amp;异步"></a>同步&amp;异步</h2><p>同步和异步关注的是消息通信机制 (synchronous communication/ asynchronous communication)<br>所谓同步，就是在发出一个<em>调用</em>时，在没有得到结果之前，该<em>调用</em>就不返回。但是一旦调用返回，就得到返回值了。<br>换句话说，就是由<em>调用者</em>主动等待这个<em>调用</em>的结果。<br>而异步则是相反，<em>调用</em>在发出之后，这个调用就直接返回了，所以没有返回结果。换句话说，当一个异步过程调用发出后，调用者不会立刻得到结果。而是在<em>调用</em>发出后，<em>被调用者</em>通过状态、通知来通知调用者，或通过回调函数处理这个调用。典型的异步编程模型比如Node.js。</p>
+<h2 id="阻塞与-amp-阻塞"><a href="#阻塞与-amp-阻塞" class="headerlink" title="阻塞与&amp;阻塞"></a>阻塞与&amp;阻塞</h2><p>阻塞和非阻塞关注的是程序在等待调用结果（消息，返回值）时的状态.<br>阻塞调用是指调用结果返回之前，当前线程会被挂起。调用线程只有在得到结果之后才会返回。<br>非阻塞调用指在不能立刻得到结果之前，该调用不会阻塞当前线程。这里阻塞与非阻塞与是否同步异步无关。<br>如果是关心blocking IO/ asynchronous IO, 参考 Unix Network Programming View Book</p>
 
       
     </div>
+    
+    
+    
+    <div>
+        
+          
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/1/">并发并行;同步异步;阻塞非阻塞</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 FK2469 的个人博客">FK2469</a></p>
+  <p><span>发布时间:</span>2018年01月08日 - 09:01</p>
+  <p><span>最后更新:</span>2018年01月16日 - 10:01</p>
+  <p><span>原始链接:</span><a href="/1/" title="并发并行;同步异步;阻塞非阻塞">http://FK2469.github.io/1/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://FK2469.github.io/1/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
 
+
+          
+    </div>
+	
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/mapreduce/" rel="next" title="走向分布式（一）- MapReduce">
+                <i class="fa fa-chevron-left"></i> 走向分布式（一）- MapReduce
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/RPC&Threads/" rel="prev" title="走向分布式（二）- RPC&Threads">
+                走向分布式（二）- RPC&Threads <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -407,6 +584,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -427,8 +608,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -495,6 +685,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并发-amp-并行"><span class="nav-number">1.</span> <span class="nav-text">并发&amp;并行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一组定义"><span class="nav-number">1.1.</span> <span class="nav-text">一组定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一组推论"><span class="nav-number">1.2.</span> <span class="nav-text">一组推论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发的构造方式"><span class="nav-number">1.3.</span> <span class="nav-text">并发的构造方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建并发程序的机制：进程、I-O多路复用、线程。"><span class="nav-number">1.4.</span> <span class="nav-text">构建并发程序的机制：进程、I/O多路复用、线程。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从进程到线程到协程"><span class="nav-number">1.5.</span> <span class="nav-text">从进程到线程到协程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并行的四个层面"><span class="nav-number">1.6.</span> <span class="nav-text">并行的四个层面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步-amp-异步"><span class="nav-number">2.</span> <span class="nav-text">同步&amp;异步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞与-amp-阻塞"><span class="nav-number">3.</span> <span class="nav-text">阻塞与&amp;阻塞</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -630,6 +836,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
