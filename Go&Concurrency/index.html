@@ -127,13 +127,13 @@
 
 
 
-<meta name="description" content="Goroutine和Channel擦出的火花，使Go得以轻松应对数以万计的并发逻辑。  并发Go 作为一门新兴的编程语言，最大特点就在于它是原生支持并发的。和传统基于 OS 线程和进程实现不同，Go 语言的并发是基于用户态的并发，这种并发方式就变得非常轻量，能够轻松运行几万甚至是几十万的并发逻辑。因此使用 Go 开发的服务端应用采用的就是“协程模型”，每一个请求由独立的协程处理完成。 比进程线程模">
+<meta name="description" content="Goroutine和Channel擦出的火花，使Go得以轻松应对数以万计的并发逻辑。  并发简略介绍Golang 最大卖点就是原生支持并发。和传统基于 OS 线程和进程实现不同，Go 语言的并发是基于用户态的并发，这种并发方式就变得非常轻量，能够轻松运行几万甚至是几十万的并发逻辑。因此使用 Go 开发的服务端应用采用的就是“协程模型”，每一个请求由独立的协程处理完成。 比进程线程模型高出几个数量级">
 <meta name="keywords" content="Golang,分布式系统,Mit 6.824">
 <meta property="og:type" content="article">
 <meta property="og:title" content="走向分布式（三）- Go&amp;Concurrency">
 <meta property="og:url" content="http://FK2469.github.io/Go&Concurrency/index.html">
 <meta property="og:site_name" content="FK2469&#39;s Notes">
-<meta property="og:description" content="Goroutine和Channel擦出的火花，使Go得以轻松应对数以万计的并发逻辑。  并发Go 作为一门新兴的编程语言，最大特点就在于它是原生支持并发的。和传统基于 OS 线程和进程实现不同，Go 语言的并发是基于用户态的并发，这种并发方式就变得非常轻量，能够轻松运行几万甚至是几十万的并发逻辑。因此使用 Go 开发的服务端应用采用的就是“协程模型”，每一个请求由独立的协程处理完成。 比进程线程模">
+<meta property="og:description" content="Goroutine和Channel擦出的火花，使Go得以轻松应对数以万计的并发逻辑。  并发简略介绍Golang 最大卖点就是原生支持并发。和传统基于 OS 线程和进程实现不同，Go 语言的并发是基于用户态的并发，这种并发方式就变得非常轻量，能够轻松运行几万甚至是几十万的并发逻辑。因此使用 Go 开发的服务端应用采用的就是“协程模型”，每一个请求由独立的协程处理完成。 比进程线程模型高出几个数量级">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://fk2469.github.io/images/figure1.jpg">
 <meta property="og:image" content="http://fk2469.github.io/images/figure2.jpg">
@@ -146,7 +146,7 @@
 <meta property="og:updated_time" content="2018-01-16T07:11:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="走向分布式（三）- Go&amp;Concurrency">
-<meta name="twitter:description" content="Goroutine和Channel擦出的火花，使Go得以轻松应对数以万计的并发逻辑。  并发Go 作为一门新兴的编程语言，最大特点就在于它是原生支持并发的。和传统基于 OS 线程和进程实现不同，Go 语言的并发是基于用户态的并发，这种并发方式就变得非常轻量，能够轻松运行几万甚至是几十万的并发逻辑。因此使用 Go 开发的服务端应用采用的就是“协程模型”，每一个请求由独立的协程处理完成。 比进程线程模">
+<meta name="twitter:description" content="Goroutine和Channel擦出的火花，使Go得以轻松应对数以万计的并发逻辑。  并发简略介绍Golang 最大卖点就是原生支持并发。和传统基于 OS 线程和进程实现不同，Go 语言的并发是基于用户态的并发，这种并发方式就变得非常轻量，能够轻松运行几万甚至是几十万的并发逻辑。因此使用 Go 开发的服务端应用采用的就是“协程模型”，每一个请求由独立的协程处理完成。 比进程线程模型高出几个数量级">
 <meta name="twitter:image" content="http://fk2469.github.io/images/figure1.jpg">
 
 
@@ -397,7 +397,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,316 字
+                  3,949 字
                 </span>
               
 
@@ -413,7 +413,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  12 分钟
+                  14 分钟
                 </span>
               
             </div>
@@ -436,8 +436,26 @@
       
         <blockquote class="blockquote-center"><br>Goroutine和Channel擦出的火花，使Go得以轻松应对数以万计的并发逻辑。<br></blockquote>
 
-<h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><p>Go 作为一门新兴的编程语言，最大特点就在于它是原生支持并发的。和传统基于 OS 线程和进程实现不同，Go 语言的并发是基于用户态的并发，这种并发方式就变得非常轻量，能够轻松运行几万甚至是几十万的并发逻辑。因此使用 Go 开发的服务端应用采用的就是“协程模型”，每一个请求由独立的协程处理完成。</p>
+<h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><h3 id="简略介绍"><a href="#简略介绍" class="headerlink" title="简略介绍"></a>简略介绍</h3><p>Golang 最大卖点就是原生支持并发。和传统基于 OS 线程和进程实现不同，Go 语言的并发是基于用户态的并发，这种并发方式就变得非常轻量，能够轻松运行几万甚至是几十万的并发逻辑。因此使用 Go 开发的服务端应用采用的就是“协程模型”，每一个请求由独立的协程处理完成。</p>
 <p>比进程线程模型高出几个数量级的并发能力，而相对基于事件回调的服务端模型，Go 开发思路更加符合人的逻辑处理思维，因此即使使用 Go 开发大型的项目，也很容易维护。<br><a id="more"></a></p>
+<h3 id="详细特性"><a href="#详细特性" class="headerlink" title="详细特性"></a>详细特性</h3><ol>
+<li><p>goroutine是Go语言运行库的功能，不是操作系统提供的功能，goroutine不是用线程实现的。具体可参见Go语言源码里的<a href="http://golang.org/src/pkg/runtime/proc.c" target="_blank" rel="noopener">pkg/runtime/proc.c</a></p>
+</li>
+<li><p>goroutine就是一段代码，一个函数入口，以及在堆上为其分配的一个堆栈。所以它非常廉价，我们可以很轻松的创建上万个goroutine，但它们并不是被操作系统所调度执行。</p>
+</li>
+<li><p>除了被系统调用阻塞的线程外，Go运行库最多会启动$GOMAXPROCS个线程来运行goroutine。</p>
+</li>
+<li><p>goroutine是协作式调度的，如果goroutine会执行很长时间，而且不是通过等待读取或写入channel的数据来同步的话，就需要主动调用Gosched()来让出CPU。</p>
+</li>
+<li><p>和所有其他并发框架里的协程一样，goroutine里所谓“无锁”的优点只在单线程下有效，如果$GOMAXPROCS &gt; 1并且协程间需要通信，Go运行库会负责加锁保护数据，这也是为什么sieve.go这样的例子在多CPU多线程时反而更慢的原因。</p>
+</li>
+<li><p>Web等服务端程序要处理的请求从本质上来讲是并行处理的问题，每个请求基本独立，互不依赖，几乎没有数据交互，这不是一个并发编程的模型，而并发编程框架只是解决了其语义表述的复杂性，并不是从根本上提高处理的效率，也许是并发连接和并发编程的英文都是concurrent吧，很容易产生“并发编程框架和coroutine可以高效处理大量并发连接”的误解。</p>
+</li>
+<li><p>Go语言运行库封装了异步IO，所以可以写出貌似并发数很多的服务端，可即使我们通过调整$GOMAXPROCS来充分利用多核CPU并行处理，其效率也不如我们利用IO事件驱动设计的、按照事务类型划分好合适比例的线程池。在响应时间上，协作式调度是硬伤。即便它更符合我们的我们的处理思维。</p>
+</li>
+<li><p>goroutine最大的价值是其实现了并发协程和实际并行执行的线程的映射以及动态扩展，随着其运行库的不断发展和完善，其性能一定会越来越好，尤其是在CPU核数越来越多的未来，终有一天我们会为了代码的简洁和可维护性而放弃那一点点性能的差别。</p>
+</li>
+</ol>
 <h2 id="并发模型"><a href="#并发模型" class="headerlink" title="并发模型"></a>并发模型</h2><p>Go的Goroutine 和 Channel属于 CSP 并发模型的一种实现，CSP 并发模型的核心概念是：“不要通过共享内存来通信，而应该通过通信来共享内存”。在1978发表的 CSP 论文中有一段使用 CSP 思路解决问题的描述:</p>
 <p>“Problem: To print in ascending order all primes less than 10000. Use an array of processes, SIEVE, in which each process inputs a prime from its predecessor and prints it. The process then inputs an ascending stream of numbers from its predecessor and passes them on to its successor, suppressing any that are multiples of the original prime.”</p>
 <p>要找出10000以内所有的素数，这里使用的方法是筛法，即从2开始每找到一个素数就标记所有能被该素数整除的所有数。直到没有可标记的数，剩下的就都是素数。下面以找出10以内所有素数为例，借用 CSP 方式解决这个问题。</p>
@@ -575,6 +593,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/GFS/" rel="prev" title="走向分布式（四）- GFS">
+                走向分布式（四）- GFS <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -650,7 +672,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -712,7 +734,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并发"><span class="nav-number">1.</span> <span class="nav-text">并发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发模型"><span class="nav-number">2.</span> <span class="nav-text">并发模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发控制"><span class="nav-number">3.</span> <span class="nav-text">并发控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#超时控制"><span class="nav-number">4.</span> <span class="nav-text">超时控制</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并发"><span class="nav-number">1.</span> <span class="nav-text">并发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简略介绍"><span class="nav-number">1.1.</span> <span class="nav-text">简略介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#详细特性"><span class="nav-number">1.2.</span> <span class="nav-text">详细特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发模型"><span class="nav-number">2.</span> <span class="nav-text">并发模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发控制"><span class="nav-number">3.</span> <span class="nav-text">并发控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#超时控制"><span class="nav-number">4.</span> <span class="nav-text">超时控制</span></a></li></ol></div>
             
 
           </div>

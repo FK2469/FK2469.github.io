@@ -4,6 +4,27 @@
 
     
   <url>
+    <loc>http://FK2469.github.io/GFS/</loc>
+    <lastmod>2018-01-17T08:27:31.957Z</lastmod>
+    <data>
+        <display>
+        <title>走向分布式（四）- GFS</title>
+        <pubTime>2018-01-17T08:27:31.969Z</pubTime>
+        
+        <tag>Golang</tag>
+         
+        <tag>分布式系统</tag>
+         
+        <tag>Mit 6.824</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://FK2469.github.io/Go&Concurrency/</loc>
     <lastmod>2018-01-16T07:11:57.000Z</lastmod>
     <data>
