@@ -135,7 +135,7 @@
 <meta property="og:site_name" content="FK2469&#39;s Notes">
 <meta property="og:description" content="远程进程之间的通信的两把利器：线程和RPC。  线程为什么线程？  允许您利用并发性，这是分布式系统中很自然的要求。    I/O并发性：在等待来自另一个服务器的响应时，处理下一个请求。   多核：线程在几个核心上并行运行。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-17T14:46:19.700Z">
+<meta property="og:updated_time" content="2018-01-18T03:58:18.961Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="走向分布式（二）- RPC&amp;Threads">
 <meta name="twitter:description" content="远程进程之间的通信的两把利器：线程和RPC。  线程为什么线程？  允许您利用并发性，这是分布式系统中很自然的要求。    I/O并发性：在等待来自另一个服务器的响应时，处理下一个请求。   多核：线程在几个核心上并行运行。">
@@ -360,8 +360,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-17T22:46:19+08:00">
-                2018-01-17
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-18T11:58:18+08:00">
+                2018-01-18
               </time>
             
           </span>
@@ -388,7 +388,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  5,226 字
+                  5,615 字
                 </span>
               
 
@@ -404,7 +404,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  24 分钟
+                  25 分钟
                 </span>
               
             </div>
@@ -481,18 +481,18 @@
 </ul>
 </li>
 </ul>
-<h2 id="远程过程调用（RPC）"><a href="#远程过程调用（RPC）" class="headerlink" title="远程过程调用（RPC）"></a>远程过程调用（RPC）</h2><p>  分布式系统的关键部分!  </p>
+<h2 id="远程过程调用（RPC）"><a href="#远程过程调用（RPC）" class="headerlink" title="远程过程调用（RPC）"></a>远程过程调用（RPC）</h2><p>  分布式系统的关键部分! RPC的概念代表着分布式计算的重大突破，同时也使分布式编程和传统编程相似，实现了分布透明性。该概念由Birrell和Nelson在1984年首次提出，为许多分布式系统的编程铺平了道路，一直到现在。</p>
 <ul>
 <li>目标：易于编程的网络通信  <ul>
-<li>隐藏客户端/服务器通信的大部分细节  </li>
-<li>客户来电很像普通的程序调用  </li>
+<li>隐藏客户端/服务器通信的大部分细节(对参数和结果的解码和编码、消息传递以及保留调用要求的语义)</li>
+<li>客户调用很像普通的程序调用  </li>
 <li>服务器处理程序很像普通程序<br>RPC被广泛使用！</li>
 </ul>
 </li>
 </ul>
 <p>RPC理想地使网络通信看起来就像fn调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Client:</span><br><span class="line">  z = fn(x, y)</span><br><span class="line">Server:</span><br><span class="line">  fn(x, y) &#123;</span><br><span class="line">    compute</span><br><span class="line">    return z</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
 <p>  RPC旨在达到这种透明度。</p>
-<h3 id="实例研究：kv-go"><a href="#实例研究：kv-go" class="headerlink" title="实例研究：kv.go"></a>实例研究：kv.go</h3><p>  客户端“拨号”服务器并调用Call（）<br>    调用类似于常规函数调用<br>  服务器在单独的线程中处理每个请求<br>    并发！因此，锁住了keyvalue。</p>
+<h3 id="实例研究：kv-go"><a href="#实例研究：kv-go" class="headerlink" title="实例研究：kv.go"></a>实例研究：kv.go</h3><p><a href="https://pdos.csail.mit.edu/6.824/notes/kv.go" target="_blank" rel="noopener">kv.go</a><br>  客户端“拨号”服务器并调用Call（）<br>    调用类似于常规函数调用<br>  服务器在单独的线程中处理每个请求<br>    并发！因此，锁住了keyvalue字段。</p>
 <p>RPC消息图：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Client             Server</span><br><span class="line">  request---&gt;</span><br><span class="line">     &lt;---response</span><br></pre></td></tr></table></figure></p>
 <p>软件结构<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">client app         handlers</span><br><span class="line">  stubs           dispatcher</span><br><span class="line"> RPC lib           RPC lib</span><br><span class="line">   net  ------------ net</span><br></pre></td></tr></table></figure></p>
 <p>一些细节：</p>
@@ -501,21 +501,26 @@
 <li>编组(Marshalling)：将数据格式化成数据包<br>棘手的数组，指针，对象，＆C<br>Go的RPC库非常强大！<br>有些事情你不能通过：例如，channel，函数  </li>
 <li>绑定(Binding)：客户如何知道与谁交谈？<br>也许客户端提供服务器主机名<br>也许名称服务将服务名称映射到最佳服务器主机  </li>
 </ul>
-<h3 id="RPC问题：如何处理失败？"><a href="#RPC问题：如何处理失败？" class="headerlink" title="RPC问题：如何处理失败？"></a>RPC问题：如何处理失败？</h3><p>  如丢包，断网，慢服务器，服务器崩溃。</p>
-<p>什么是客户端RPC库的失败？<br>  客户端从不会看到来自服务器的响应<br>  客户端*不知道服务器是否看到了请求！<br>    也许服务器/网络在发送回复之前失败</p>
-<h4 id="最简单的方案：“至少一次”-at-least-once"><a href="#最简单的方案：“至少一次”-at-least-once" class="headerlink" title="最简单的方案：“至少一次”(at least once)"></a>最简单的方案：“至少一次”(at least once)</h4><p>  RPC库等待响应一段时间，如果没有到达，重新发送请求。<br>  这样做几次后，若仍然没有回应则将错误返回给应用程序。</p>
+<h3 id="RPC问题：如何处理失败？"><a href="#RPC问题：如何处理失败？" class="headerlink" title="RPC问题：如何处理失败？"></a>RPC问题：如何处理失败？</h3><p>  比如：丢包，网络断线，服务器运行缓慢，服务器崩溃。</p>
+<p>错误对RPC客户端意味着什么？<br>  客户端从不会看到来自服务器的响应。<br>  客户端不知道服务器是否看到了请求！也许服务器/网络在发送回复之前失败。</p>
+<h4 id="最简单的方案：“至少一次”-at-least-once-语义"><a href="#最简单的方案：“至少一次”-at-least-once-语义" class="headerlink" title="最简单的方案：“至少一次”(at least once)语义"></a>最简单的方案：“至少一次”(at least once)语义</h4><p>  RPC库等待响应一段时间，如果没有到达，重新发送请求。<br>  这样做几次后，若仍然没有回应则将错误返回给应用程序。</p>
+<p>  采用“至少一次”调用语义，调用者可能收到返回的结果，也可能收到一个异常。在收到返回结果的情况下，调用者知道该方法至少执行过一次，而异常信息则通知它没有接收到执行结果。“至少一次”调用语义可以通过重发请求消息来达到，它屏蔽了调用或结果消息的遗漏故障。但可能会遇到下列类型的故障：</p>
+<ul>
+<li>由于包含远程对象服务器故障而引起的系统崩溃</li>
+<li>随机故障。重发调用消息时，远程对象可能会接收到这一消息并多次执行某一方法，结果导致存储或返回了错误的值。</li>
+</ul>
 <p>问：应用程序能够轻松处理“至少一次”吗？</p>
-<p>简单的问题”写”至少一次：<br>  客户发送“从银行账户扣除$ 10”</p>
-<p>问：这个客户端程序有什么问题？<br>  Put（“k”，10） - 一个RPC在DB服务器中设置键的值<br>  Put（“k”，20） - 客户端然后做第二个同一个键</p>
+<p>简单的问题”写”至少一次：<br>  客户发送“从银行账户扣除 $10”</p>
+<p>问：这个客户端程序有什么问题？<br>  Put（“k”，10） - 一个RPC调用在数据库服务器中设置键值对。<br>  Put（“k”，20） - 客户端对同一个键设置其他值。</p>
 <p>问：至少有一次可以吗？</p>
 <ul>
-<li>是的：如果可以重复操作，例如只读操作</li>
-<li>是的：如果应用程序有自己的应对重复计划(MIT 6.824 Lab1 中就用到该方案)</li>
+<li>是的：如果可以重复操作，例如只读操作。</li>
+<li>是的：如果应用程序有自己的应对重复计划(MIT 6.824 Lab1 中就用到该方案)。<br>换句话说，如果能设计服务器中的操作使其服务接口中的所有方法都是幂等操作的话，那么“至少一次”调用语义是可以接受的。</li>
 </ul>
-<h4 id="更好的RPC行为：“最多一次”-at-most-once"><a href="#更好的RPC行为：“最多一次”-at-most-once" class="headerlink" title="更好的RPC行为：“最多一次”(at most once)"></a>更好的RPC行为：“最多一次”(at most once)</h4><p>  想法：服务器RPC代码检测到重复的请求<br>    返回以前的答复，而不是重新运行处理程序</p>
-<p>  问：如何检测重复的请求？<br>  客户端包含每个请求的唯一ID（XID）<br>    使用相同的XID重新发送<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  if seen[xid]:</span><br><span class="line">    r = old[xid]</span><br><span class="line">  else</span><br><span class="line">    r = handler()</span><br><span class="line">    old[xid] = r</span><br><span class="line">    seen[xid] = true</span><br></pre></td></tr></table></figure></p>
+<h4 id="更好的RPC行为：“最多一次”-at-most-once"><a href="#更好的RPC行为：“最多一次”-at-most-once" class="headerlink" title="更好的RPC行为：“最多一次”(at most once)"></a>更好的RPC行为：“最多一次”(at most once)</h4><p>想法：服务器RPC代码检测到重复的请求，返回以前的答复，而不是重新运行处理程序。</p>
+<p>问：如何检测重复的请求？<br>客户端包含每个请求的唯一ID（XID）;使用相同的XID重新发送。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  if seen[xid]:</span><br><span class="line">    r = old[xid]</span><br><span class="line">  else</span><br><span class="line">    r = handler()</span><br><span class="line">    old[xid] = r</span><br><span class="line">    seen[xid] = true</span><br></pre></td></tr></table></figure></p>
 <h5 id="一些”最多一次”的复杂性"><a href="#一些”最多一次”的复杂性" class="headerlink" title="一些”最多一次”的复杂性"></a>一些”最多一次”的复杂性</h5><ul>
-<li>如何确保XID是唯一的？<br>大随机数？<br>结合唯一的客户端ID（IP地址？）和序列号？</li>
+<li>如何确保XID是唯一的？<br>很大的随机数？<br>将唯一的客户端ID（IP地址？）和序列号组合起来？</li>
 <li><p>服务器必须最终放弃有关旧RPC的信息<br>什么时候放弃安全？<br>理念：  </p>
 <ul>
 <li>唯一的客户端ID</li>
@@ -523,25 +528,31 @@
 <li>客户端包括“seen all replies &lt;= X”</li>
 <li>很像TCP序列号和ack</li>
 </ul>
-<p>或者一次只允许客户端一个未完成的RPC<br>  seq + 1的到达允许服务器放弃所有&lt;= seq</p>
-<p>或者客户同意继续重试&lt;5分钟<br>  服务器丢弃5分钟以上</p>
+<p>或者一次只允许客户端一个未完成的RPC，到达的是seq+1，那么忽略其他小于seq的请求。</p>
+<p>或者客户端最多可以尝试5次，服务器会忽略大于5次的请求。</p>
 </li>
-<li><p>如何处理dup req而原始仍在执行？<br>服务器还不知道答复; 不想跑两次</p>
-<p>想法：每个执行RPC的“挂起”标志; 等待或忽略</p>
+<li><p>当原来的请求还在执行，怎么样处理相同seq的请求？<br>服务器还不知道答复; 不想跑两次</p>
+<p>想法：给每个执行的RPC“挂起”标志; 等待或忽略</p>
 </li>
 </ul>
-<p>如果最多一次服务器崩溃并重新启动，该怎么办？  </p>
+<p>如果“最多一次”服务器崩溃并重新启动，该怎么办？  </p>
 <ul>
-<li>如果在内存中至多有一次重复的信息，服务器将会忘记<br>并在重新启动后接受重复的请求  </li>
+<li>如果在内存中至多有一次重复的信息，服务器将会忘记，并在重新启动后接受重复的请求。  </li>
 <li>也许它应该将重复信息写入磁盘？  </li>
 <li>也许副本服务器也应该复制重复信息？  </li>
 </ul>
-<h3 id="那“仅一次”呢？"><a href="#那“仅一次”呢？" class="headerlink" title="那“仅一次”呢？"></a>那“仅一次”呢？</h3><p>  最多一次，再加上无限重试加上容错服务。</p>
-<h3 id="Go-RPC是“最多一次”"><a href="#Go-RPC是“最多一次”" class="headerlink" title="Go RPC是“最多一次”"></a>Go RPC是“最多一次”</h3><p>  打开TCP连接; 写请求到TCP连接。<br>  TCP可能会重新传输，但服务器的TCP将会过滤掉重复的内容。<br>  Go代码没有重试（即不会创建第二个TCP连接）。<br>  Go RPC代码返回一个错误，如果它没有得到答复： </p>
-<ul>
-<li>也许在超时之后（来自TCP）  </li>
+<h3 id="那“仅一次”呢？"><a href="#那“仅一次”呢？" class="headerlink" title="那“仅一次”呢？"></a>那“仅一次”呢？</h3><p>  最多一次 + 无限重试 + 容错服务。</p>
+<h3 id="Go-RPC是“最多一次”"><a href="#Go-RPC是“最多一次”" class="headerlink" title="Go RPC是“最多一次”"></a>Go RPC是“最多一次”</h3><ul>
+<li>打开TCP连接; </li>
+<li>写请求到TCP连接。  </li>
+<li>TCP可能会重新传输，但服务器的TCP将会过滤掉重复的内容。</li>
+<li>Go代码没有重试（即不会创建第二个TCP连接）。</li>
+<li>Go RPC代码返回一个错误，如果它没有得到答复： <ul>
+<li>也许是TCP连接的超时 </li>
 <li>也许服务器没有看到请求  </li>
 <li>也许服务器处理请求，但服务器/网络在回复之前失败</li>
+</ul>
+</li>
 </ul>
 <p>对于实验1来说，Go RPC的”最多一次”是不够的  </p>
 <ul>
@@ -568,12 +579,12 @@
 </ul>
 <p>再剧透一下其中的关键函数:</p>
 <ul>
-<li>Server.AddService，可能在多个goroutine中调用，deter的作用是在函数退出前，调用之后的代码，就是添加完新服务后，做解锁操作。</li>
-<li>Server.dispatch，分发请求，为什么持有锁？跟AddService并发访问可能冲突。</li>
-<li>ClientEnd.Call，使用反射查找参数类型，使用“gob”序列化参数（Go的自带编解码包gob.NewEncoder），ClientEnd.ch（chan reqMsg）是用于发送请求的通道e.ch &lt;- req，需要一个通道从接收回复(&lt;- req.replyCh)</li>
-<li>Network.MakeEnd，创建客户端，使用一个线程或者goroutine模拟网络，每个请求分别在不同的goroutine处理。一个端点是否可以拥有多个未处理的请求？为什么使用rn.mu.Lock()？锁保护了什么？保护Network中的活跃数组信息</li>
-<li>Network.ProcessReq，如果网络不可靠，可能会延迟或者丢失请求，在一个新的线程中分发请求。通过读取e.ch等待回复直到时间过去100毫秒。100毫秒只是来看看服务器是否崩溃。最后返回回复（req.replyCh &lt;- reply），ProcessReq没有持有rn锁，是否安全？</li>
-<li>Service.dispatch，为请求找到合适的处理方法</li>
+<li>Server.AddService() 由于它可能在多个goroutine中调用，所以上锁。而deter的作用是在函数退出前，调用之后的代码，就是添加完新服务后，做解锁操作。</li>
+<li>Server.dispatch() 分发请求。为什么持有锁？因为跟AddService并发访问可能冲突。</li>
+<li>ClientEnd.Call() 使用反射查找参数类型，使用“gob”序列化参数（Go的自带编解码包gob.NewEncoder）; ClientEnd.ch（chan reqMsg）是用于发送请求的通道e.ch &lt;- req; 需要一个通道从接收回复(&lt;- req.replyCh)。</li>
+<li>Network.MakeEnd，创建客户端，使用一个线程或者goroutine模拟网络，每个请求分别在不同的goroutine处理。一个端点是否可以拥有多个未处理的请求？为什么使用rn.mu.Lock()？锁保护了什么？保护Network中的活跃数组信息。</li>
+<li>Network.ProcessReq，如果网络不可靠，可能会延迟或者丢失请求，在一个新的线程中分发请求。通过读取e.ch等待回复直到时间过去100毫秒。100毫秒只是来看看服务器是否崩溃。最后返回回复（req.replyCh &lt;- reply）。ProcessReq没有持有rn锁，是否安全？</li>
+<li>Service.dispatch，为请求找到合适的处理方法。</li>
 </ul>
 <h3 id="RPC基本结构"><a href="#RPC基本结构" class="headerlink" title="RPC基本结构"></a>RPC基本结构</h3><h4 id="Network"><a href="#Network" class="headerlink" title="Network"></a>Network</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Network <span class="keyword">struct</span> &#123;</span><br><span class="line">  mu             sync.Mutex</span><br><span class="line">  reliable       <span class="keyword">bool</span></span><br><span class="line">  longDelays     <span class="keyword">bool</span>                        <span class="comment">// pause a long time on send on disabled connection</span></span><br><span class="line">  longReordering <span class="keyword">bool</span>                        <span class="comment">// sometimes delay replies a long time</span></span><br><span class="line">  ends           <span class="keyword">map</span>[<span class="keyword">interface</span>&#123;&#125;]*ClientEnd  <span class="comment">// ends, by name</span></span><br><span class="line">  enabled        <span class="keyword">map</span>[<span class="keyword">interface</span>&#123;&#125;]<span class="keyword">bool</span>        <span class="comment">// by end name</span></span><br><span class="line">  servers        <span class="keyword">map</span>[<span class="keyword">interface</span>&#123;&#125;]*Server     <span class="comment">// servers, by name</span></span><br><span class="line">  connections    <span class="keyword">map</span>[<span class="keyword">interface</span>&#123;&#125;]<span class="keyword">interface</span>&#123;&#125; <span class="comment">// endname -&gt; servername</span></span><br><span class="line">  endCh          <span class="keyword">chan</span> reqMsg</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Network中各字段含义如下:</p>
@@ -646,7 +657,7 @@
   <p><span>本文标题:</span><a href="/RPC&Threads/">走向分布式（二）- RPC&Threads</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 FK2469 的个人博客">FK2469</a></p>
   <p><span>发布时间:</span>2018年01月13日 - 00:01</p>
-  <p><span>最后更新:</span>2018年01月17日 - 22:01</p>
+  <p><span>最后更新:</span>2018年01月18日 - 11:01</p>
   <p><span>原始链接:</span><a href="/RPC&Threads/" title="走向分布式（二）- RPC&Threads">http://FK2469.github.io/RPC&Threads/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://FK2469.github.io/RPC&Threads/"  aria-label="复制成功！"></i></span>
   </p>
@@ -849,7 +860,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么线程？"><span class="nav-number">1.1.</span> <span class="nav-text">为什么线程？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程-“执行线程”-thread-of-execution"><span class="nav-number">1.2.</span> <span class="nav-text">线程==“执行线程”(thread of execution)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序中应该有多少个线程？"><span class="nav-number">1.3.</span> <span class="nav-text">程序中应该有多少个线程？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程中的挑战："><span class="nav-number">1.4.</span> <span class="nav-text">线程中的挑战：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例练习-Crawler"><span class="nav-number">1.5.</span> <span class="nav-text">实例练习 Crawler</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方案"><span class="nav-number">1.5.1.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#消除深度—使用fetched代替"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">消除深度—使用fetched代替</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是最好的解决方案？"><span class="nav-number">1.5.2.</span> <span class="nav-text">什么是最好的解决方案？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程过程调用（RPC）"><span class="nav-number">2.</span> <span class="nav-text">远程过程调用（RPC）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例研究：kv-go"><span class="nav-number">2.1.</span> <span class="nav-text">实例研究：kv.go</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RPC问题：如何处理失败？"><span class="nav-number">2.2.</span> <span class="nav-text">RPC问题：如何处理失败？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最简单的方案：“至少一次”-at-least-once"><span class="nav-number">2.2.1.</span> <span class="nav-text">最简单的方案：“至少一次”(at least once)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更好的RPC行为：“最多一次”-at-most-once"><span class="nav-number">2.2.2.</span> <span class="nav-text">更好的RPC行为：“最多一次”(at most once)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一些”最多一次”的复杂性"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">一些”最多一次”的复杂性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#那“仅一次”呢？"><span class="nav-number">2.3.</span> <span class="nav-text">那“仅一次”呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go-RPC是“最多一次”"><span class="nav-number">2.4.</span> <span class="nav-text">Go RPC是“最多一次”</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带有故障模拟的RPC实现分析"><span class="nav-number">3.</span> <span class="nav-text">带有故障模拟的RPC实现分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RPC基本结构"><span class="nav-number">3.1.</span> <span class="nav-text">RPC基本结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Network"><span class="nav-number">3.1.1.</span> <span class="nav-text">Network</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Server"><span class="nav-number">3.1.2.</span> <span class="nav-text">Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Client"><span class="nav-number">3.1.3.</span> <span class="nav-text">Client</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RPC-API实现"><span class="nav-number">3.2.</span> <span class="nav-text">RPC API实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MakeNetwork"><span class="nav-number">3.2.1.</span> <span class="nav-text">MakeNetwork</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MakeEnd"><span class="nav-number">3.2.2.</span> <span class="nav-text">MakeEnd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MakeServer"><span class="nav-number">3.2.3.</span> <span class="nav-text">MakeServer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AddServer"><span class="nav-number">3.2.4.</span> <span class="nav-text">AddServer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MakeService"><span class="nav-number">3.2.5.</span> <span class="nav-text">MakeService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Connect"><span class="nav-number">3.2.6.</span> <span class="nav-text">Connect</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Enable"><span class="nav-number">3.2.7.</span> <span class="nav-text">Enable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Call"><span class="nav-number">3.2.8.</span> <span class="nav-text">Call</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么线程？"><span class="nav-number">1.1.</span> <span class="nav-text">为什么线程？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程-“执行线程”-thread-of-execution"><span class="nav-number">1.2.</span> <span class="nav-text">线程==“执行线程”(thread of execution)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序中应该有多少个线程？"><span class="nav-number">1.3.</span> <span class="nav-text">程序中应该有多少个线程？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程中的挑战："><span class="nav-number">1.4.</span> <span class="nav-text">线程中的挑战：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例练习-Crawler"><span class="nav-number">1.5.</span> <span class="nav-text">实例练习 Crawler</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方案"><span class="nav-number">1.5.1.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#消除深度—使用fetched代替"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">消除深度—使用fetched代替</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是最好的解决方案？"><span class="nav-number">1.5.2.</span> <span class="nav-text">什么是最好的解决方案？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程过程调用（RPC）"><span class="nav-number">2.</span> <span class="nav-text">远程过程调用（RPC）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例研究：kv-go"><span class="nav-number">2.1.</span> <span class="nav-text">实例研究：kv.go</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RPC问题：如何处理失败？"><span class="nav-number">2.2.</span> <span class="nav-text">RPC问题：如何处理失败？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最简单的方案：“至少一次”-at-least-once-语义"><span class="nav-number">2.2.1.</span> <span class="nav-text">最简单的方案：“至少一次”(at least once)语义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更好的RPC行为：“最多一次”-at-most-once"><span class="nav-number">2.2.2.</span> <span class="nav-text">更好的RPC行为：“最多一次”(at most once)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一些”最多一次”的复杂性"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">一些”最多一次”的复杂性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#那“仅一次”呢？"><span class="nav-number">2.3.</span> <span class="nav-text">那“仅一次”呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go-RPC是“最多一次”"><span class="nav-number">2.4.</span> <span class="nav-text">Go RPC是“最多一次”</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带有故障模拟的RPC实现分析"><span class="nav-number">3.</span> <span class="nav-text">带有故障模拟的RPC实现分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RPC基本结构"><span class="nav-number">3.1.</span> <span class="nav-text">RPC基本结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Network"><span class="nav-number">3.1.1.</span> <span class="nav-text">Network</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Server"><span class="nav-number">3.1.2.</span> <span class="nav-text">Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Client"><span class="nav-number">3.1.3.</span> <span class="nav-text">Client</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RPC-API实现"><span class="nav-number">3.2.</span> <span class="nav-text">RPC API实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MakeNetwork"><span class="nav-number">3.2.1.</span> <span class="nav-text">MakeNetwork</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MakeEnd"><span class="nav-number">3.2.2.</span> <span class="nav-text">MakeEnd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MakeServer"><span class="nav-number">3.2.3.</span> <span class="nav-text">MakeServer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AddServer"><span class="nav-number">3.2.4.</span> <span class="nav-text">AddServer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MakeService"><span class="nav-number">3.2.5.</span> <span class="nav-text">MakeService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Connect"><span class="nav-number">3.2.6.</span> <span class="nav-text">Connect</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Enable"><span class="nav-number">3.2.7.</span> <span class="nav-text">Enable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Call"><span class="nav-number">3.2.8.</span> <span class="nav-text">Call</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
