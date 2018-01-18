@@ -4,6 +4,27 @@
 
     
   <url>
+    <loc>http://FK2469.github.io/Bell_Labs_and_CSP_Threads/</loc>
+    <lastmod>2018-01-18T16:14:26.576Z</lastmod>
+    <data>
+        <display>
+        <title>贝尔实验室和 CSP 线程</title>
+        <pubTime>2018-01-18T16:14:26.580Z</pubTime>
+        
+        <tag>Golang</tag>
+         
+        <tag>分布式系统</tag>
+         
+        <tag>Mit 6.824</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://FK2469.github.io/RPC&Threads/</loc>
     <lastmod>2018-01-18T03:58:18.961Z</lastmod>
     <data>
@@ -50,7 +71,7 @@
     <lastmod>2018-01-16T07:11:57.000Z</lastmod>
     <data>
         <display>
-        <title>走向分布式（三）- Go&Concurrency</title>
+        <title>分布式系统学习笔记（三）- Go&Concurrency</title>
         <pubTime>2018-01-15T15:32:57.000Z</pubTime>
         
         <tag>Golang</tag>

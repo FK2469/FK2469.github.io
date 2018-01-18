@@ -116,7 +116,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Golang,分布式系统,Mit 6.824," />
 
 
 
@@ -127,13 +127,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="FK2469&#39;s Notes">
-<meta property="og:url" content="http://FK2469.github.io/archives/2017/index.html">
+<meta name="description" content="TODO:  原作者: Russ Cox原文链接:Bell Labs and CSP Threads   译者按: 学习Go语言的时候发现了这篇小文，很是喜欢，翻译出来以飨读者。">
+<meta name="keywords" content="Golang,分布式系统,Mit 6.824">
+<meta property="og:type" content="article">
+<meta property="og:title" content="贝尔实验室和 CSP 线程">
+<meta property="og:url" content="http://FK2469.github.io/Bell_Labs_and_CSP_Threads/index.html">
 <meta property="og:site_name" content="FK2469&#39;s Notes">
+<meta property="og:description" content="TODO:  原作者: Russ Cox原文链接:Bell Labs and CSP Threads   译者按: 学习Go语言的时候发现了这篇小文，很是喜欢，翻译出来以飨读者。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-18T16:14:26.576Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="FK2469&#39;s Notes">
+<meta name="twitter:title" content="贝尔实验室和 CSP 线程">
+<meta name="twitter:description" content="TODO:  原作者: Russ Cox原文链接:Bell Labs and CSP Threads   译者按: 学习Go语言的时候发现了这篇小文，很是喜欢，翻译出来以飨读者。">
 
 
 
@@ -163,13 +168,13 @@
 
 
 
-  <link rel="canonical" href="http://FK2469.github.io/archives/2017/"/>
+  <link rel="canonical" href="http://FK2469.github.io/Bell_Labs_and_CSP_Threads/"/>
 
 
 
 
 
-  <title>归档 | FK2469's Notes</title>
+  <title>贝尔实验室和 CSP 线程 | FK2469's Notes</title>
   
 
 
@@ -188,7 +193,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
     <a href="https://github.com/FK2469" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -296,74 +301,275 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        嗯..! 目前共计 6 篇日志。 继续努力。
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h2 class="archive-year" id="archive-year-2017">2017</h2>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://FK2469.github.io/Bell_Labs_and_CSP_Threads/">
 
-      <h3 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="FK2469">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FK2469's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/mapreduce/" itemprop="url">
-              
-                <span itemprop="name">走向分布式（一）- MapReduce</span>
-              
-            </a>
         
-      </h3>
+          <h2 class="post-title" itemprop="name headline">贝尔实验室和 CSP 线程</h2>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-31T00:00:00+08:00"
-              content="2017-12-31" >
-          12-31
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-19T00:14:26+08:00">
+                2018-01-19
+              </time>
+            
 
-    </header>
-  </article>
+            
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-19T00:14:26+08:00">
+                2018-01-19
+              </time>
+            
+          </span>
 
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,973 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  11 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+      
 
+      
+        <blockquote class="blockquote-center"><br>TODO:<br></blockquote>
+
+<p>原作者: <a href="http://swtch.com/~rsc/" target="_blank" rel="noopener">Russ Cox</a><br>原文链接:<a href="https://swtch.com/~rsc/thread/#1" target="_blank" rel="noopener">Bell Labs and CSP Threads</a>  </p>
+<p>译者按: 学习Go语言的时候发现了这篇小文，很是喜欢，翻译出来以飨读者。<br><a id="more"></a></p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>此页是并发编程历史的一部分, 侧重于霍尔的通信顺序进程 (CSP) [1] [1a]的特定沿袭。在这种风格的并发编程是有趣的原因不是效率, 但清晰。也就是说, 只考虑并发编程作为提高性能的一种手段,例如, 以重叠磁盘 i/o 请求, 通过预取结果到预期查询来减少延迟, 或利用多个处理器, 这是一个普遍的错误。这些优势固然重要, 但与本讨论无关。毕竟, 它们可以在其他样式 (如异步事件驱动编程) 中实现。相反, 我们对并发编程感兴趣, 因为它提供了一种自然的抽象, 可以使某些程序更简单。</p>
+<h2 id="这不是"><a href="#这不是" class="headerlink" title="这不是"></a>这不是</h2><p>大多数计算机科学专业的本科生被迫阅读安德鲁. 伯雷尔的”使用线程编程入门”SRC 线程模型是当前可用的大多数线程包所使用的。所有这些问题都是因为它们太低级了。与霍尔提供的通信原语不同, SRC 样式的线程模块中的基元必须与其他技术 (通常是共享内存) 相结合, 以便有效地使用。一般情况下, 程序员往往不构建自己的高级结构, 并且由于需要注意这样低级别的细节而感到沮丧。</p>
+<p>现在, 把伯雷尔的教程从你的头脑中推开。这是一个不同的线程模型。如果您将其作为不同的线程模型来处理, 您可能会发现它更容易理解。</p>
+<h2 id="通信顺序进程"><a href="#通信顺序进程" class="headerlink" title="通信顺序进程"></a>通信顺序进程</h2><p>到 1978年, 在编程多的上下文中, 有许多用于通信和同步的建议方法。共享内存是最常见的通信机制, 而信号量、关键区域和监视器是同步机制之一。c.a.r. 霍尔解决了这两个问题与单一的语言原语: 同步通信。在霍尔的 CSP 语言中, 进程通过从命名的缓冲通道发送或接收值来进行通信。由于信道是缓冲的, 因此发送操作会一直阻塞, 直到该值已转移到接收器, 从而提供了同步的机制。</p>
+<p>霍尔的示例之一是重新格式化80列卡, 以便在125列的打印机上进行打印。在他的解决方案中, 一个进程一次读取卡, 将分解后的内容字符按字符发送到第二个进程。第二个过程将组合125个字符, 将组发送到行打印机。这听起来很琐碎, 但是在没有缓冲的 i/o 库的情况下, 单进程解决方案所涉及的必要簿记是繁重的。事实上, 缓冲的 i/o 库实际上只是封装了这两种导出单字符通信接口的进程。</p>
+<p>作为另一个例子, 其中霍尔学分的 Doug 麦克罗伊, 考虑到所有的素数的世代少于1000。埃拉托的筛子可以由执行以下伪代码的过程的管道模拟:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">p = get a number from left neighbor</span><br><span class="line">print p</span><br><span class="line">loop:</span><br><span class="line">    n = get a number from left neighbor</span><br><span class="line">    if (p does not divide n)</span><br><span class="line">        send n to right neighbor</span><br></pre></td></tr></table></figure></p>
+<p>生成过程可以将数字2、3、4、…, 1000 插入到管线的左端: 第一个进程在行中消除了倍数为 2, 第二个消除了倍数 3, 第三个消除了倍数 5, 等等:</p>
+<p>这些例子的线性管道性质 misrepresentative 了 CSP 的一般性质, 但甚至限于线性管道, 模型是相当强大的。在 Unix 操作系统是众所周知的[2]的情况下, 通过筛选和管道方法的成功, 已经有力地证明了这种能力, 即管道在霍尔的纸张之前。在一个内部贝尔实验室的备忘录日期 1964年10月11日, Doug 麦克罗伊是玩弄的想法, 将成为 Unix 管道: “我们应该有一些耦合程序的方式, 如花园软管-螺丝在另一个环节, 当它成为必要的按摩数据以另一种方式.这也是 IO 的方式。[3]</p>
+<p>霍尔的通信过程比典型的 Unix shell 管道更通用, 因为它们可以以任意模式连接。事实上, 霍尔给出的一个例子是一个3x3 的进程矩阵, 有点像素数筛子, 可以用一个3x3 的正方形矩阵乘以一个向量。</p>
+<p>当然, Unix 的管道机制不需要线性布局;只有 shell 语法才行。麦克罗伊报告玩弄与一般管道的外壳早期的语法, 但不喜欢的语法足以实现它 (个人沟通, 2011)。后来的炮弹确实支持一些限制形式的非线性管道。Rochkind 的2dsh 支持达吉斯坦;汤姆. 达夫的 rc 支持树木。</p>
+<p>霍尔的语言新颖而有影响力, 但缺乏几个关键方面。主要的缺点是用于通信的缓冲通道不是一流的对象: 它们不能存储在变量中, 不能作为参数传递给函数, 也不能通过通道发送。因此, 通信结构必须在编写程序时进行修复。因此, 我们必须编写一个程序来打印前1000素数, 而不是第一个n素数, 并将一个向量乘以一个3x3 矩阵而不是一个nxn矩阵。</p>
+<h2 id="平底锅和-Promela"><a href="#平底锅和-Promela" class="headerlink" title="平底锅和 Promela"></a>平底锅和 Promela</h2><p>在 1980年, 仅仅两年后, 霍尔的论文, 杰拉德 ast-holzmann 和 Rob 派克创建了一个协议分析器称为 pan, 以 CSP 方言作为输入。Pan 的 CSP 方言有串联、选择和循环, 但没有变量。即便如此, ast-holzmann 报告说, “潘在1980年11月21日的贝尔实验室数据交换控制协议中发现了第一个错误。[14]. 这种方言很可能是贝尔实验室的第一个 csp 语言, 它无疑提供了使用和实施类似 csp 的语言的经验, 他的第一个许多。</p>
+<p>ast-holzmann 的协议分析器开发成了自旋模型检查器及其 Promela 语言, 它以与 Newsqueak (q.v.) 相同的方式具有一流的通道。</p>
+<h2 id="Newsqueak"><a href="#Newsqueak" class="headerlink" title="Newsqueak"></a>Newsqueak</h2><p>在一个不同的方向移动, 卢卡 Cardelli 和罗布派克开发的想法在 CSP 到吱吱声迷你语言[4] , 以生成用户界面代码。(此吱吱声与 Smalltalk 实现的吱吱声不同。派克后来扩展到了完全成熟的编程语言 Newsqueak [5][6] , 其中生计划9的 Alef [7] [8], 地狱的地狱边缘[9], 和 Google Go [13]。Newsqueak 的主要语义优势是, Newsqueak 将通信信道视为头等对象: 与 CSP 和吱吱声不同, 通道可以存储在变量中, 作为参数传递给函数, 并通过通道发送。这反过来又使通信结构的编程建设, 从而允许创建更复杂的结构比是合理的手工设计。特别是, Doug 麦克罗伊演示了如何使用 Newsqueak 的通信设备来编写用于操作符号电源系列[10]的优雅程序。传统语言的类似尝试往往会陷入簿记的泥潭。在类似的情况下, Rob 派克演示了如何使用通信设备来打破公共事件的编程模型, 编写并发窗口系统[11].</p>
+<h2 id="alef"><a href="#alef" class="headerlink" title="alef"></a>alef</h2><p>Alef [7] [8]是由菲尔温特伯顿设计的一种语言, 用于将 Newsqueak 思想应用于一个完整的系统编程语言。Alef 有两种类型的, 我们一直在调用进程: 触发和线程。程序被组织成一个或多个触发, 这是可以先发制人调度的共享内存操作系统进程。每个进程都包含一个或多个任务, 它们是协作安排的协同。请注意, 每个任务都分配给一个特定的进程: 它们不会在触发之间迁移。</p>
+<p>触发的主要用途是提供可以独立于主要任务来阻止 i/o 的上下文。(计划9没有选择调用, 即使在 Unix 上, 如果要与非网络 i/o 进行重叠计算, 也需要多个触发。Acme 文件[12]对触发和线程有一个很好的简短讨论, 如下面所述,关于计划9窗口系统的演讲说明。</p>
+<h2 id="地狱"><a href="#地狱" class="headerlink" title="地狱"></a>地狱</h2><p>地狱操作系统是一个计划9剥离的准备机顶盒。它的编程语言, 地狱边缘[9], 受 Alef 的严重影响。它消除了触发和任务之间的区别, 实际上只是触发, 虽然它们的重量比大多数人认为的过程轻。所有并行性都是抢占式的。有趣的是, 尽管这样, 语言没有提供真正的锁定支持。相反, 信道通信通常提供足够的同步, 并鼓励程序员安排任何数据块始终有明确的所有者。显式锁定是不必要的。</p>
+<h2 id="Libthread"><a href="#Libthread" class="headerlink" title="Libthread"></a>Libthread</h2><p>在计划9世界中, Alef 编译器结果很难维护, 因为计划9被移植到更多的体系结构中。Libthread 最初是为了将 Alef 程序创建到 C, 以便 Alef 编译器可以退役。Alef 的触发和任务被称为触发和线程在 libthread。手动页是最终引用。</p>
+<h2 id="Go"><a href="#Go" class="headerlink" title="Go"></a>Go</h2><p>Rob 派克和 Ken 汤普森移动到谷歌, 并放置在Go 语言的并发支持中心的 CSP。</p>
+<h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><p>要获得模型的感觉, 特别是进程和线程如何交互, 值得阅读 Alef 用户指南[8]。此演示文稿的前三十张幻灯片很好地介绍了 Alef 构造在 C 中的表示方式。</p>
+<p>CSP 模型的威力的最佳例子是麦克罗伊和派克的论文, 上面提到[10] [11].</p>
+<p>罗布派克的主页包含了关于并发编程的课程的讲义:简介, 以及有关上述两篇文章的幻灯片:斜视和窗口系统。最后的三提供了一个很好的例子, 说明计划9程序通常如何使用触发和任务。</p>
+<p>罗布派克给了一个技术讲座在谷歌提供了一个很好的介绍 (57 分钟的视频)。</p>
+<p>罗布派克的一半, 他的2010 谷歌 i/o 谈话与拉斯考克斯演示如何使用通道和 Go 的并发来实现负载平衡工作管理系统。</p>
+<p>相关资源</p>
+<p>John Reppy已将相同的想法应用于 ml, 生成并发 ml。他使用 CML 来构建eXene多线程 (非事件驱动) X 窗口系统工具包。</p>
+<p>引用<br>[1] C. A. R. Hoare, “Communicating Sequential Processes,” Communications of the ACM 21(8) (August 1978), 666-677.</p>
+<p>[1a]C. A. R. Hoare, Communicating Sequential Processes. Prentice Hall, Englewood Cliffs, New Jersey, 1985.</p>
+<p>[2] Michael S. Mahoney, ed., <a href="">The Unix Oral History Project, Release 0: The Beginning</a></p>
+<p>[3] M. Douglas McIlroy, <a href="">internal Bell Labs memorandum</a>, October 1964.</p>
+<p>[4] Luca Cardelli and Rob Pike, <a href="">“Squeak: a Language for Communicating with Mice,”</a> Computer Graphics, 19(3) (July 1985: SIGGRAPH ‘85 Proceedings), 199-204.</p>
+<p>[5] Rob Pike, <a href="">“The Implementation of Newsqueak,”</a> Software–Practice and Experience, 20(7) (July 1990), 649-659.</p>
+<p>[6] Rob Pike, <a href="">“Newsqueak: a Language for Communicating with Mice,”</a> Computing Science Technical Report 143, AT&amp;T Bell Laboratories, Murray Hill, 1989.</p>
+<p>[7] Phil Winterbottom, <a href="">“Alef Language Reference Manual,”</a> in Plan 9 Programmer’s Manual: Volume Two, AT&amp;T, Murray Hill, 1995.</p>
+<p>[8] Bob Flandrena, <a href="">“Alef Users’ Guide,”</a> in Plan 9 Programmer’s Manual: Volume Two, AT&amp;T, Murray Hill, 1995.</p>
+<p>[9] Dennis M. Ritchie, <a href="">“The Limbo Programming Language,”</a> in Inferno Programmer’s Manual, Volume 2, Vita Nuova Holdings Ltd., York, 2000.</p>
+<p><a href="">10] M. Douglas McIlroy, “Squinting at Power Series,”</a> Software–Practice and Experience, 20(7) (July 1990), 661-683.</p>
+<p>[11] Rob Pike, <a href="">“A Concurrent Window System,”</a> Computing Systems, 2(2) 133-153.</p>
+<p>[12] Rob Pike, <a href="">“Acme: A User Interface for Programmers,”</a> Proceedings of the Winter 1994 USENIX Conference, 223-234.</p>
+<p>[13] golang.org, <a href="">“The Go Programming Language”</a>.</p>
+<p>[14] Gerard Holzmann, <a href="">“Spin’s Roots”</a>.</p>
+<p>[15] Gerard Holzmann, <a href="">“Promela Language Reference”</a>.</p>
+
+      
     </div>
+    
+    
+    
+    <div>
+        
+          
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/Bell_Labs_and_CSP_Threads/">贝尔实验室和 CSP 线程</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 FK2469 的个人博客">FK2469</a></p>
+  <p><span>发布时间:</span>2018年01月19日 - 00:01</p>
+  <p><span>最后更新:</span>2018年01月19日 - 00:01</p>
+  <p><span>原始链接:</span><a href="/Bell_Labs_and_CSP_Threads/" title="贝尔实验室和 CSP 线程">http://FK2469.github.io/Bell_Labs_and_CSP_Threads/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://FK2469.github.io/Bell_Labs_and_CSP_Threads/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+          
+    </div>
+	
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Golang/" rel="tag"># Golang</a>
+          
+            <a href="/tags/分布式系统/" rel="tag"># 分布式系统</a>
+          
+            <a href="/tags/Mit-6-824/" rel="tag"># Mit 6.824</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/GFS/" rel="next" title="走向分布式（四）- GFS">
+                <i class="fa fa-chevron-left"></i> 走向分布式（四）- GFS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -371,6 +577,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -391,8 +601,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -459,6 +678,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#这不是"><span class="nav-number">2.</span> <span class="nav-text">这不是</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通信顺序进程"><span class="nav-number">3.</span> <span class="nav-text">通信顺序进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#平底锅和-Promela"><span class="nav-number">4.</span> <span class="nav-text">平底锅和 Promela</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Newsqueak"><span class="nav-number">5.</span> <span class="nav-text">Newsqueak</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alef"><span class="nav-number">6.</span> <span class="nav-text">alef</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地狱"><span class="nav-number">7.</span> <span class="nav-text">地狱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Libthread"><span class="nav-number">8.</span> <span class="nav-text">Libthread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go"><span class="nav-number">9.</span> <span class="nav-text">Go</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#入门"><span class="nav-number">10.</span> <span class="nav-text">入门</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -594,6 +829,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
