@@ -136,7 +136,7 @@
 <meta property="og:description" content="CSP的来龙去脉  原作者: Russ Cox原文链接:Bell Labs and CSP Threads   译者按: 学习Go语言的时候发现了这篇小文，很是喜欢，翻译出来以飨读者。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://swtch.com/~rsc/thread/sieve.gif">
-<meta property="og:updated_time" content="2018-01-19T03:14:57.844Z">
+<meta property="og:updated_time" content="2018-01-19T08:21:39.530Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="贝尔实验室和 CSP 线程">
 <meta name="twitter:description" content="CSP的来龙去脉  原作者: Russ Cox原文链接:Bell Labs and CSP Threads   译者按: 学习Go语言的时候发现了这篇小文，很是喜欢，翻译出来以飨读者。">
@@ -362,7 +362,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-19T11:14:57+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-19T16:21:39+08:00">
                 2018-01-19
               </time>
             
@@ -390,7 +390,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,883 字
+                  2,896 字
                 </span>
               
 
@@ -431,11 +431,11 @@
 
 <p>原作者: <a href="http://swtch.com/~rsc/" target="_blank" rel="noopener">Russ Cox</a><br>原文链接:<a href="https://swtch.com/~rsc/thread/#1" target="_blank" rel="noopener">Bell Labs and CSP Threads</a>  </p>
 <p>译者按: 学习Go语言的时候发现了这篇小文，很是喜欢，翻译出来以飨读者。<br><a id="more"></a></p>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>本文是并发编程历史的一部分, 侧重于Hoare的通信顺序进程 (CSP-Communication Sequential Process) [1] [1a]的特定沿袭。这种并发编程的特色不在于效率, 而是清晰。这是一个普遍的错误, 只将并发编程作为提高性能的一种手段。例如, 以重叠磁盘I/O请求, 通过预取结果到预期查询来减少延迟, 或利用多个处理器。这些优势固然重要, 但与本讨论无关。毕竟, 它们可以在其他样式 (如异步事件驱动编程) 中实现。相反, 我们对并发编程感兴趣, 因为它提供了一种自然的抽象, 可以使某些程序更简单。</p>
-<h2 id="这不是"><a href="#这不是" class="headerlink" title="这不是"></a>这不是</h2><p>大多数计算机科学专业的本科生被迫阅读Andrew Birrell的<a href="http://gatekeeper.research.compaq.com/pub/DEC/SRC/research-reports/SRC-035.pdf" target="_blank" rel="noopener">“使用线程编程入门”</a>。SRC线程模型是当前可用的大多数线程包所使用的。所有这些问题都是因为它们太低级了。与Hoare提供的通信原语不同, SRC 样式的线程模块中的基元必须与其他技术 (通常是共享内存) 相结合, 以便有效地使用。一般情况下, 程序员往往不构建自己的高级结构, 并且由于需要注意这样低级别的细节而感到沮丧。</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>本文是并发编程历史的一部分, 侧重于Hoare的通信顺序进程 (CSP-Communication Sequential Process) [1] [1a]的沿袭与传承。这种并发编程的特色不在于执行上的效率, 而是逻辑上的清晰。作者认为只将并发编程作为提高性能的一种手段，是一种普遍的错误。例如, 以重叠磁盘I/O请求, 通过预取结果到预期查询来减少延迟, 或利用多个处理器。这些优势固然重要, 但与本讨论无关。毕竟, 它们可以在其他样式 (如异步事件驱动编程) 中实现。相反, 我们对并发编程感兴趣, 因为它提供了一种自然的抽象, 可以使某些程序更简单。</p>
+<h2 id="看文章之前你要忘掉的"><a href="#看文章之前你要忘掉的" class="headerlink" title="看文章之前你要忘掉的"></a>看文章之前你要忘掉的</h2><p>大多数计算机科学专业的本科生“被迫”阅读Andrew Birrell的<a href="http://gatekeeper.research.compaq.com/pub/DEC/SRC/research-reports/SRC-035.pdf" target="_blank" rel="noopener">“使用线程编程入门”</a>。SRC线程模型是当前大多数线程包所使用的并发模型。该模型产生的所有问题都源于它们太底层了。与Hoare提供的通信原语不同, SRC 样式的线程模块中的基元必须与其他技术 (通常是共享内存) 相结合, 以便有效地使用。一般情况下, 程序员往往不构建自己的高级结构,并且由于需要过度注意这样底层的细节而感到沮丧。</p>
 <p>现在, 把Birrell的教程忘得一干二净。这是一个不同的线程模型。如果您将其作为不同的线程模型来处理, 您可能会发现它更容易理解。</p>
-<h2 id="通信顺序进程-CSP"><a href="#通信顺序进程-CSP" class="headerlink" title="通信顺序进程 CSP"></a>通信顺序进程 CSP</h2><p>到 1978年, 在编程多的上下文中, 有许多用于通信和同步的建议方法。共享内存是最常见的通信机制, 而信号量、关键区域和监视器是同步机制之一。Hoare解决了这两个问题与单一的语言原语: 同步通信。在Hoare的 CSP 语言中, 进程通过从命名的缓冲通道发送或接收值来进行通信。由于信道是缓冲的, 因此发送操作会一直阻塞, 直到该值已转移到接收器, 从而提供了同步的机制。</p>
-<p>Hoare的示例之一是重新格式化80列卡, 以便在125列的打印机上进行打印。在他的解决方案中 一个进程一次读取卡, 将分解后的内容字符按字符发送到第二个进程。第二个过程将组合125个字符, 将组发送到行打印机。这听起来很琐碎, 但是在没有缓冲的I/O库的情况下, 单进程解决方案所涉及的必要簿记(bookkeeping )十分繁重。事实上, 缓冲的I/O库实际上只是封装了这两种导出单字符通信接口的进程。</p>
+<h2 id="通信顺序进程-CSP"><a href="#通信顺序进程-CSP" class="headerlink" title="通信顺序进程 CSP"></a>通信顺序进程 CSP</h2><p>到1978年, 有许多用于通信和同步的方法。共享内存是最常见的通信机制, 而信号量、关键区域和监视器是同步机制之一。Hoare用单一的语言原语: 同步通信，解决了这两个问题。在Hoare的 CSP 语言中, 进程通过从命名的缓冲通道发送或接收值来进行通信。由于信道是缓冲的, 因此发送操作会一直阻塞, 直到该值已转移到接收器, 从而提供了同步机制。</p>
+<p>Hoare的示例之一是重新格式化80列卡, 以便其在125列的打印机上进行打印。在他的解决方案中，一个进程一次读取卡, 将分解后的内容字符按字符发送到第二个进程。第二个过程将组合125个字符, 将组发送到行打印机。这听起来很琐碎, 但是在没有缓冲的I/O库的情况下, 单进程解决方案所涉及的必要簿记(bookkeeping)十分繁重。事实上, 缓冲的I/O库实际上只是封装了这两种导出单字符通信接口的进程。</p>
 <p>作为另一个例子, Hoare将其归功于Doug McIlroy。考虑产生所有的小于1000的素数。Eratosthenes的筛子可以由执行以下伪代码的管道模拟:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">p = get a number from left neighbor</span><br><span class="line">print p</span><br><span class="line">loop:</span><br><span class="line">    n = get a number from left neighbor</span><br><span class="line">    if (p does not divide n)</span><br><span class="line">        send n to right neighbor</span><br></pre></td></tr></table></figure></p>
 <p>生成过程可以将数字2、3、4、…, 1000 插入到管道的左端: 第一个进程在行中消除了倍数为 2, 第二个消除了倍数 3, 第三个消除了倍数 5, 等等:</p>
 <p><img src="https://swtch.com/~rsc/thread/sieve.gif" alt="Figure"></p>
@@ -491,7 +491,7 @@
   <p><span>本文标题:</span><a href="/Bell_Labs_and_CSP_Threads/">贝尔实验室和 CSP 线程</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 FK2469 的个人博客">FK2469</a></p>
   <p><span>发布时间:</span>2018年01月18日 - 23:01</p>
-  <p><span>最后更新:</span>2018年01月19日 - 11:01</p>
+  <p><span>最后更新:</span>2018年01月19日 - 16:01</p>
   <p><span>原始链接:</span><a href="/Bell_Labs_and_CSP_Threads/" title="贝尔实验室和 CSP 线程">http://FK2469.github.io/Bell_Labs_and_CSP_Threads/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://FK2469.github.io/Bell_Labs_and_CSP_Threads/"  aria-label="复制成功！"></i></span>
   </p>
@@ -690,7 +690,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#这不是"><span class="nav-number">2.</span> <span class="nav-text">这不是</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通信顺序进程-CSP"><span class="nav-number">3.</span> <span class="nav-text">通信顺序进程 CSP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pan-和-Promela"><span class="nav-number">4.</span> <span class="nav-text">Pan 和 Promela</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Newsqueak"><span class="nav-number">5.</span> <span class="nav-text">Newsqueak</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Alef"><span class="nav-number">6.</span> <span class="nav-text">Alef</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limbo"><span class="nav-number">7.</span> <span class="nav-text">Limbo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Libthread"><span class="nav-number">8.</span> <span class="nav-text">Libthread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go"><span class="nav-number">9.</span> <span class="nav-text">Go</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#入门"><span class="nav-number">10.</span> <span class="nav-text">入门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关资源"><span class="nav-number">11.</span> <span class="nav-text">相关资源</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#看文章之前你要忘掉的"><span class="nav-number">2.</span> <span class="nav-text">看文章之前你要忘掉的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通信顺序进程-CSP"><span class="nav-number">3.</span> <span class="nav-text">通信顺序进程 CSP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pan-和-Promela"><span class="nav-number">4.</span> <span class="nav-text">Pan 和 Promela</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Newsqueak"><span class="nav-number">5.</span> <span class="nav-text">Newsqueak</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Alef"><span class="nav-number">6.</span> <span class="nav-text">Alef</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limbo"><span class="nav-number">7.</span> <span class="nav-text">Limbo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Libthread"><span class="nav-number">8.</span> <span class="nav-text">Libthread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go"><span class="nav-number">9.</span> <span class="nav-text">Go</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#入门"><span class="nav-number">10.</span> <span class="nav-text">入门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关资源"><span class="nav-number">11.</span> <span class="nav-text">相关资源</span></a></li></ol></div>
             
 
           </div>
