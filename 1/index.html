@@ -127,18 +127,18 @@
 
 
 
-<meta name="description" content="容易被不规范讨论的几组概念。  并发&amp;amp;并行2018/1/8 0:33 阅读 goroutine背后的系统知识与Concurrency is not parallelism有感。对并发、并行这一老生常谈的问题进行二次挖掘，但仍然停留在扩展概念和完善解释的层面。对Concurrency后面的big picture(如Actor模型等)仍认识不足。需待以后补全。">
+<meta name="description" content="纪念当初傻傻分不清楚的并发并行。  并发&amp;amp;并行2018/1/8 0:33 阅读 goroutine背后的系统知识与Concurrency is not parallelism有感。对并发、并行这一老生常谈的问题进行二次挖掘，但仍然停留在扩展概念和完善解释的层面。对Concurrency后面的big picture(如Actor模型等)仍认识不足。需待以后补全。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="并发并行;同步异步;阻塞非阻塞">
+<meta property="og:title" content="并发&amp;并行">
 <meta property="og:url" content="http://FK2469.github.io/1/index.html">
 <meta property="og:site_name" content="FK2469&#39;s Notes">
-<meta property="og:description" content="容易被不规范讨论的几组概念。  并发&amp;amp;并行2018/1/8 0:33 阅读 goroutine背后的系统知识与Concurrency is not parallelism有感。对并发、并行这一老生常谈的问题进行二次挖掘，但仍然停留在扩展概念和完善解释的层面。对Concurrency后面的big picture(如Actor模型等)仍认识不足。需待以后补全。">
+<meta property="og:description" content="纪念当初傻傻分不清楚的并发并行。  并发&amp;amp;并行2018/1/8 0:33 阅读 goroutine背后的系统知识与Concurrency is not parallelism有感。对并发、并行这一老生常谈的问题进行二次挖掘，但仍然停留在扩展概念和完善解释的层面。对Concurrency后面的big picture(如Actor模型等)仍认识不足。需待以后补全。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.sizeofvoid.net/wp-content/uploads/2013/03/concurrent_and_parallel.png">
-<meta property="og:updated_time" content="2018-01-16T02:53:47.995Z">
+<meta property="og:updated_time" content="2018-01-24T12:33:55.382Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="并发并行;同步异步;阻塞非阻塞">
-<meta name="twitter:description" content="容易被不规范讨论的几组概念。  并发&amp;amp;并行2018/1/8 0:33 阅读 goroutine背后的系统知识与Concurrency is not parallelism有感。对并发、并行这一老生常谈的问题进行二次挖掘，但仍然停留在扩展概念和完善解释的层面。对Concurrency后面的big picture(如Actor模型等)仍认识不足。需待以后补全。">
+<meta name="twitter:title" content="并发&amp;并行">
+<meta name="twitter:description" content="纪念当初傻傻分不清楚的并发并行。  并发&amp;amp;并行2018/1/8 0:33 阅读 goroutine背后的系统知识与Concurrency is not parallelism有感。对并发、并行这一老生常谈的问题进行二次挖掘，但仍然停留在扩展概念和完善解释的层面。对Concurrency后面的big picture(如Actor模型等)仍认识不足。需待以后补全。">
 <meta name="twitter:image" content="http://www.sizeofvoid.net/wp-content/uploads/2013/03/concurrent_and_parallel.png">
 
 
@@ -175,7 +175,7 @@
 
 
 
-  <title>并发并行;同步异步;阻塞非阻塞 | FK2469's Notes</title>
+  <title>并发&并行 | FK2469's Notes</title>
   
 
 
@@ -333,7 +333,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">并发并行;同步异步;阻塞非阻塞</h2>
+          <h2 class="post-title" itemprop="name headline">并发&并行</h2>
         
 
         <div class="post-meta">
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-16T10:53:47+08:00">
-                2018-01-16
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-24T20:33:55+08:00">
+                2018-01-24
               </time>
             
           </span>
@@ -389,7 +389,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,128 字
+                  2,799 字
                 </span>
               
 
@@ -405,7 +405,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  11 分钟
+                  10 分钟
                 </span>
               
             </div>
@@ -426,7 +426,7 @@
       
 
       
-        <blockquote class="blockquote-center"><br>容易被不规范讨论的几组概念。<br></blockquote>
+        <blockquote class="blockquote-center"><br>纪念当初傻傻分不清楚的并发并行。<br></blockquote>
 
 <h2 id="并发-amp-并行"><a href="#并发-amp-并行" class="headerlink" title="并发&amp;并行"></a>并发&amp;并行</h2><p>2018/1/8 0:33 阅读 <a href="http://www.cnblogs.com/foxmailed/p/3429072.html" target="_blank" rel="noopener">goroutine背后的系统知识</a>与<a href="https://blog.golang.org/concurrency-is-not-parallelism" target="_blank" rel="noopener">Concurrency is not parallelism</a>有感。<br>对并发、并行这一老生常谈的问题进行二次挖掘，但仍然停留在扩展概念和完善解释的层面。对Concurrency后面的big picture(如Actor模型等)仍认识不足。需待以后补全。<br><a id="more"></a></p>
 <h3 id="一组定义"><a href="#一组定义" class="headerlink" title="一组定义"></a>一组定义</h3><ul>
@@ -482,8 +482,6 @@
 </ol>
 <p>其中，1牵涉到分布式处理，包括数据的分布和任务的同步等等，而且是基于网络的。3和4通常是编译器和CPU的开发人员需要考虑的。这里我们说的并行主要针对第2种：单台机器内的多核CPU并行。</p>
 <p>在CMU那本著名的《Computer Systems: A Programmer’s Perspective》里的这张图也非常直观清晰：<br><img src="http://www.sizeofvoid.net/wp-content/uploads/2013/03/concurrent_and_parallel.png" alt="CSAPP-Figure-12.31"></p>
-<h2 id="同步-amp-异步"><a href="#同步-amp-异步" class="headerlink" title="同步&amp;异步"></a>同步&amp;异步</h2><p>同步和异步关注的是消息通信机制 (synchronous communication/ asynchronous communication)<br>所谓同步，就是在发出一个<em>调用</em>时，在没有得到结果之前，该<em>调用</em>就不返回。但是一旦调用返回，就得到返回值了。<br>换句话说，就是由<em>调用者</em>主动等待这个<em>调用</em>的结果。<br>而异步则是相反，<em>调用</em>在发出之后，这个调用就直接返回了，所以没有返回结果。换句话说，当一个异步过程调用发出后，调用者不会立刻得到结果。而是在<em>调用</em>发出后，<em>被调用者</em>通过状态、通知来通知调用者，或通过回调函数处理这个调用。典型的异步编程模型比如Node.js。</p>
-<h2 id="阻塞与-amp-阻塞"><a href="#阻塞与-amp-阻塞" class="headerlink" title="阻塞与&amp;阻塞"></a>阻塞与&amp;阻塞</h2><p>阻塞和非阻塞关注的是程序在等待调用结果（消息，返回值）时的状态.<br>阻塞调用是指调用结果返回之前，当前线程会被挂起。调用线程只有在得到结果之后才会返回。<br>非阻塞调用指在不能立刻得到结果之前，该调用不会阻塞当前线程。这里阻塞与非阻塞与是否同步异步无关。<br>如果是关心blocking IO/ asynchronous IO, 参考 Unix Network Programming View Book</p>
 
       
     </div>
@@ -499,11 +497,11 @@
   <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
-  <p><span>本文标题:</span><a href="/1/">并发并行;同步异步;阻塞非阻塞</a></p>
+  <p><span>本文标题:</span><a href="/1/">并发&并行</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 FK2469 的个人博客">FK2469</a></p>
   <p><span>发布时间:</span>2018年01月08日 - 09:01</p>
-  <p><span>最后更新:</span>2018年01月16日 - 10:01</p>
-  <p><span>原始链接:</span><a href="/1/" title="并发并行;同步异步;阻塞非阻塞">http://FK2469.github.io/1/</a>
+  <p><span>最后更新:</span>2018年01月24日 - 20:01</p>
+  <p><span>原始链接:</span><a href="/1/" title="并发&并行">http://FK2469.github.io/1/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://FK2469.github.io/1/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
@@ -544,8 +542,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/mapreduce/" rel="next" title="走向分布式（一）- MapReduce">
-                <i class="fa fa-chevron-left"></i> 走向分布式（一）- MapReduce
+              <a href="/mapreduce/" rel="next" title="分布式系统学习笔记（一）- MapReduce">
+                <i class="fa fa-chevron-left"></i> 分布式系统学习笔记（一）- MapReduce
               </a>
             
           </div>
@@ -554,8 +552,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/RPC&Threads/" rel="prev" title="走向分布式（二）- RPC&Threads">
-                走向分布式（二）- RPC&Threads <i class="fa fa-chevron-right"></i>
+              <a href="/RPC&Threads/" rel="prev" title="分布式系统学习笔记（二）- RPC&Threads">
+                分布式系统学习笔记（二）- RPC&Threads <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -633,7 +631,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -695,7 +693,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并发-amp-并行"><span class="nav-number">1.</span> <span class="nav-text">并发&amp;并行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一组定义"><span class="nav-number">1.1.</span> <span class="nav-text">一组定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一组推论"><span class="nav-number">1.2.</span> <span class="nav-text">一组推论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发的构造方式"><span class="nav-number">1.3.</span> <span class="nav-text">并发的构造方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建并发程序的机制：进程、I-O多路复用、线程。"><span class="nav-number">1.4.</span> <span class="nav-text">构建并发程序的机制：进程、I/O多路复用、线程。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从进程到线程到协程"><span class="nav-number">1.5.</span> <span class="nav-text">从进程到线程到协程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并行的四个层面"><span class="nav-number">1.6.</span> <span class="nav-text">并行的四个层面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步-amp-异步"><span class="nav-number">2.</span> <span class="nav-text">同步&amp;异步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞与-amp-阻塞"><span class="nav-number">3.</span> <span class="nav-text">阻塞与&amp;阻塞</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并发-amp-并行"><span class="nav-number">1.</span> <span class="nav-text">并发&amp;并行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一组定义"><span class="nav-number">1.1.</span> <span class="nav-text">一组定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一组推论"><span class="nav-number">1.2.</span> <span class="nav-text">一组推论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发的构造方式"><span class="nav-number">1.3.</span> <span class="nav-text">并发的构造方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建并发程序的机制：进程、I-O多路复用、线程。"><span class="nav-number">1.4.</span> <span class="nav-text">构建并发程序的机制：进程、I/O多路复用、线程。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从进程到线程到协程"><span class="nav-number">1.5.</span> <span class="nav-text">从进程到线程到协程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并行的四个层面"><span class="nav-number">1.6.</span> <span class="nav-text">并行的四个层面</span></a></li></ol></li></ol></div>
             
 
           </div>

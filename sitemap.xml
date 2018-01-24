@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://FK2469.github.io/GFS/</loc>
+    
+    <lastmod>2018-01-24T15:43:51.805Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://FK2469.github.io/RPC&Threads/</loc>
+    
+    <lastmod>2018-01-24T15:43:46.169Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://FK2469.github.io/1/</loc>
+    
+    <lastmod>2018-01-24T15:32:54.135Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://FK2469.github.io/1/</loc>
+    
+    <lastmod>2018-01-24T12:33:55.382Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://FK2469.github.io/Bell_Labs_and_CSP_Threads/</loc>
     
     <lastmod>2018-01-19T08:21:39.530Z</lastmod>
@@ -9,30 +37,9 @@
   </url>
   
   <url>
-    <loc>http://FK2469.github.io/RPC&Threads/</loc>
-    
-    <lastmod>2018-01-18T03:58:18.961Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://FK2469.github.io/GFS/</loc>
-    
-    <lastmod>2018-01-17T08:27:31.957Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://FK2469.github.io/Go&Concurrency/</loc>
     
     <lastmod>2018-01-16T07:11:57.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://FK2469.github.io/1/</loc>
-    
-    <lastmod>2018-01-16T02:53:47.995Z</lastmod>
     
   </url>
   

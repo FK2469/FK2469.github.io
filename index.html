@@ -311,6 +311,350 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://FK2469.github.io/GFS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="FK2469">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FK2469's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/GFS/" itemprop="url">分布式系统学习笔记（四）- GFS</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T23:44:23+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-24T23:43:51+08:00">
+                2018-01-24
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  8,080 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  29 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote class="blockquote-center"><br>GFS——Google分布式存储的基石。<br></blockquote>
+
+<p>GFS是构建在<em>廉价服务器</em>上的大型分布式系统。它将服务器故障视为正常现象，通过集成持续的监控、错误侦测、灾难冗余以及自动恢复的机制以实现自动容错。由于文件非常巨大，重新考虑了I/O 操作和 Block 的尺寸。针对海量文件的访问模式，客户端对数据块缓存是没有意义的，为了性能优化和原子性保证，GFS中绝大部分文件的修改是采用在文件尾部追加数据，而不是覆盖原有数据的方式。应用程序和文件系统 API 的协同设计提高了整个系统的灵活性。在保证系统可靠性和稳定性的同时，大幅降低了系统成本。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/GFS/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+    <div>
+          
+    </div>
+	
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://FK2469.github.io/1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="FK2469">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FK2469's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/1/" itemprop="url">同步异步、阻塞非阻塞</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T20:32:57+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-24T23:32:54+08:00">
+                2018-01-24
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  955 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote class="blockquote-center"><br>混淆常常发生在熟读《UNP》的同时也学习了一门脚本语言。<br></blockquote>
+
+<p>在程序员的世界里，“概念”既廉价又珍贵。说它廉价，一来是因为祖师爷们大都是从数学家转职成计算机科学家，所以很多概念都是从数学里面借用过来；二来是徒子徒孙们在资本以及媒体的怂恿下疯狂地造新概念。且不提“人工智能”相关的概念，就算是普通的软件开发领域，也有很多像“组件化”和“模块化”这样难区分的概念。因此，一个清晰准确的概念，其实十分的珍贵。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+    <div>
+          
+    </div>
+	
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://FK2469.github.io/Bell_Labs_and_CSP_Threads/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -431,178 +775,6 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/Bell_Labs_and_CSP_Threads/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-    <div>
-          
-    </div>
-	
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://FK2469.github.io/GFS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="FK2469">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="FK2469's Notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/GFS/" itemprop="url">走向分布式（四）- GFS</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T16:27:31+08:00">
-                2018-01-17
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-17T16:27:31+08:00">
-                2018-01-17
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  8,080 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  29 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote class="blockquote-center"><br>GFS——Google分布式存储的基石。<br></blockquote>
-
-<p>GFS是构建在<em>廉价服务器</em>上的大型分布式系统。它将服务器故障视为正常现象，通过集成持续的监控、错误侦测、灾难冗余以及自动恢复的机制以实现自动容错。由于文件非常巨大，重新考虑了I/O 操作和 Block 的尺寸。针对海量文件的访问模式，客户端对数据块缓存是没有意义的，为了性能优化和原子性保证，GFS中绝大部分文件的修改是采用在文件尾部追加数据，而不是覆盖原有数据的方式。应用程序和文件系统 API 的协同设计提高了整个系统的灵活性。在保证系统可靠性和稳定性的同时，大幅降低了系统成本。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/GFS/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -848,7 +1020,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/RPC&Threads/" itemprop="url">走向分布式（二）- RPC&Threads</a></h2>
+                <a class="post-title-link" href="/RPC&Threads/" itemprop="url">分布式系统学习笔记（二）- RPC&Threads</a></h2>
         
 
         <div class="post-meta">
@@ -876,8 +1048,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-18T11:58:18+08:00">
-                2018-01-18
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-24T23:43:46+08:00">
+                2018-01-24
               </time>
             
           </span>
@@ -1023,7 +1195,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/1/" itemprop="url">并发并行;同步异步;阻塞非阻塞</a></h2>
+                <a class="post-title-link" href="/1/" itemprop="url">并发&并行</a></h2>
         
 
         <div class="post-meta">
@@ -1051,8 +1223,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-16T10:53:47+08:00">
-                2018-01-16
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-24T20:33:55+08:00">
+                2018-01-24
               </time>
             
           </span>
@@ -1079,7 +1251,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,128 字
+                  2,799 字
                 </span>
               
 
@@ -1095,7 +1267,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  11 分钟
+                  10 分钟
                 </span>
               
             </div>
@@ -1117,7 +1289,7 @@
 
       
         
-          <blockquote class="blockquote-center"><br>容易被不规范讨论的几组概念。<br></blockquote>
+          <blockquote class="blockquote-center"><br>纪念当初傻傻分不清楚的并发并行。<br></blockquote>
 
 <h2 id="并发-amp-并行"><a href="#并发-amp-并行" class="headerlink" title="并发&amp;并行"></a>并发&amp;并行</h2><p>2018/1/8 0:33 阅读 <a href="http://www.cnblogs.com/foxmailed/p/3429072.html" target="_blank" rel="noopener">goroutine背后的系统知识</a>与<a href="https://blog.golang.org/concurrency-is-not-parallelism" target="_blank" rel="noopener">Concurrency is not parallelism</a>有感。<br>对并发、并行这一老生常谈的问题进行二次挖掘，但仍然停留在扩展概念和完善解释的层面。对Concurrency后面的big picture(如Actor模型等)仍认识不足。需待以后补全。<br>
           <!--noindex-->
@@ -1195,7 +1367,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/mapreduce/" itemprop="url">走向分布式（一）- MapReduce</a></h2>
+                <a class="post-title-link" href="/mapreduce/" itemprop="url">分布式系统学习笔记（一）- MapReduce</a></h2>
         
 
         <div class="post-meta">
@@ -1381,7 +1553,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
