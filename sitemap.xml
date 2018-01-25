@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://FK2469.github.io/Synchronize&Asynchronize/</loc>
+    
+    <lastmod>2018-01-25T09:29:54.403Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://FK2469.github.io/Currency&Parallel/</loc>
+    
+    <lastmod>2018-01-25T09:24:11.948Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://FK2469.github.io/GFS/</loc>
     
-    <lastmod>2018-01-24T15:43:51.805Z</lastmod>
+    <lastmod>2018-01-25T09:12:19.288Z</lastmod>
     
   </url>
   
@@ -12,20 +26,6 @@
     <loc>http://FK2469.github.io/RPC&Threads/</loc>
     
     <lastmod>2018-01-24T15:43:46.169Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://FK2469.github.io/1/</loc>
-    
-    <lastmod>2018-01-24T15:32:54.135Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://FK2469.github.io/1/</loc>
-    
-    <lastmod>2018-01-24T12:33:55.382Z</lastmod>
     
   </url>
   

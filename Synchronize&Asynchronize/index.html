@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=consolas:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="I/O模型," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="混淆常常发生在熟读《UNP》的同时也学习了一门脚本语言。  在程序员的世界里，“概念”既廉价又珍贵。说它廉价，一来是因为祖师爷们大都是从数学家转职成计算机科学家，所以很多概念都是从数学里面借用过来；二来是徒子徒孙们在资本以及媒体的怂恿下疯狂地造新概念。且不提“人工智能”相关的概念，就算是普通的软件开发领域，也有很多像“组件化”和“模块化”这样难区分的概念。因此，一个清晰准确的概念，其实十分的珍贵。">
+<meta name="keywords" content="I&#x2F;O模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="同步异步、阻塞非阻塞">
+<meta property="og:url" content="http://FK2469.github.io/Synchronize&Asynchronize/index.html">
+<meta property="og:site_name" content="FK2469&#39;s Notes">
+<meta property="og:description" content="混淆常常发生在熟读《UNP》的同时也学习了一门脚本语言。  在程序员的世界里，“概念”既廉价又珍贵。说它廉价，一来是因为祖师爷们大都是从数学家转职成计算机科学家，所以很多概念都是从数学里面借用过来；二来是徒子徒孙们在资本以及媒体的怂恿下疯狂地造新概念。且不提“人工智能”相关的概念，就算是普通的软件开发领域，也有很多像“组件化”和“模块化”这样难区分的概念。因此，一个清晰准确的概念，其实十分的珍贵。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://sfault-image.b0.upaiyun.com/210/932/2109320510-55c4670795194">
+<meta property="og:image" content="https://msdn.microsoft.com/dynimg/IC12128.png">
+<meta property="og:image" content="http://www.rowkey.me/images/blog_images/io/bio.png">
+<meta property="og:image" content="http://www.rowkey.me/images/blog_images/io/nio.png">
+<meta property="og:image" content="http://www.rowkey.me/images/blog_images/io/mulio.png">
+<meta property="og:image" content="http://www.rowkey.me/images/blog_images/io/sigio.png">
+<meta property="og:image" content="http://www.rowkey.me/images/blog_images/io/aio.png">
+<meta property="og:updated_time" content="2018-01-25T09:29:54.403Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="同步异步、阻塞非阻塞">
+<meta name="twitter:description" content="混淆常常发生在熟读《UNP》的同时也学习了一门脚本语言。  在程序员的世界里，“概念”既廉价又珍贵。说它廉价，一来是因为祖师爷们大都是从数学家转职成计算机科学家，所以很多概念都是从数学里面借用过来；二来是徒子徒孙们在资本以及媒体的怂恿下疯狂地造新概念。且不提“人工智能”相关的概念，就算是普通的软件开发领域，也有很多像“组件化”和“模块化”这样难区分的概念。因此，一个清晰准确的概念，其实十分的珍贵。">
+<meta name="twitter:image" content="https://sfault-image.b0.upaiyun.com/210/932/2109320510-55c4670795194">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://FK2469.github.io/Synchronize&Asynchronize/"/>
+
+
+
+
+
+  <title>同步异步、阻塞非阻塞 | FK2469's Notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/FK2469" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">FK2469's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://FK2469.github.io/Synchronize&Asynchronize/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="FK2469">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FK2469's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">同步异步、阻塞非阻塞</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T20:32:57+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-25T17:29:54+08:00">
+                2018-01-25
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5,176 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  19 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote class="blockquote-center"><br>混淆常常发生在熟读《UNP》的同时也学习了一门脚本语言。<br></blockquote>
+
+<p>在程序员的世界里，“概念”既廉价又珍贵。说它廉价，一来是因为祖师爷们大都是从数学家转职成计算机科学家，所以很多概念都是从数学里面借用过来；二来是徒子徒孙们在资本以及媒体的怂恿下疯狂地造新概念。且不提“人工智能”相关的概念，就算是普通的软件开发领域，也有很多像“组件化”和“模块化”这样难区分的概念。因此，一个清晰准确的概念，其实十分的珍贵。<br><a id="more"></a></p>
+<h1 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h1><p>我们由一组辨析来引入今天的主题~</p>
+<h2 id="日常中的同步、异步I-O"><a href="#日常中的同步、异步I-O" class="headerlink" title="日常中的同步、异步I/O"></a>日常中的同步、异步I/O</h2><p>我们来看几组“傻傻分不清楚”的场景:</p>
+<ul>
+<li><p>Python中有个网络框架——twisted，它的reactor模式的实现基于epoll或者poll。熟读《UNP》的朋友们一定知道它们被归类于同步I/O。与此同时，网上几乎所有的文章都说twisted是异步的。</p>
+</li>
+<li><p>人们介绍Node.js的时候，像<code>“Node.js最精华的*异步I/O模型*在fs模块里有着充分的体现”</code>、<code>“因为JavaScript是单线程执行，根本不能进行同步I/O操作，所以，JavaScript的这一“缺陷”导致了它只能使用*异步I/O*”</code>这样的言论层出不穷。</p>
+</li>
+</ul>
+<p>对于这些“傻傻分不清楚”的场景，我们应该从“语义”的角度理解。</p>
+<p>事实上，“twisted是异步的”与“Node.js的是异步I/O模型”中的“异步”，可以更准确地被描述为“异步模式”。它代表一种语义或者通信机制。  </p>
+<ul>
+<li>从语义的角度来说:“被调用的函数返回时，调用者不能得到预期的值或实现预期的效果，而需要在将来通过一定的手段得到或实现。”  </li>
+<li>从通信的角度来说，“同步指的是自身主动询问或者关注某个消息是否产生，异步指的是当某个消息产生的时候通知自身。”  </li>
+</ul>
+<h2 id="UNP中的同步、异步I-O"><a href="#UNP中的同步、异步I-O" class="headerlink" title="UNP中的同步、异步I/O"></a>UNP中的同步、异步I/O</h2><p>而UNP中对同步I/O、异步I/O的定义又和“阻塞、非阻塞”捆绑了在一起。</p>
+<p>对于“阻塞、非阻塞”这个概念，熟悉操作系统的朋友们应该很好理解了——正在执行的进程，由于期待的某些事件未发生，如请求系统资源失败、等待某种操作的完成、新数据尚未到达或无新工作做等，则由系统自动执行阻塞原语(Block)，使自己由运行状态变为阻塞状态。</p>
+<p>POSIX中同步、异步I/O的定义是这样子的：</p>
+<ul>
+<li>A synchronous I/O operation causes the requesting process to be blocked until that I/O operation completes;</li>
+<li>An asynchronous I/O operation does not cause the requesting process to be blocked;</li>
+</ul>
+<p>可以看到，两者的区别就在于Synchronous I/O做“I/O operation”的时候会将进程阻塞。按照这个定义，Blocking I/O，Non-Blocking I/O，I/O Multiplexing都属于Synchronous I/O。</p>
+<p>有人会说，Non-Blocking I/O并没有被阻塞啊。这里有个非常“鸡贼”的地方，定义中所指的“I/O operation”是指真实的I/O操作，就是recvfrom这个系统调用。Non-Blocking I/O在执行recvfrom的时候，如果内核的数据没有准备好，这时候不会阻塞进程。但是，当内核中数据准备好的时候，recvfrom会将数据从内核拷贝到用户内存中，这个时候进程是被阻塞了，在这段时间内，进程是被阻塞的。</p>
+<p>而Asynchronous I/O则不一样，当进程发起I/O操作之后，就直接返回再也不理睬了，直到内核发送一个信号，告诉进程说I/O完成。在这整个过程中，进程完全没有被阻塞。</p>
+<p><img src="https://sfault-image.b0.upaiyun.com/210/932/2109320510-55c4670795194" alt="Comparison of the five I/O models"></p>
+<p>这张图就蛮清晰地说明了Linux下5种I/O模型之间的区别。我们可以发现Non-Blocking I/O和Asynchronous I/O的区别还是很明显的。在Non-Blocking I/O中，虽然进程大部分时间都不会被阻塞，但是它仍然要求进程去主动的检查，并且当数据准备完成以后，也需要进程主动的再次调用recvfrom来将数据拷贝到用户内存。而Asynchronous I/O则完全不同。它就像是用户进程将整个I/O操作交给了内核完成，内核做完后发信号通知。在此期间，用户进程不需要去检查I/O操作的状态，也不需要主动地去拷贝数据。</p>
+<h2 id="MSDN里的同步、异步I-O"><a href="#MSDN里的同步、异步I-O" class="headerlink" title="MSDN里的同步、异步I/O"></a>MSDN里的同步、异步I/O</h2><ul>
+<li>In synchronous file I/O, a thread starts an I/O operation and immediately enters a wait state until the I/O request has completed. </li>
+<li>A thread performing asynchronous file I/O sends an I/O request to the 内核 by calling an appropriate function. If the request is accepted by the 内核, the calling thread continues processing another job until the 内核 signals to the thread that the I/O operation is complete. It then interrupts its current job and processes the data from the I/O operation as necessary.</li>
+</ul>
+<p><img src="https://msdn.microsoft.com/dynimg/IC12128.png" alt="Synchronous&amp;Asynchronous"></p>
+<p>可以看到哈，Windows里的定义也是引入了”wait state”这样的概念，和UNP的说法大同小异。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>小小总结一下，日常中的同步和异步仅仅是一组语义或者通信机制(就像程序设计语言的特性)，具体到操作系统层面的实现则有不同的定义(就像不同编译器之间的实现)。</p>
+<p>我们讨论同步异步的时候，需要说明针对哪一个通信层次。比如异步编程框架是说<code>框架内的业务代码</code>相对于<code>框架</code>是异步的，而<code>框架</code>相对于<code>操作系统的系统调用</code>还需要具体情况具体分析。</p>
+<p>以Node.js的异步I/O实现为例。Windows下主要通过I/OCP来向系统内核发送I/O调用和从内核获取已完成的I/O操作，配以事件循环，以此完成异步I/O的过程。在Linux下通过epoll实现这个过程，FreeBSD下通过kqueue实现，Solaris下通过Event ports实现。不同的是线程池在Windows下由内核（I/OCP）直接提供(算是真正的异步方案)，*nix系列下由libuv自行实现(因为Linux原生提供的支持有缺陷，无法利用系统缓存)。</p>
+<h1 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h1><p>在上一Part，我们已经有了基本的辨析，但这还不够。虽然我们用看似“一针见血”的方式直观地感受了“异步”的魅力，但我们必须引入更多的信息才能让自己的理解更准确。就是一个把书读厚、把书读薄的过程啦~</p>
+<h2 id="我们什么时候忘掉了异步？"><a href="#我们什么时候忘掉了异步？" class="headerlink" title="我们什么时候忘掉了异步？"></a>我们什么时候忘掉了异步？</h2><p>“异步”这个名词的大规模流行是在Web 2.0浪潮中，它伴随着AJAX的第一个A（Asynchronous）席卷了世界。<br>在Node出现之前，最习惯异步编程的程序员莫过于前端/GUI工程师了。其中充斥的各种Ajax和事件，都是典型的异步应用场景。</p>
+<p>但事实上，异步早就存在于操作系统的底层。在底层系统中，异步通过信号量、消息等方式有了广泛的应用。意外的是，在绝大多数高级编程语言中，异步并不多见，疑似被屏蔽了一般。对应到我们的本科生活中就好比，我们学完操作系统之后，开心地做Web开发，结果就再也没记起来还有异步这回事。</p>
+<p>使用PHP开发的同学最能体会这个观点。PHP对调用层不仅屏蔽了异步，甚至连多线程都不提供。PHP语言从头到脚都是以同步阻塞的方式来执行的。它的优点十分明显，利于程序员顺序编写业务逻辑；它的缺点在小规模站点中基本不存在，但是在复杂的网络应用中，阻塞导致它无法更好地并发。</p>
+<p>而在其他语言中，尽管可能存在异步的API，但是程序员还是习惯采用同步的方式来编写应用。在众多高级编程语言或运行平台中，将异步作为主要编程方式和设计理念的，Node是首个！</p>
+<h2 id="高性能的服务器软件-事件驱动-异步I-O"><a href="#高性能的服务器软件-事件驱动-异步I-O" class="headerlink" title="高性能的服务器软件 = 事件驱动 + 异步I/O"></a>高性能的服务器软件 = 事件驱动 + 异步I/O</h2><p>上面这个公式是Node.js的作者Ryan Dahl在与高性能服务器软件斗智斗勇很多年以后得到的经验。</p>
+<p>而JavaScript比C的开发门槛要低，相比Lua其历史包袱几乎为零。另外，JavaScript在浏览器中有广泛的事件驱动方面的应用，暗合Ryan Dahl基于事件驱动的需求。当时，Chrome浏览器的JavaScript引擎V8横空出世，保证了JavaScript的高性能，因此JavaScript就<del>到了北京</del>成了Node.js的实现语言。</p>
+<p>作为后端JavaScript的运行平台，Node保留了前端浏览器JavaScript中那些熟悉的接口，没有改写语言本身的任何特性，依旧基于作用域和原型链。成功将前端中广泛运用的思想迁移到了服务器端。事实上，这是一个很重要的因果关系——Node.js只是<em>保留</em>了熟悉的语义，而不是<em>受限</em>于JavaScript的特性所以只能这么实现。</p>
+<p>与Node的事件驱动、异步I/O设计理念比较相近的一个知名产品为Nginx。Nginx采用纯C编写，性能表现非常优异。它们的区别在于，Nginx具备面向客户端管理连接的强大能力，但是它的背后依然受限于各种同步方式的编程语言。但Node却是全能选手，它既可以作为服务器端去处理客户端的大量并发请求，也能作为客户端向网络中的各个应用进行并发请求。</p>
+<h3 id="单线程"><a href="#单线程" class="headerlink" title="单线程"></a>单线程</h3><p>对于事件驱动和异步，大家已经很熟悉了，但JavaScript的特性里还有一个小兄弟还没有介绍——单线程。</p>
+<p>当然，这里的单线程仅仅只是JavaScript执行在单线程中罢了。在Node中，无论是*nix还是Windows平台，内部完成I/O任务的另有线程池。</p>
+<p>Node保持了JavaScript在浏览器中单线程的特点。而且在Node中，JavaScript与其余线程是无法共享任何状态的。单线程的最大好处是不用像多线程编程那样处处在意状态的同步问题，这里没有死锁的存在，也没有线程上下文交换所带来的性能上的开销。</p>
+<p>同样，单线程也有它自身的弱点，这些弱点是学习Node的过程中必须要面对的。</p>
+<p>具体有以下3方面:</p>
+<ul>
+<li>无法利用多核CPU。</li>
+<li>错误会引起整个应用退出。</li>
+<li>大量计算占用CPU导致无法继续调用异步I/O。</li>
+</ul>
+<p>Node采用与HTML5中Web Workers规范相同的思路来解决单线程中大计算量的问题：child_process。</p>
+<p>子进程的出现，意味着Node可以从容地应对单线程在健壮性和无法利用多核CPU方面的问题。通过将计算分发到各个子进程，可以将大量计算分解掉，然后再通过进程之间的事件消息来传递结果，这可以很好地保持应用模型的简单和低依赖。通过Master-Worker的管理方式，也可以很好地管理各个工作进程，以达到更高的健壮性。<br>关于如何通过子进程来充分利用硬件资源和提升应用的健壮性，这是一个值得探究的话题。此处我们暂且不表~</p>
+<h2 id="我们为啥需要异步I-O"><a href="#我们为啥需要异步I-O" class="headerlink" title="我们为啥需要异步I/O?"></a>我们为啥需要异步I/O?</h2><h3 id="用户体验"><a href="#用户体验" class="headerlink" title="用户体验"></a>用户体验</h3><p>异步的概念之所以首先在Web 2.0中火起来，是因为在浏览器中JavaScript在单线程上执行，而且它还与UI渲染共用一个线程。这意味着JavaScript在执行的时候UI渲染和响应是处于停滞状态的，如果没有异步的话，用户体验会相当糟糕。同理，异步也可以减少前端获取后端资源的时间。这些都为提高用户体验打下了基础。</p>
+<h3 id="资源分配"><a href="#资源分配" class="headerlink" title="资源分配"></a>资源分配</h3><p>单线程同步编程模型会因阻塞I/O导致硬件资源得不到更优的使用。多线程编程模型也因为编程中的死锁、状态同步等问题让开发人员头疼。<br>Node在两者之间给出了它的方案：利用单线程，远离多线程死锁、状态同步等问题；利用异步I/O，让单线程远离阻塞，以更好地使用CPU。</p>
+<h2 id="OS对异步I-O实现的支持情况"><a href="#OS对异步I-O实现的支持情况" class="headerlink" title="OS对异步I/O实现的支持情况"></a>OS对异步I/O实现的支持情况</h2><p>限于文章篇幅，此处主要以UNIX系统中网络I/O为例。</p>
+<h3 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h3><h4 id="文件描述符fd"><a href="#文件描述符fd" class="headerlink" title="文件描述符fd"></a>文件描述符fd</h4><p>文件描述符（File descriptor）是计算机科学中的一个术语，是一个用于表述指向文件的引用的抽象化概念。</p>
+<p>文件描述符在形式上是一个非负整数。实际上，它是一个索引值，指向内核为每一个进程所维护的该进程打开文件的记录表。当程序打开一个现有文件或者创建一个新文件时，内核向进程返回一个文件描述符。在程序设计中，一些涉及底层的程序编写往往会围绕着文件描述符展开。但是文件描述符这一概念往往只适用于UNIX、Linux这样的操作系统。</p>
+<h4 id="缓存-I-O"><a href="#缓存-I-O" class="headerlink" title="缓存 I/O"></a>缓存 I/O</h4><p>缓存I/O又被称作标准 I/O，大多数文件系统的默认 I/O 操作都是缓存 I/O。在 Linux 的缓存 I/O 机制中，操作系统会将 I/O 的数据缓存在文件系统的页缓存(page cache)中，也就是说，数据会先被拷贝到操作系统内核的缓冲区中，然后才会从操作系统内核的缓冲区拷贝到应用程序的地址空间。但数据在传输过程中需要在应用程序地址空间和内核进行多次数据拷贝操作，这些数据拷贝操作所带来的 CPU 以及内存开销是非常大的。</p>
+<h3 id="I-O-模型"><a href="#I-O-模型" class="headerlink" title="I/O 模型"></a>I/O 模型</h3><h4 id="阻塞-I-O（Blocking-I-O）"><a href="#阻塞-I-O（Blocking-I-O）" class="headerlink" title="阻塞 I/O（Blocking I/O）"></a>阻塞 I/O（Blocking I/O）</h4><p>在Linux中，默认情况下所有的Socket都是blocking，一个典型的读操作流程大概是这样：<br><img src="http://www.rowkey.me/images/blog_images/io/bio.png" alt="bio"><br>当用户进程调用了recvfrom这个系统调用，内核就开始了I/O的第一个阶段：准备数据（对于网络I/O来说，很多时候数据在一开始还没有到达。比如，还没有收到一个完整的UDP包。这个时候内核就要等待足够的数据到来）。这个过程需要等待，也就是说数据被拷贝到操作系统内核的缓冲区中是需要一个过程的。而在用户进程这边，整个进程会被阻塞（当然，是进程自己选择的阻塞）。当内核一直等到数据准备好了，它就会将数据从内核中拷贝到用户内存，然后内核返回结果，用户进程才解除阻塞的状态，重新运行起来。</p>
+<p><code>Blocking I/O的特点就是在I/O执行的两个阶段都被阻塞了。</code></p>
+<h4 id="非阻塞-I-O（Non-Blocking-I-O）"><a href="#非阻塞-I-O（Non-Blocking-I-O）" class="headerlink" title="非阻塞 I/O（Non-Blocking I/O）"></a>非阻塞 I/O（Non-Blocking I/O）</h4><p>Linux下，可以通过设置Socket使其变为Non-blocking。当对一个Non-blocking Socket执行读操作时，流程是这个样子：<br><img src="http://www.rowkey.me/images/blog_images/io/nio.png" alt="nio"></p>
+<p>当用户进程发出read操作时，如果内核中的数据还没有准备好，那么它并不会阻塞用户进程，而是立刻返回一个error。从用户进程角度讲 ，它发起一个read操作后，并不需要等待，而是马上就得到了一个结果。用户进程判断结果是一个error时，它就知道数据还没有准备好，于是它可以再次发送read操作。一旦内核中的数据准备好了，并且又再次收到了用户进程的系统调用，那么它马上就将数据拷贝到了用户内存，然后返回。</p>
+<p><code>Non-Blocking I/O的特点是用户进程需要不断的主动询问内核数据好了没有。</code></p>
+<h4 id="I-O-多路复用（-I-O-multiplexing）"><a href="#I-O-多路复用（-I-O-multiplexing）" class="headerlink" title="I/O 多路复用（ I/O multiplexing）"></a>I/O 多路复用（ I/O multiplexing）</h4><p>I/O multiplexing就是我们说的select，poll，epoll，有些地方也称这种I/O方式为event driven I/O。select/epoll的好处就在于单个process就可以同时处理多个网络连接的I/O。它的基本原理就是select，poll，epoll这个function会不断的轮询所负责的所有Socket，当某个Socket有数据到达了，就通知用户进程。</p>
+<p><img src="http://www.rowkey.me/images/blog_images/io/mulio.png" alt="mulio"></p>
+<p>当用户进程调用了select，那么整个进程会被block，而同时，内核会“监视”所有select负责的Socket，当任何一个Socket中的数据准备好了，select就会返回。这个时候用户进程再调用read操作，将数据从内核拷贝到用户进程。</p>
+<p><code>I/O 多路复用的特点是通过一种机制一个进程能同时等待多个文件描述符，而这些文件描述符（套接字描述符）其中的任意一个进入读就绪状态，select()函数就可以返回。</code></p>
+<p>这个图和Blocking I/O的图其实并没有太大的不同，事实上，还更差一些。因为这里需要使用两个系统调用 (select 和 recvfrom)，而Blocking I/O只调用了一个系统调用 (recvfrom)。但是，用select的优势在于它可以同时处理多个连接。</p>
+<p>所以，如果处理的连接数不是很高的话，使用select/epoll的Web server不一定比使用多线程 + Blocking I/O的web server性能更好，可能延迟还更大。select/epoll的优势并不是对于单个连接能处理得更快，而是在于能处理更多的连接。）</p>
+<p>在I/O multiplexing Model中，实际中，对于每一个Socket，一般都设置成为Non-blocking，但是，如上图所示，整个用户的process其实是一直被block的。只不过process是被select这个函数阻塞，而不是被Socket I/O给阻塞。</p>
+<h4 id="信号驱动式I-O"><a href="#信号驱动式I-O" class="headerlink" title="信号驱动式I/O"></a>信号驱动式I/O</h4><p>该模型实际使用较少，在此仅简短介绍。<br>其流程如下：<br>开启套接字信号驱动IO功能;<br>系统调用sigaction执行信号处理函数（非阻塞，立刻返回）;<br>数据就绪，生成sigio信号，通过信号回调通知应用来读取数据。<br><img src="http://www.rowkey.me/images/blog_images/io/sigio.png" alt="sigio"><br>此种I/O方式存在的一个很大的问题：Linux中信号队列是有限制的，如果超过这个数字问题就无法读取数据。</p>
+<h4 id="异步-I-O（asynchronous-I-O）"><a href="#异步-I-O（asynchronous-I-O）" class="headerlink" title="异步 I/O（asynchronous I/O）"></a>异步 I/O（asynchronous I/O）</h4><p>Linux下的asynchronous I/O其实用得很少。先看一下它的流程：<br><img src="http://www.rowkey.me/images/blog_images/io/aio.png" alt="aio"><br>用户进程发起read操作之后，立刻就可以开始去做其它的事。而另一方面，从内核的角度，当它受到一个asynchronous read之后，首先它会立刻返回，所以不会对用户进程产生任何阻塞。然后，内核会等待数据准备完成，然后将数据拷贝到用户内存，当这一切都完成之后，内核会给用户进程发送一个signal，告诉它read操作完成了。<br>不幸的是，它有一个<a href="http://forum.nginx.org/read.php?2,113524,113587#msg-113587" target="_blank" rel="noopener">致命缺陷</a>——AIO仅支持内核I/O中的O_DIRECT方式读取，导致无法利用系统缓存。</p>
+<p>当然，系统原生层次虽然不给力，但程序员们可以模拟呀~</p>
+<p>glibc的AIO便是典型的线程池模拟异步I/O。然而遗憾的是，它存在一些难以忍受的缺陷和bug，不推荐采用。libev的作者Marc Alexander Lehmann重新实现了一个异步I/O的库：libeio。libeio实质上依然是采用线程池与阻塞I/O模拟异步I/O。最初，Node在*nix平台下采用了libeio配合libev实现I/O部分，实现了异步I/O。在Node v0.9.3中，自行实现了线程池来完成异步I/O。</p>
+<p>那么在Windows平台下的状况如何呢？Windows有一种独有的内核异步IO方案：IOCP。IOCP的思路是真正的异步I/O方案，调用异步方法，然后等待I/O完成通知。IOCP内部依旧是通过线程实现，不同在于这些线程由系统内核接手管理。(又是一个“语义与实现”的区别)IOCP的异步模型与Node.js的异步调用模型已经十分近似。</p>
+<h2 id="Node的异步I-O"><a href="#Node的异步I-O" class="headerlink" title="Node的异步I/O"></a>Node的异步I/O</h2>
+      
+    </div>
+    
+    
+    
+    <div>
+        
+          
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/Synchronize&Asynchronize/">同步异步、阻塞非阻塞</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 FK2469 的个人博客">FK2469</a></p>
+  <p><span>发布时间:</span>2018年01月24日 - 20:01</p>
+  <p><span>最后更新:</span>2018年01月25日 - 17:01</p>
+  <p><span>原始链接:</span><a href="/Synchronize&Asynchronize/" title="同步异步、阻塞非阻塞">http://FK2469.github.io/Synchronize&Asynchronize/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://FK2469.github.io/Synchronize&Asynchronize/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+          
+    </div>
+	
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/I-O模型/" rel="tag"># I/O模型</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Bell_Labs_and_CSP_Threads/" rel="next" title="贝尔实验室和 CSP 线程">
+                <i class="fa fa-chevron-left"></i> 贝尔实验室和 CSP 线程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">FK2469</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/FK2469" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:FK2469@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#引子"><span class="nav-number">1.</span> <span class="nav-text">引子</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#日常中的同步、异步I-O"><span class="nav-number">1.1.</span> <span class="nav-text">日常中的同步、异步I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UNP中的同步、异步I-O"><span class="nav-number">1.2.</span> <span class="nav-text">UNP中的同步、异步I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MSDN里的同步、异步I-O"><span class="nav-number">1.3.</span> <span class="nav-text">MSDN里的同步、异步I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">1.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#详解"><span class="nav-number">2.</span> <span class="nav-text">详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#我们什么时候忘掉了异步？"><span class="nav-number">2.1.</span> <span class="nav-text">我们什么时候忘掉了异步？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高性能的服务器软件-事件驱动-异步I-O"><span class="nav-number">2.2.</span> <span class="nav-text">高性能的服务器软件 = 事件驱动 + 异步I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单线程"><span class="nav-number">2.2.1.</span> <span class="nav-text">单线程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我们为啥需要异步I-O"><span class="nav-number">2.3.</span> <span class="nav-text">我们为啥需要异步I/O?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户体验"><span class="nav-number">2.3.1.</span> <span class="nav-text">用户体验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源分配"><span class="nav-number">2.3.2.</span> <span class="nav-text">资源分配</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OS对异步I-O实现的支持情况"><span class="nav-number">2.4.</span> <span class="nav-text">OS对异步I/O实现的支持情况</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景知识"><span class="nav-number">2.4.1.</span> <span class="nav-text">背景知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件描述符fd"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">文件描述符fd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存-I-O"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">缓存 I/O</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O-模型"><span class="nav-number">2.4.2.</span> <span class="nav-text">I/O 模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞-I-O（Blocking-I-O）"><span class="nav-number">2.4.2.1.</span> <span class="nav-text">阻塞 I/O（Blocking I/O）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非阻塞-I-O（Non-Blocking-I-O）"><span class="nav-number">2.4.2.2.</span> <span class="nav-text">非阻塞 I/O（Non-Blocking I/O）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#I-O-多路复用（-I-O-multiplexing）"><span class="nav-number">2.4.2.3.</span> <span class="nav-text">I/O 多路复用（ I/O multiplexing）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号驱动式I-O"><span class="nav-number">2.4.2.4.</span> <span class="nav-text">信号驱动式I/O</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步-I-O（asynchronous-I-O）"><span class="nav-number">2.4.2.5.</span> <span class="nav-text">异步 I/O（asynchronous I/O）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node的异步I-O"><span class="nav-number">2.5.</span> <span class="nav-text">Node的异步I/O</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">FK2469</span>
+
+  
+</div>
+
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
