@@ -5,13 +5,17 @@
     
   <url>
     <loc>http://FK2469.github.io/Synchronize&Asynchronize/</loc>
-    <lastmod>2018-01-25T09:29:54.403Z</lastmod>
+    <lastmod>2018-01-25T15:13:49.968Z</lastmod>
     <data>
         <display>
-        <title>同步异步、阻塞非阻塞</title>
+        <title>由同步异步I/O引发的...</title>
         <pubTime>2018-01-24T12:32:57.000Z</pubTime>
         
         <tag>I/O模型</tag>
+         
+        <tag>Node.js</tag>
+         
+        <tag>Unix网络编程</tag>
          
          
            
