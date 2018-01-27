@@ -147,7 +147,7 @@
 <meta property="og:image" content="http://7xsi10.com1.z0.glb.clouddn.com/process.png">
 <meta property="og:image" content="http://fk2469.github.io/images/Chrome&Node.PNG">
 <meta property="og:image" content="http://fk2469.github.io/images/CommonJS&W3C&Node.PNG">
-<meta property="og:updated_time" content="2018-01-27T07:56:06.712Z">
+<meta property="og:updated_time" content="2018-01-27T15:32:49.030Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="由同步异步I&#x2F;O引发的...">
 <meta name="twitter:description" content="混淆常常发生在熟读《UNP》的同时也学习了一门脚本语言。  在程序员的世界里，“概念”既廉价又珍贵。说它廉价，一来是因为祖师爷们大都是从数学家转职成计算机科学家，所以很多概念都是从数学里面借用过来；二来是徒子徒孙们在资本以及媒体的怂恿下疯狂地造新概念。且不提“人工智能”相关的概念，就算是普通的软件开发领域，也有很多像“组件化”和“模块化”这样难区分的概念。因此，一个清晰准确的概念，其实十分的珍贵。">
@@ -373,7 +373,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-27T15:56:06+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-27T23:32:49+08:00">
                 2018-01-27
               </time>
             
@@ -401,7 +401,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  11,684 字
+                  12,813 字
                 </span>
               
 
@@ -417,7 +417,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  42 分钟
+                  46 分钟
                 </span>
               
             </div>
@@ -442,16 +442,16 @@
 
 <p>在程序员的世界里，“概念”既廉价又珍贵。说它廉价，一来是因为祖师爷们大都是从数学家转职成计算机科学家，所以很多概念都是从数学里面借用过来；二来是徒子徒孙们在资本以及媒体的怂恿下疯狂地造新概念。且不提“人工智能”相关的概念，就算是普通的软件开发领域，也有很多像“组件化”和“模块化”这样难区分的概念。因此，一个清晰准确的概念，其实十分的珍贵。<br><a id="more"></a></p>
 <h1 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h1><p>我们由一组辨析来引入今天的主题~</p>
-<h2 id="日常中的异步"><a href="#日常中的异步" class="headerlink" title="日常中的异步"></a>日常中的异步</h2><p>它代表一种语义或者通信机制。  </p>
+<h2 id="日常中的同步、异步"><a href="#日常中的同步、异步" class="headerlink" title="日常中的同步、异步"></a>日常中的同步、异步</h2><p>它代表一种语义或者通信机制。  </p>
 <ul>
 <li>从语义的角度来说:“被调用的函数返回时，调用者不能实现预期的效果，而需要在将来通过一定的手段实现。”  </li>
 <li>从通信的角度来说，“同步指的是自身主动询问或者关注某个消息是否产生，异步指的是当某个消息产生的时候通知自身。” </li>
 </ul>
-<h2 id="日常中的同步、异步I-O"><a href="#日常中的同步、异步I-O" class="headerlink" title="日常中的同步、异步I/O"></a>日常中的同步、异步I/O</h2><p>我们来看几组“傻傻分不清楚”的场景:</p>
+<h2 id="I-O中的同步、异步"><a href="#I-O中的同步、异步" class="headerlink" title="I/O中的同步、异步"></a>I/O中的同步、异步</h2><p>我们来看几组“傻傻分不清楚”的场景:</p>
 <ul>
 <li><p>Python中有个网络框架——twisted，它的reactor模式基于epoll或者poll实现(熟读《UNP》的朋友们一定知道它们被归类于同步I/O)。与此同时，网上几乎所有的文章都说twisted是异步的。</p>
 </li>
-<li><p>人们介绍Node.js的时候，像<code>“Node.js最精华的*异步I/O模型*在fs模块里有着充分的体现”</code>、<code>“因为JavaScript是单线程执行，根本不能进行同步I/O操作，所以，JavaScript的这一“缺陷”导致了它只能使用*异步I/O*”</code>这样的言论又层出不穷。但熟悉操作系统及Node.js实现的同学们又知道，除了Windows版Node.js基于原生的I/O接口——IOCP实现，Linux版其实是用线程池模拟出来的，并非操作系统原生的AIO。</p>
+<li><p>人们介绍Node.js的时候，像“Node.js最精华的<em>异步I/O模型</em>在fs模块里有着充分的体现”<code>、</code>“因为JavaScript是单线程执行，根本不能进行同步I/O操作，所以，JavaScript的这一“缺陷”导致了它只能使用<em>异步I/O</em>”这样的言论又层出不穷。但熟悉操作系统及Node.js实现的同学们又知道，除了Windows版Node.js基于原生的I/O接口——IOCP实现，Linux版其实是用线程池模拟出来的，并非操作系统原生的AIO。</p>
 </li>
 </ul>
 <p>对于这些相互借鉴而稍显混乱的用词，我们到底有没有必要分清？其实是没有的，不同上下文用不同的理解就好。</p>
@@ -517,19 +517,50 @@
 <h3 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h3><h4 id="文件描述符fd"><a href="#文件描述符fd" class="headerlink" title="文件描述符fd"></a>文件描述符fd</h4><p>文件描述符（File descriptor）是计算机科学中的一个术语，是一个用于表述指向文件的引用的抽象化概念。</p>
 <p>文件描述符在形式上是一个非负整数。实际上，它是一个索引值，指向内核为每一个进程所维护的该进程打开文件的记录表。当程序打开一个现有文件或者创建一个新文件时，内核向进程返回一个文件描述符。在程序设计中，一些涉及底层的程序编写往往会围绕着文件描述符展开。但是文件描述符这一概念往往只适用于UNIX、Linux这样的操作系统。</p>
 <h4 id="缓存-I-O"><a href="#缓存-I-O" class="headerlink" title="缓存 I/O"></a>缓存 I/O</h4><p>缓存I/O又被称作标准 I/O，大多数文件系统的默认 I/O 操作都是缓存 I/O。在 Linux 的缓存 I/O 机制中，操作系统会将 I/O 的数据缓存在文件系统的页缓存(page cache)中，也就是说，数据会先被拷贝到操作系统内核的缓冲区中，然后才会从操作系统内核的缓冲区拷贝到应用程序的地址空间。但数据在传输过程中需要在应用程序地址空间和内核进行多次数据拷贝操作，这些数据拷贝操作所带来的 CPU 以及内存开销是非常大的。</p>
-<h3 id="I-O-模型"><a href="#I-O-模型" class="headerlink" title="I/O 模型"></a>I/O 模型</h3><h4 id="阻塞-I-O（Blocking-I-O）"><a href="#阻塞-I-O（Blocking-I-O）" class="headerlink" title="阻塞 I/O（Blocking I/O）"></a>阻塞 I/O（Blocking I/O）</h4><p>在Linux中，默认情况下所有的Socket都是blocking，一个典型的读操作流程大概是这样：<br><img src="http://www.rowkey.me/images/blog_images/io/bio.png" alt="bio"><br>当用户进程调用了recvfrom这个系统调用，内核就开始了I/O的第一个阶段：准备数据（对于网络I/O来说，很多时候数据在一开始还没有到达。比如，还没有收到一个完整的UDP包。这个时候内核就要等待足够的数据到来）。这个过程需要等待，也就是说数据被拷贝到操作系统内核的缓冲区中是需要一个过程的。而在用户进程这边，整个进程会被阻塞（当然，是进程自己选择的阻塞）。当内核一直等到数据准备好了，它就会将数据从内核中拷贝到用户内存，然后内核返回结果，用户进程才解除阻塞的状态，重新运行起来。</p>
+<h3 id="I-O-模型"><a href="#I-O-模型" class="headerlink" title="I/O 模型"></a>I/O 模型</h3><h4 id="阻塞-I-O（Blocking-I-O）"><a href="#阻塞-I-O（Blocking-I-O）" class="headerlink" title="阻塞 I/O（Blocking I/O）"></a>阻塞 I/O（Blocking I/O）</h4><p>在Linux中，默认情况下所有的Socket都是Blocking I/O，一个典型的读操作流程大概是这样：<br><img src="http://www.rowkey.me/images/blog_images/io/bio.png" alt="bio"><br>当用户进程调用了recvfrom这个系统调用，内核就开始了I/O的第一个阶段：准备数据（对于网络I/O来说，很多时候数据在一开始还没有到达。比如，还没有收到一个完整的UDP包。这个时候内核就要等待足够的数据到来）。这个过程需要等待，也就是说数据被拷贝到操作系统内核的缓冲区中是需要一个过程的。而在用户进程这边，整个进程会被阻塞（因为进程默认将Socket设置成阻塞）。当内核一直等到数据准备好了，它就会将数据从内核中拷贝到用户内存，然后内核返回结果，用户进程才解除阻塞的状态，重新运行起来。</p>
 <p><code>Blocking I/O的特点就是在I/O执行的两个阶段都被阻塞了。</code></p>
 <h4 id="非阻塞-I-O（Non-Blocking-I-O）"><a href="#非阻塞-I-O（Non-Blocking-I-O）" class="headerlink" title="非阻塞 I/O（Non-Blocking I/O）"></a>非阻塞 I/O（Non-Blocking I/O）</h4><p>Linux下，可以通过设置Socket使其变为Non-blocking。当对一个Non-blocking Socket执行读操作时，流程是这个样子：<br><img src="http://www.rowkey.me/images/blog_images/io/nio.png" alt="nio"></p>
 <p>当用户进程发出read操作时，如果内核中的数据还没有准备好，那么它并不会阻塞用户进程，而是立刻返回一个error。从用户进程角度讲 ，它发起一个read操作后，并不需要等待，而是马上就得到了一个结果。用户进程判断结果是一个error时，它就知道数据还没有准备好，于是它可以再次发送read操作。一旦内核中的数据准备好了，并且又再次收到了用户进程的系统调用，那么它马上就将数据拷贝到了用户内存，然后返回。</p>
+<p>当一个应用进程像这样对一个非阻塞描述符循环调用read时，我们称之为轮询(polling)。这样做往往耗费大量CPU时间，不过这种模型偶尔也会遇到，通常在某种专一系统中才能遇到。</p>
 <p><code>Non-Blocking I/O的特点是用户进程需要不断的主动询问内核数据好了没有。</code></p>
 <h4 id="I-O-多路复用（-I-O-multiplexing）"><a href="#I-O-多路复用（-I-O-multiplexing）" class="headerlink" title="I/O 多路复用（ I/O multiplexing）"></a>I/O 多路复用（ I/O multiplexing）</h4><p>I/O multiplexing就是我们说的select，poll，epoll，有些地方也称这种I/O方式为event driven I/O。select/epoll的好处就在于单个process就可以同时处理多个网络连接的I/O。它的基本原理就是select，poll，epoll这个function会不断的轮询所负责的所有Socket，当某个Socket有数据到达了，就通知用户进程。</p>
 <p>换句话说，I/O多路复用就是通过一种机制，一个进程可以监视多个描述符，一旦某个描述符就绪（一般是读就绪或者写就绪），能够通知程序进行相应的读写操作。但select，poll，epoll本质上都是同步I/O，因为他们都需要在读写事件就绪后自己负责进行读写，也就是说这个读写过程是阻塞的，而异步I/O则无需自己负责进行读写，异步I/O的实现会负责把数据从内核拷贝到用户空间。</p>
 <p><img src="http://www.rowkey.me/images/blog_images/io/mulio.png" alt="mulio"></p>
 <p>当用户进程调用了select，那么整个进程会被阻塞，而同时，内核会“监视”所有select负责的Socket，当任何一个Socket中的数据准备好了，select就会返回。这个时候用户进程再调用read操作，将数据从内核拷贝到用户进程。</p>
 <p><code>I/O 多路复用的特点是通过一种机制一个进程能同时等待多个文件描述符，而这些文件描述符（套接字描述符）其中的任意一个进入读就绪状态，select()函数就可以返回。</code></p>
-<p>这个图和Blocking I/O的图其实并没有太大的不同，事实上，还更差一些。因为这里需要使用两个系统调用 (select 和 recvfrom)，而Blocking I/O只调用了一个系统调用 (recvfrom)。但是，用select的优势在于它可以同时处理多个连接。</p>
-<p>所以，如果处理的连接数不是很高的话，使用select/epoll的Web server不一定比使用多线程 + Blocking I/O的web server性能更好，可能延迟还更大。select/epoll的优势并不是对于单个连接能处理得更快，而是在于能处理更多的连接。）</p>
-<p>在I/O multiplexing Model中，实际中，对于每一个Socket，一般都设置成为Non-blocking，但是，如上图所示，整个用户的process其实是一直被block的。只不过process是被select这个函数阻塞，而不是被Socket I/O给阻塞。</p>
+<p>这个图和Blocking I/O的图其实并没有太大的不同，事实上，还更差一些。因为这里需要使用两个系统调用 (select 和 recvfrom)，而Blocking I/O只调用了一个系统调用 (recvfrom)。但是，用select的优势在于它可以同时处理多个连接。此时的socket应该采用非阻塞模式。</p>
+<p>所以，如果处理的连接数不是很高的话，使用select/epoll的Web server不一定比使用多线程 + Blocking I/O的Web server性能更好，可能延迟还更大。select/epoll的优势并不是对于单个连接能处理得更快，而是在于能处理更多的连接。</p>
+<p>在I/O multiplexing Model中，实际中，对于每一个Socket，一般都设置成为Non-blocking。但是，如上图所示，整个用户的进程其实是一直被阻塞的。只不过进程阻塞在select或poll上，而不是被Socket I/O给阻塞。因为它等待事件的发生然后对其作相应的反应。正因为如此，它也被称作事件循环。</p>
+<p>一个真正reactor模式的实现是需要实现循环独立抽象出来并具有如下的功能：</p>
+<ol>
+<li>监视一系列与你I/O操作相关的文件描述符（description)</li>
+<li>不停地向你汇报那些准备好的I/O操作的文件描述符</li>
+</ol>
+<p>一个设计优秀的reactor模式实现需要做到：</p>
+<ol>
+<li>处理所有不同系统会出现的I/O事件</li>
+<li>提供优雅的抽象来帮助你在使用reactor时少花些心思去考虑它的存在</li>
+<li>提供你可以在抽象层外使用的公共协议实现。</li>
+</ol>
+<p>为什么I/O多路复用要搭配非阻塞I/O？</p>
+<p>先设想如下场景：假如 socket 的读缓冲区中已有足够多的数据，需要调用三次 read 才能读取完。或 ACCEPT 队列已经有三个「握手已完成的连接」。<br>非阻塞 I/O 的处理方式：循环的 read 或 accept，直到读完所有的数据（抛出 EWOULDBLOCK 异常）。<br>阻塞 I/O 的处理方式：每次只能调用一次 read 或 accept，因为多路复用只会告诉你 fd 对应的 socket 可读了，但不会告诉你有多少的数据可读，所以在 handle_read/handle_accept 中只能read/accept 一次，你无法知道下一次 read/accept 会不会发生阻塞。所以只能等 ioloop 的第二次循环，ioloop 告诉你 fd 可用后再继续调用 handle_read/handle_accept 处理，然后再循环第三次。</p>
+<p>我们会发现，后者的处理方式要复杂很多，稍不注意就会阻塞整个进程。</p>
+<p>如果上述的解释中，采用非阻塞I/O仅仅算是一种最佳实践的话，那么下面几种情况，必须采用非阻塞I/O:</p>
+<ul>
+<li>在边缘触发的环境:</li>
+</ul>
+<p>ET模式指的是当数据从无到有时，才通知该fd。数据读不完，也不会再次通知，所以read时一定要采用循环的方式一直读到read函数返回-1为止。此时采用阻塞的read，那么就阻塞了整个线程。</p>
+<ul>
+<li>在多线程环境:</li>
+</ul>
+<p>惊群现象，就是一个典型场景，多个进程或者线程通过 select 或者 epoll 监听一个 listen socket，当有一个新连接完成三次握手之后，所有进程都会通过 select 或者 epoll 被唤醒，但是最终只有一个进程或者线程 accept 到这个新连接，若是采用了阻塞 I/O，没有accept 到连接的进程或者线程就 block 住了。</p>
+<ul>
+<li>在触发select bug的时候:</li>
+</ul>
+<p>man 2 select「BUGS」节：       </p>
+<p>Under Linux, select() may report a socket file descriptor as “ready for reading”, while nevertheless a subsequent read blocks. This could for example happen when data has arrived but upon examination has wrong checksum and is discarded. There may be other circumstances in which a file descriptor is spuriously reported as ready. Thus it may be safer to use O_NONBLOCK on sockets that should not block.</p>
+<p>当某个socket接收缓冲区有新数据分节到达，然后select报告这个socket描述符可读，但随后，协议栈检查到这个新分节检验和错误，然后丢弃这个分节，这时候调用read则无数据可读，如果socket没有被设置nonblocking，此read将阻塞当前线程。可以看出，select返回某个描述符读写就绪，并不意味着接下来的读写操作全过程就一定不会阻塞。所以I/O多路复用绝大部分时候是和非阻塞的socket联合使用。就算数据不会被别人读走，也可能被内核丢弃。还有文档没有明说的其它情况。</p>
+<p>与I/O复用密切相关的另一种I/O模型是在多线程中使用阻塞式I/O。这种模型与上述模型极为相似，但它没有使用select阻塞在多个文件描述符上，而是使用多个线程(每个文件描述符对应一个线程)，这样每个线程都可以自由地调用read之类的阻塞式I/O系统调用了。</p>
 <h5 id="select-amp-poll-amp-epoll"><a href="#select-amp-poll-amp-epoll" class="headerlink" title="select &amp; poll &amp; epoll"></a>select &amp; poll &amp; epoll</h5><p>select, poll, epoll 都是I/O多路复用的具体的实现，而且他们出现是有先后顺序的。 </p>
 <p>I/O多路复用这个概念被提出来以后， select是第一个实现 (1983 左右在BSD里面实现的)。 </p>
 <p>select 被实现以后，很快就暴露出了很多问题。 </p>
@@ -545,7 +576,7 @@
 <li>poll 从设计上来说，不再修改传入数组，不过这个要看你的平台了，所以行走江湖，还是小心为妙。</li>
 </ul>
 <p>其实拖14年那么久也不是效率问题， 而是那个时代的硬件实在太弱，一台服务器处理1千多个链接简直就是神一样的存在了，select很长段时间已经满足需求。但是poll仍然不是线程安全的， 这就意味着，不管服务器有多强悍，你也只能在一个线程里面处理一组I/O流。你当然可以那多进程来配合了，不过然后你就有了多进程的各种问题。</p>
-<p>于是5年以后, 在2002, 大神 Davide Libenzi 实现了epoll。</p>
+<p>于是5年以后, Davide Libenzi 实现了epoll。</p>
 <p>epoll 可以说是I/O 多路复用最新的一个实现，epoll 修复了poll 和select绝大部分问题, 比如： </p>
 <ul>
 <li>epoll 现在是线程安全的。 </li>
@@ -654,7 +685,7 @@
   <p><span>本文标题:</span><a href="/Synchronize&Asynchronize/">由同步异步I/O引发的...</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 FK2469 的个人博客">FK2469</a></p>
   <p><span>发布时间:</span>2018年01月24日 - 20:01</p>
-  <p><span>最后更新:</span>2018年01月27日 - 15:01</p>
+  <p><span>最后更新:</span>2018年01月27日 - 23:01</p>
   <p><span>原始链接:</span><a href="/Synchronize&Asynchronize/" title="由同步异步I/O引发的...">http://FK2469.github.io/Synchronize&Asynchronize/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://FK2469.github.io/Synchronize&Asynchronize/"  aria-label="复制成功！"></i></span>
   </p>
@@ -862,7 +893,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#引子"><span class="nav-number">1.</span> <span class="nav-text">引子</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#日常中的异步"><span class="nav-number">1.1.</span> <span class="nav-text">日常中的异步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日常中的同步、异步I-O"><span class="nav-number">1.2.</span> <span class="nav-text">日常中的同步、异步I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作系统层次"><span class="nav-number">1.3.</span> <span class="nav-text">操作系统层次</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UNP中的同步、异步I-O"><span class="nav-number">1.3.1.</span> <span class="nav-text">UNP中的同步、异步I/O</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MSDN里的同步、异步I-O"><span class="nav-number">1.3.2.</span> <span class="nav-text">MSDN里的同步、异步I/O</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">1.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#详解"><span class="nav-number">2.</span> <span class="nav-text">详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#我们什么时候忘掉了异步？"><span class="nav-number">2.1.</span> <span class="nav-text">我们什么时候忘掉了异步？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高性能的服务器软件-事件驱动-异步I-O"><span class="nav-number">2.2.</span> <span class="nav-text">高性能的服务器软件 = 事件驱动 + 异步I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单线程"><span class="nav-number">2.2.1.</span> <span class="nav-text">单线程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我们为啥需要异步I-O"><span class="nav-number">2.3.</span> <span class="nav-text">我们为啥需要异步I/O?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户体验"><span class="nav-number">2.3.1.</span> <span class="nav-text">用户体验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源分配"><span class="nav-number">2.3.2.</span> <span class="nav-text">资源分配</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OS对异步I-O实现的支持情况"><span class="nav-number">2.4.</span> <span class="nav-text">OS对异步I/O实现的支持情况</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景知识"><span class="nav-number">2.4.1.</span> <span class="nav-text">背景知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件描述符fd"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">文件描述符fd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存-I-O"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">缓存 I/O</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O-模型"><span class="nav-number">2.4.2.</span> <span class="nav-text">I/O 模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞-I-O（Blocking-I-O）"><span class="nav-number">2.4.2.1.</span> <span class="nav-text">阻塞 I/O（Blocking I/O）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非阻塞-I-O（Non-Blocking-I-O）"><span class="nav-number">2.4.2.2.</span> <span class="nav-text">非阻塞 I/O（Non-Blocking I/O）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#I-O-多路复用（-I-O-multiplexing）"><span class="nav-number">2.4.2.3.</span> <span class="nav-text">I/O 多路复用（ I/O multiplexing）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#select-amp-poll-amp-epoll"><span class="nav-number">2.4.2.3.1.</span> <span class="nav-text">select &amp; poll &amp; epoll</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号驱动式I-O"><span class="nav-number">2.4.2.4.</span> <span class="nav-text">信号驱动式I/O</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步-I-O（asynchronous-I-O）"><span class="nav-number">2.4.2.5.</span> <span class="nav-text">异步 I/O（asynchronous I/O）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node的异步I-O"><span class="nav-number">2.5.</span> <span class="nav-text">Node的异步I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Node-js架构"><span class="nav-number">2.5.1.</span> <span class="nav-text">Node.js架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件循环"><span class="nav-number">2.5.2.</span> <span class="nav-text">事件循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#观察者"><span class="nav-number">2.5.3.</span> <span class="nav-text">观察者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O线程池"><span class="nav-number">2.5.4.</span> <span class="nav-text">I/O线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求对象"><span class="nav-number">2.5.5.</span> <span class="nav-text">请求对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行回调"><span class="nav-number">2.5.6.</span> <span class="nav-text">执行回调</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览器端的异步"><span class="nav-number">2.6.</span> <span class="nav-text">浏览器端的异步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器与Node"><span class="nav-number">2.6.1.</span> <span class="nav-text">浏览器与Node</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件驱动与高性能服务器"><span class="nav-number">2.7.</span> <span class="nav-text">事件驱动与高性能服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#经典服务器模型"><span class="nav-number">2.7.1.</span> <span class="nav-text">经典服务器模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go"><span class="nav-number">2.7.1.1.</span> <span class="nav-text">Go</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于事件的服务模型存在的问题"><span class="nav-number">2.7.2.</span> <span class="nav-text">基于事件的服务模型存在的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他平台"><span class="nav-number">2.7.3.</span> <span class="nav-text">其他平台</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#引子"><span class="nav-number">1.</span> <span class="nav-text">引子</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#日常中的同步、异步"><span class="nav-number">1.1.</span> <span class="nav-text">日常中的同步、异步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-O中的同步、异步"><span class="nav-number">1.2.</span> <span class="nav-text">I/O中的同步、异步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作系统层次"><span class="nav-number">1.3.</span> <span class="nav-text">操作系统层次</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UNP中的同步、异步I-O"><span class="nav-number">1.3.1.</span> <span class="nav-text">UNP中的同步、异步I/O</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MSDN里的同步、异步I-O"><span class="nav-number">1.3.2.</span> <span class="nav-text">MSDN里的同步、异步I/O</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">1.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#详解"><span class="nav-number">2.</span> <span class="nav-text">详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#我们什么时候忘掉了异步？"><span class="nav-number">2.1.</span> <span class="nav-text">我们什么时候忘掉了异步？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高性能的服务器软件-事件驱动-异步I-O"><span class="nav-number">2.2.</span> <span class="nav-text">高性能的服务器软件 = 事件驱动 + 异步I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单线程"><span class="nav-number">2.2.1.</span> <span class="nav-text">单线程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我们为啥需要异步I-O"><span class="nav-number">2.3.</span> <span class="nav-text">我们为啥需要异步I/O?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户体验"><span class="nav-number">2.3.1.</span> <span class="nav-text">用户体验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源分配"><span class="nav-number">2.3.2.</span> <span class="nav-text">资源分配</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OS对异步I-O实现的支持情况"><span class="nav-number">2.4.</span> <span class="nav-text">OS对异步I/O实现的支持情况</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景知识"><span class="nav-number">2.4.1.</span> <span class="nav-text">背景知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件描述符fd"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">文件描述符fd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存-I-O"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">缓存 I/O</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O-模型"><span class="nav-number">2.4.2.</span> <span class="nav-text">I/O 模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞-I-O（Blocking-I-O）"><span class="nav-number">2.4.2.1.</span> <span class="nav-text">阻塞 I/O（Blocking I/O）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非阻塞-I-O（Non-Blocking-I-O）"><span class="nav-number">2.4.2.2.</span> <span class="nav-text">非阻塞 I/O（Non-Blocking I/O）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#I-O-多路复用（-I-O-multiplexing）"><span class="nav-number">2.4.2.3.</span> <span class="nav-text">I/O 多路复用（ I/O multiplexing）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#select-amp-poll-amp-epoll"><span class="nav-number">2.4.2.3.1.</span> <span class="nav-text">select &amp; poll &amp; epoll</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号驱动式I-O"><span class="nav-number">2.4.2.4.</span> <span class="nav-text">信号驱动式I/O</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步-I-O（asynchronous-I-O）"><span class="nav-number">2.4.2.5.</span> <span class="nav-text">异步 I/O（asynchronous I/O）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node的异步I-O"><span class="nav-number">2.5.</span> <span class="nav-text">Node的异步I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Node-js架构"><span class="nav-number">2.5.1.</span> <span class="nav-text">Node.js架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件循环"><span class="nav-number">2.5.2.</span> <span class="nav-text">事件循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#观察者"><span class="nav-number">2.5.3.</span> <span class="nav-text">观察者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O线程池"><span class="nav-number">2.5.4.</span> <span class="nav-text">I/O线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求对象"><span class="nav-number">2.5.5.</span> <span class="nav-text">请求对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行回调"><span class="nav-number">2.5.6.</span> <span class="nav-text">执行回调</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览器端的异步"><span class="nav-number">2.6.</span> <span class="nav-text">浏览器端的异步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器与Node"><span class="nav-number">2.6.1.</span> <span class="nav-text">浏览器与Node</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件驱动与高性能服务器"><span class="nav-number">2.7.</span> <span class="nav-text">事件驱动与高性能服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#经典服务器模型"><span class="nav-number">2.7.1.</span> <span class="nav-text">经典服务器模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go"><span class="nav-number">2.7.1.1.</span> <span class="nav-text">Go</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于事件的服务模型存在的问题"><span class="nav-number">2.7.2.</span> <span class="nav-text">基于事件的服务模型存在的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他平台"><span class="nav-number">2.7.3.</span> <span class="nav-text">其他平台</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
