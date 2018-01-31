@@ -4,6 +4,25 @@
 
     
   <url>
+    <loc>http://FK2469.github.io/Fault-Tolerant%20Virtual%20Machines/</loc>
+    <lastmod>2018-01-31T07:59:00.861Z</lastmod>
+    <data>
+        <display>
+        <title>分布式容错系统</title>
+        <pubTime>2018-01-31T07:52:57.000Z</pubTime>
+        
+        <tag>分布式系统</tag>
+         
+        <tag>Mit 6.824</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://FK2469.github.io/Synchronize&Asynchronize/</loc>
     <lastmod>2018-01-28T15:50:35.734Z</lastmod>
     <data>

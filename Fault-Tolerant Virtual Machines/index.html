@@ -116,7 +116,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="分布式系统,Mit 6.824," />
 
 
 
@@ -127,13 +127,22 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="FK2469&#39;s Notes">
-<meta property="og:url" content="http://FK2469.github.io/archives/2017/12/index.html">
+<meta name="description" content="虚拟化与容错系统的结合与碰撞。  这篇文章是我阅读论文《The Design of a Practical System for Fault-Tolerant Virtual Machines》时的笔记，这篇论文是 VMware 发表的论文，使用虚拟机来设计一个分布式容错系统。 在分布式系统中，容错方法有很多种，常见的传统方法有：主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作），这">
+<meta name="keywords" content="分布式系统,Mit 6.824">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式容错系统">
+<meta property="og:url" content="http://FK2469.github.io/Fault-Tolerant Virtual Machines/index.html">
 <meta property="og:site_name" content="FK2469&#39;s Notes">
+<meta property="og:description" content="虚拟化与容错系统的结合与碰撞。  这篇文章是我阅读论文《The Design of a Practical System for Fault-Tolerant Virtual Machines》时的笔记，这篇论文是 VMware 发表的论文，使用虚拟机来设计一个分布式容错系统。 在分布式系统中，容错方法有很多种，常见的传统方法有：主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作），这">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/4858d6a8ly1ffrt85wk4wj20a50bmdh1.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/4858d6a8ly1ffru2zo16dj20if09ddgr.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/4858d6a8ly1ffruxtx8wzj20ez0chwfd.jpg">
+<meta property="og:updated_time" content="2018-01-31T07:59:00.861Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="FK2469&#39;s Notes">
+<meta name="twitter:title" content="分布式容错系统">
+<meta name="twitter:description" content="虚拟化与容错系统的结合与碰撞。  这篇文章是我阅读论文《The Design of a Practical System for Fault-Tolerant Virtual Machines》时的笔记，这篇论文是 VMware 发表的论文，使用虚拟机来设计一个分布式容错系统。 在分布式系统中，容错方法有很多种，常见的传统方法有：主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作），这">
+<meta name="twitter:image" content="http://wx4.sinaimg.cn/mw690/4858d6a8ly1ffrt85wk4wj20a50bmdh1.jpg">
 
 
 
@@ -163,13 +172,13 @@
 
 
 
-  <link rel="canonical" href="http://FK2469.github.io/archives/2017/12/"/>
+  <link rel="canonical" href="http://FK2469.github.io/Fault-Tolerant Virtual Machines/"/>
 
 
 
 
 
-  <title>归档 | FK2469's Notes</title>
+  <title>分布式容错系统 | FK2469's Notes</title>
   
 
 
@@ -188,7 +197,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
     <a href="https://github.com/FK2469" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -296,74 +305,282 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        嗯..! 目前共计 8 篇日志。 继续努力。
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h2 class="archive-year" id="archive-year-2017">2017</h2>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://FK2469.github.io/Fault-Tolerant Virtual Machines/">
 
-      <h3 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="FK2469">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FK2469's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/mapreduce/" itemprop="url">
-              
-                <span itemprop="name">分布式系统学习笔记（一）- MapReduce</span>
-              
-            </a>
         
-      </h3>
+          <h2 class="post-title" itemprop="name headline">分布式容错系统</h2>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-31T00:00:00+08:00"
-              content="2017-12-31" >
-          12-31
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-31T15:52:57+08:00">
+                2018-01-31
+              </time>
+            
 
-    </header>
-  </article>
+            
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-31T15:59:00+08:00">
+                2018-01-31
+              </time>
+            
+          </span>
 
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,535 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+      
 
+      
+        <blockquote class="blockquote-center"><br>虚拟化与容错系统的结合与碰撞。<br></blockquote>
+
+<p>这篇文章是我阅读论文《The Design of a Practical System for Fault-Tolerant Virtual Machines》时的笔记，这篇论文是 VMware 发表的论文，使用虚拟机来设计一个分布式容错系统。</p>
+<p>在分布式系统中，容错方法有很多种，常见的传统方法有：主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作），这种方法通常需要机器之间的高带宽。</p>
+<p>另外还有确定（deterministic）状态机方法：将另一台服务器初始化为和主服务器一样的状态，然后让它们都接受到同样的输入，这样它们的状态始终保持一致，但是这种方法对于非确定的（non-deterministic）操作并不适用。</p>
+<p>本文中讨论的方法是使用虚拟机作为状态机，它具有以下优点：</p>
+<ul>
+<li>操作全部被虚拟化</li>
+<li>虚拟机本身就支持 non-deterministic 操作</li>
+<li>虚拟机管理程序（Hypervision）能够记录所有在虚拟机上的操作，所以能够记录主服务器（Primary）所有操作，然后在副服务器（Backup）上进行演绎</li>
+</ul>
+<h1 id="基本设计方案"><a href="#基本设计方案" class="headerlink" title="基本设计方案"></a>基本设计方案</h1><p><img src="http://wx4.sinaimg.cn/mw690/4858d6a8ly1ffrt85wk4wj20a50bmdh1.jpg" alt="Figure 1:Basic FT Configuration"></p>
+<p>如图就是本文提到的容错系统的架构，一个 Primary，一个 Backup，Primary 和 Backup 之间通过 Logging Channel 进行通信，Primary 和 Backup 基本保持同步，Backup 稍稍落后，它们两个之间会通过 heartbeat 进行 fail 检测，并且它们使用共享磁盘（Shared Disk）。</p>
+<h1 id="可确定（deterministic）操作的演绎"><a href="#可确定（deterministic）操作的演绎" class="headerlink" title="可确定（deterministic）操作的演绎"></a>可确定（deterministic）操作的演绎</h1><p>让两台机器初始状态相同，它们接受相同的输入，顺序相同，两台机器执行的任务的结果就会相同。</p>
+<p>但是如果存在非确定的（non-deterministic）操作（比如中断事件、读取CPU时钟计数器的值操作就是非确定的），它会影响状态机的执行。</p>
+<p>难点在于：</p>
+<ul>
+<li>需要捕捉全部的输入和 non-deterministic 操作在保证 Backup 是deterministic 的</li>
+<li>需要准确将全部输入和 non-deterministic 操作应用到 Backup 中</li>
+<li>需要保证系统高效</li>
+</ul>
+<p>设计方案为：<br>将所有的 input 和 non-deterministic 操作写入到 log 中（file），对于 non-deterministic 操作还要记录和它相关的状态信息等，确保 non-deterministic 操作后Backup状态还是和 Primary 一致</p>
+<h1 id="FT（Fault-Tolerance）协议"><a href="#FT（Fault-Tolerance）协议" class="headerlink" title="FT（Fault-Tolerance）协议"></a>FT（Fault-Tolerance）协议</h1><p>FT 协议是应用于 logging channel 的协议，协议的基本要求为：</p>
+<p>如果 Primary 宕机了，Backup 接替它的工作，Backup 之后向外界发出所有的 Output 要和 Primary 原本应当发送的一致。</p>
+<p>为了保证以上的要求，设计如下系统：</p>
+<ul>
+<li>Primary会在所有关于本次Output 的所有信息都发送给 Backup 之后（并且要确保 Backup 收到）才会把 output 发送给外界</li>
+<li>Primary 只是推迟将 output 发送给外界，而不会暂停执行后边的任务</li>
+</ul>
+<p>流程如图所示：</p>
+<p><img src="http://wx1.sinaimg.cn/mw690/4858d6a8ly1ffru2zo16dj20if09ddgr.jpg" alt="Figure 2: FT Protocol."></p>
+<p>但是这种方法不能保证 output 只发出一次，如果 primary 宕机了，backup 不能判断它是在发送了 output 之前还是之后宕机的，因此 backup 会再发送一次 output。但是这个问题很容易解决，因为：</p>
+<ul>
+<li>output 是通过网络进行发送的，例如 TCP 之类的网络协议能够检测重复的数据包</li>
+<li>即使 output 被发送了2次其实也没关系。如果 output 是一个写操作，它会在同一个位置写入两次，结果不会发生变化；如果 output 是读取操作，读的内容会被放入 bounce buffer（为了消除 DMA 竞争），数据会在 IO 中断之后被送到</li>
+</ul>
+<h1 id="宕机检测"><a href="#宕机检测" class="headerlink" title="宕机检测"></a>宕机检测</h1><p>如何知道有机器宕机，在该系统中是十分重要的。该设计使用的是UDP heartbeat 机制来检测 Primary 与 Backup 之间的通信是否正常。</p>
+<p>但是使用这种方法会存在裂脑问题（split-brain，Primary 和 Backup 同时宕机），该怎么解决呢？</p>
+<p>该设计中使用了共享存储（Shared Storage），对它的操作是原子的，Primary 和 Backup不能同时进行一个操作（提供原子的 test-and-set 操作）</p>
+<p>如果检测出 Primary 宕机，Backup 会成为 Primary，接替之前的工作，然后再寻找一个 Backup。</p>
+<h1 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h1><h2 id="启动-重启-Virtual-Machine"><a href="#启动-重启-Virtual-Machine" class="headerlink" title="启动/重启 Virtual Machine"></a>启动/重启 Virtual Machine</h2><p>如何启动一个和 Primary 状态一样的 Backup？</p>
+<p>VMware Vmotion 操作能够将一台 VM 从一个 Server 完整的迁移到另一个 Server（只需要很短的中断），在该设计中的方法对 Vmotion 做了一点修改，不是进行迁移，而是直接克隆。</p>
+<h2 id="管理-Logging-Channel"><a href="#管理-Logging-Channel" class="headerlink" title="管理 Logging Channel"></a>管理 Logging Channel</h2><p><img src="http://wx2.sinaimg.cn/mw690/4858d6a8ly1ffruxtx8wzj20ez0chwfd.jpg" alt="Figure 3: FT Logging Buffers and Channel"></p>
+<p>如图，该设计使用了一个大的 buffer，来保存 logging entries，Primary 把自己的 entry 存到 buffer 中，由 logging channel 发送给Backup 的 buffer，然后 Backup 从 buffer 读取命令执行。</p>
+<ul>
+<li>如果 Backup 的 buffer 空了，没有命令执行了，Backup 会等待新的 entry</li>
+<li>如果 Primary 的 buffer 满了，Primary 会等待，等 buffer 中有空余空间再继续执行</li>
+</ul>
+<h1 id="Disk-I-O问题"><a href="#Disk-I-O问题" class="headerlink" title="Disk I/O问题"></a>Disk I/O问题</h1><ul>
+<li><p>disk 操作是并行的，同时对 disk 的同一位置进行操作会导致 non-deterministic<br>解决方案：检测 IO 竞争，使这些操作串行执行</p>
+</li>
+<li><p>Disk IO 使用 DMA（Direct Memory Access），同时访问内存同一位置的操作会导致 non-deterministic<br>解决方案：对 disk 操作的内存设置内存的页保护，但是这种方法代价太高；该设计中使用了 bounce buffer，它的大小和 disk 所操作的内存部分大小是一致的，read 操作直接将内容读入 buffer，当其他操作完成，写入内存，write 操作将写内容写入 buffer，之后再写入磁盘。</p>
+</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Vmware 提出的这种 Primary/Backup 方法是分布式容错方法中非常重要的一部分，可以用在许多系统中，不仅仅是分布式存储（GFS 的容错方法），也可以用在分布式计算中，因为它是将所有的操作都记录下来，将它们重新在 Backup 上进行演绎，从而起到了备份的作用，能够做到容错（Fault-Tolerance）。</p>
+
+      
     </div>
+    
+    
+    
+    <div>
+        
+          
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/Fault-Tolerant Virtual Machines/">分布式容错系统</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 FK2469 的个人博客">FK2469</a></p>
+  <p><span>发布时间:</span>2018年01月31日 - 15:01</p>
+  <p><span>最后更新:</span>2018年01月31日 - 15:01</p>
+  <p><span>原始链接:</span><a href="/Fault-Tolerant Virtual Machines/" title="分布式容错系统">http://FK2469.github.io/Fault-Tolerant Virtual Machines/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://FK2469.github.io/Fault-Tolerant Virtual Machines/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+          
+    </div>
+	
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/分布式系统/" rel="tag"># 分布式系统</a>
+          
+            <a href="/tags/Mit-6-824/" rel="tag"># Mit 6.824</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Synchronize&Asynchronize/" rel="next" title="由同步异步I/O引发的...">
+                <i class="fa fa-chevron-left"></i> 由同步异步I/O引发的...
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -371,6 +588,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -391,8 +612,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -459,6 +689,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本设计方案"><span class="nav-number">1.</span> <span class="nav-text">基本设计方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可确定（deterministic）操作的演绎"><span class="nav-number">2.</span> <span class="nav-text">可确定（deterministic）操作的演绎</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FT（Fault-Tolerance）协议"><span class="nav-number">3.</span> <span class="nav-text">FT（Fault-Tolerance）协议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#宕机检测"><span class="nav-number">4.</span> <span class="nav-text">宕机检测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#具体实现"><span class="nav-number">5.</span> <span class="nav-text">具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#启动-重启-Virtual-Machine"><span class="nav-number">5.1.</span> <span class="nav-text">启动/重启 Virtual Machine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理-Logging-Channel"><span class="nav-number">5.2.</span> <span class="nav-text">管理 Logging Channel</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Disk-I-O问题"><span class="nav-number">6.</span> <span class="nav-text">Disk I/O问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -594,6 +840,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
