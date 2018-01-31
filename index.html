@@ -358,7 +358,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-31T15:59:00+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-31T16:15:33+08:00">
                 2018-01-31
               </time>
             
@@ -386,7 +386,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,535 字
+                  1,867 字
                 </span>
               
 
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6 分钟
+                  7 分钟
                 </span>
               
             </div>
@@ -425,11 +425,8 @@
       
         
           
-            <blockquote class="blockquote-center"><br>虚拟化与容错系统的结合与碰撞。<br></blockquote>
-
-<p>这篇文章是我阅读论文《The Design of a Practical System for Fault-Tolerant Virtual Machines》时的笔记，这篇论文是 VMware 发表的论文，使用虚拟机来设计一个分布式容错系统。</p>
-<p>在分布式系统中，容错方法有很多种，常见的传统方法有：主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作），这种方法通常需要机器之间的高带宽。</p>
-<p>另外还有确定（deterministic）状态机方法：将另一台服务器初始化为和主服务器一样的状态，然后让它们都接受到同样的输入，这样它们的状态始终保持一致，但是这种方法对于非确定的（non-deterministic）操作并不适用。</p>
+            <p><blockquote class="blockquote-center"><br>虚拟化与容错系统的结合与碰撞。<br></blockquote><br>在分布式系统中有很多种容错方法。最常见的就是——主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作）。这种方法通常需要机器之间的高带宽。</p>
+<p>另外还有确定（deterministic）状态机方法：将另一台服务器初始化为和主服务器一样的状态，然后让它们都接受到同样的输入，这样它们的状态始终保持一致。虽然这种方法对于非确定的（non-deterministic）操作并不适用（因此会引入很多额外的操作来保持同步），但与状态机的改变相比仍然是很小的一部分。</p>
 <p>本文中讨论的方法是使用虚拟机作为状态机，它具有以下优点：</p>
 <ul>
 <li>操作全部被虚拟化</li>
@@ -480,6 +477,8 @@
 </li>
 </ul>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Vmware 提出的这种 Primary/Backup 方法是分布式容错方法中非常重要的一部分，可以用在许多系统中，不仅仅是分布式存储（GFS 的容错方法），也可以用在分布式计算中，因为它是将所有的操作都记录下来，将它们重新在 Backup 上进行演绎，从而起到了备份的作用，能够做到容错（Fault-Tolerance）。</p>
+<h2 id="观感"><a href="#观感" class="headerlink" title="观感"></a>观感</h2><p>虚拟化技术的应用,使企业得以把原来独占物理主机的业务系统集中部署到虚拟化环境下.这种部署方式在提高资源利用率和降低管理成本的同时,也严重降低了系统的可靠性。虽然本论文试图通过备份的方式来解决这一问题,但却引入了较大的系统开销。另外,由于系统的运行状态具有一定的规律性和周期性,因此可以通过对业务系统历史数据的分析来对系统的未来运行状态进行预测。</p>
+<p>中科院软件研究所提出了一种<a href="http://www.jos.org.cn/jos/ch/reader/create_pdf.aspx?file_no=4548&amp;journal_id=jos" target="_blank" rel="noopener">基于隐马尔可夫模型的系统失效恢复性能优化方法</a>。通过对系统运行时状态的预测分析,计算系统未来运行状态的概率趋势,并在运行过程中动态调整系统失效恢复功能与正常业务功能之间的资源分配,从而降低了系统的运行时性能开销,提高了业务系统服务能力。实验分析显示,该方法可以在保障系统可靠性的同时有效地降低系统的性能开销,在系统运行状态稳定的情况下,最高可以降低 2/3 的系统响应时间。</p>
 
           
         

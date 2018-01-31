@@ -127,21 +127,21 @@
 
 
 
-<meta name="description" content="虚拟化与容错系统的结合与碰撞。  这篇文章是我阅读论文《The Design of a Practical System for Fault-Tolerant Virtual Machines》时的笔记，这篇论文是 VMware 发表的论文，使用虚拟机来设计一个分布式容错系统。 在分布式系统中，容错方法有很多种，常见的传统方法有：主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作），这">
+<meta name="description" content="虚拟化与容错系统的结合与碰撞。在分布式系统中有很多种容错方法。最常见的就是——主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作）。这种方法通常需要机器之间的高带宽。 另外还有确定（deterministic）状态机方法：将另一台服务器初始化为和主服务器一样的状态，然后让它们都接受到同样的输入，这样它们的状态始终保持一致。虽然这种方法对于非确定的（non-deterministic）操">
 <meta name="keywords" content="分布式系统,Mit 6.824">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式容错系统">
 <meta property="og:url" content="http://FK2469.github.io/Fault-Tolerant Virtual Machines/index.html">
 <meta property="og:site_name" content="FK2469&#39;s Notes">
-<meta property="og:description" content="虚拟化与容错系统的结合与碰撞。  这篇文章是我阅读论文《The Design of a Practical System for Fault-Tolerant Virtual Machines》时的笔记，这篇论文是 VMware 发表的论文，使用虚拟机来设计一个分布式容错系统。 在分布式系统中，容错方法有很多种，常见的传统方法有：主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作），这">
+<meta property="og:description" content="虚拟化与容错系统的结合与碰撞。在分布式系统中有很多种容错方法。最常见的就是——主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作）。这种方法通常需要机器之间的高带宽。 另外还有确定（deterministic）状态机方法：将另一台服务器初始化为和主服务器一样的状态，然后让它们都接受到同样的输入，这样它们的状态始终保持一致。虽然这种方法对于非确定的（non-deterministic）操">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://wx4.sinaimg.cn/mw690/4858d6a8ly1ffrt85wk4wj20a50bmdh1.jpg">
 <meta property="og:image" content="http://wx1.sinaimg.cn/mw690/4858d6a8ly1ffru2zo16dj20if09ddgr.jpg">
 <meta property="og:image" content="http://wx2.sinaimg.cn/mw690/4858d6a8ly1ffruxtx8wzj20ez0chwfd.jpg">
-<meta property="og:updated_time" content="2018-01-31T07:59:00.861Z">
+<meta property="og:updated_time" content="2018-01-31T08:15:33.154Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式容错系统">
-<meta name="twitter:description" content="虚拟化与容错系统的结合与碰撞。  这篇文章是我阅读论文《The Design of a Practical System for Fault-Tolerant Virtual Machines》时的笔记，这篇论文是 VMware 发表的论文，使用虚拟机来设计一个分布式容错系统。 在分布式系统中，容错方法有很多种，常见的传统方法有：主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作），这">
+<meta name="twitter:description" content="虚拟化与容错系统的结合与碰撞。在分布式系统中有很多种容错方法。最常见的就是——主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作）。这种方法通常需要机器之间的高带宽。 另外还有确定（deterministic）状态机方法：将另一台服务器初始化为和主服务器一样的状态，然后让它们都接受到同样的输入，这样它们的状态始终保持一致。虽然这种方法对于非确定的（non-deterministic）操">
 <meta name="twitter:image" content="http://wx4.sinaimg.cn/mw690/4858d6a8ly1ffrt85wk4wj20a50bmdh1.jpg">
 
 
@@ -364,7 +364,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-31T15:59:00+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-31T16:15:33+08:00">
                 2018-01-31
               </time>
             
@@ -392,7 +392,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,535 字
+                  1,867 字
                 </span>
               
 
@@ -408,7 +408,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6 分钟
+                  7 分钟
                 </span>
               
             </div>
@@ -429,11 +429,8 @@
       
 
       
-        <blockquote class="blockquote-center"><br>虚拟化与容错系统的结合与碰撞。<br></blockquote>
-
-<p>这篇文章是我阅读论文《The Design of a Practical System for Fault-Tolerant Virtual Machines》时的笔记，这篇论文是 VMware 发表的论文，使用虚拟机来设计一个分布式容错系统。</p>
-<p>在分布式系统中，容错方法有很多种，常见的传统方法有：主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作），这种方法通常需要机器之间的高带宽。</p>
-<p>另外还有确定（deterministic）状态机方法：将另一台服务器初始化为和主服务器一样的状态，然后让它们都接受到同样的输入，这样它们的状态始终保持一致，但是这种方法对于非确定的（non-deterministic）操作并不适用。</p>
+        <p><blockquote class="blockquote-center"><br>虚拟化与容错系统的结合与碰撞。<br></blockquote><br>在分布式系统中有很多种容错方法。最常见的就是——主/副服务器方法（当主服务器宕机之后，由副服务器来接管它的工作）。这种方法通常需要机器之间的高带宽。</p>
+<p>另外还有确定（deterministic）状态机方法：将另一台服务器初始化为和主服务器一样的状态，然后让它们都接受到同样的输入，这样它们的状态始终保持一致。虽然这种方法对于非确定的（non-deterministic）操作并不适用（因此会引入很多额外的操作来保持同步），但与状态机的改变相比仍然是很小的一部分。</p>
 <p>本文中讨论的方法是使用虚拟机作为状态机，它具有以下优点：</p>
 <ul>
 <li>操作全部被虚拟化</li>
@@ -484,6 +481,8 @@
 </li>
 </ul>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Vmware 提出的这种 Primary/Backup 方法是分布式容错方法中非常重要的一部分，可以用在许多系统中，不仅仅是分布式存储（GFS 的容错方法），也可以用在分布式计算中，因为它是将所有的操作都记录下来，将它们重新在 Backup 上进行演绎，从而起到了备份的作用，能够做到容错（Fault-Tolerance）。</p>
+<h2 id="观感"><a href="#观感" class="headerlink" title="观感"></a>观感</h2><p>虚拟化技术的应用,使企业得以把原来独占物理主机的业务系统集中部署到虚拟化环境下.这种部署方式在提高资源利用率和降低管理成本的同时,也严重降低了系统的可靠性。虽然本论文试图通过备份的方式来解决这一问题,但却引入了较大的系统开销。另外,由于系统的运行状态具有一定的规律性和周期性,因此可以通过对业务系统历史数据的分析来对系统的未来运行状态进行预测。</p>
+<p>中科院软件研究所提出了一种<a href="http://www.jos.org.cn/jos/ch/reader/create_pdf.aspx?file_no=4548&amp;journal_id=jos" target="_blank" rel="noopener">基于隐马尔可夫模型的系统失效恢复性能优化方法</a>。通过对系统运行时状态的预测分析,计算系统未来运行状态的概率趋势,并在运行过程中动态调整系统失效恢复功能与正常业务功能之间的资源分配,从而降低了系统的运行时性能开销,提高了业务系统服务能力。实验分析显示,该方法可以在保障系统可靠性的同时有效地降低系统的性能开销,在系统运行状态稳定的情况下,最高可以降低 2/3 的系统响应时间。</p>
 
       
     </div>
@@ -502,7 +501,7 @@
   <p><span>本文标题:</span><a href="/Fault-Tolerant Virtual Machines/">分布式容错系统</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 FK2469 的个人博客">FK2469</a></p>
   <p><span>发布时间:</span>2018年01月31日 - 15:01</p>
-  <p><span>最后更新:</span>2018年01月31日 - 15:01</p>
+  <p><span>最后更新:</span>2018年01月31日 - 16:01</p>
   <p><span>原始链接:</span><a href="/Fault-Tolerant Virtual Machines/" title="分布式容错系统">http://FK2469.github.io/Fault-Tolerant Virtual Machines/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://FK2469.github.io/Fault-Tolerant Virtual Machines/"  aria-label="复制成功！"></i></span>
   </p>
@@ -699,7 +698,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本设计方案"><span class="nav-number">1.</span> <span class="nav-text">基本设计方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可确定（deterministic）操作的演绎"><span class="nav-number">2.</span> <span class="nav-text">可确定（deterministic）操作的演绎</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FT（Fault-Tolerance）协议"><span class="nav-number">3.</span> <span class="nav-text">FT（Fault-Tolerance）协议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#宕机检测"><span class="nav-number">4.</span> <span class="nav-text">宕机检测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#具体实现"><span class="nav-number">5.</span> <span class="nav-text">具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#启动-重启-Virtual-Machine"><span class="nav-number">5.1.</span> <span class="nav-text">启动/重启 Virtual Machine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理-Logging-Channel"><span class="nav-number">5.2.</span> <span class="nav-text">管理 Logging Channel</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Disk-I-O问题"><span class="nav-number">6.</span> <span class="nav-text">Disk I/O问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本设计方案"><span class="nav-number">1.</span> <span class="nav-text">基本设计方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可确定（deterministic）操作的演绎"><span class="nav-number">2.</span> <span class="nav-text">可确定（deterministic）操作的演绎</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FT（Fault-Tolerance）协议"><span class="nav-number">3.</span> <span class="nav-text">FT（Fault-Tolerance）协议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#宕机检测"><span class="nav-number">4.</span> <span class="nav-text">宕机检测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#具体实现"><span class="nav-number">5.</span> <span class="nav-text">具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#启动-重启-Virtual-Machine"><span class="nav-number">5.1.</span> <span class="nav-text">启动/重启 Virtual Machine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理-Logging-Channel"><span class="nav-number">5.2.</span> <span class="nav-text">管理 Logging Channel</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Disk-I-O问题"><span class="nav-number">6.</span> <span class="nav-text">Disk I/O问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#观感"><span class="nav-number">7.1.</span> <span class="nav-text">观感</span></a></li></ol></li></ol></div>
             
 
           </div>
